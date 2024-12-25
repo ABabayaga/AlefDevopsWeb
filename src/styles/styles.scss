@@ -1,0 +1,55 @@
+$success: #7952b3;
+
+@import "bootstrap/scss/bootstrap.scss";
+
+body {
+  padding: 1.5rem;
+}
+
+.nav-link {
+  color: #202427;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #061d36;
+}
+
+p {
+  max-width: 800px; /* Limita a largura máxima do texto */
+  line-height: 1.8; /* Aumenta o espaçamento entre linhas */
+  margin-top: 20px; /* Adiciona um espaçamento superior */
+}
+
+.text-justify {
+  text-align: justify;
+  text-align-last: justify;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Ajuste conforme necessário */
+  padding-top: 20px; /* Ajuste o espaço superior */
+  padding-bottom: 20px; /* Ajuste o espaço inferior */
+  border-top: 1px solid #ccc; /* Se você deseja uma linha acima do footer */
+}
+
+footer hr {
+  width: 100%; /* Garante que a linha ocupe toda a largura */
+  border: none; /* Remove qualquer estilo de borda existente */
+  border-top: 1px solid #ccc; /* Linha simples acima do footer */
+}
+
+.large-text {
+  font-size: 20px;
+}
+
+.large-heading {
+  font-size: 33px; /* Ajuste o tamanho conforme necessário */
+  font-weight: bold;
+  text-align: center; /* Opcional: centralizar o texto */
+}
