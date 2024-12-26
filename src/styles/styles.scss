@@ -1,21 +1,22 @@
-$success: #7952b3;
-
-@import "bootstrap/scss/bootstrap.scss";
-
 body {
   padding: 1.5rem;
 }
 
-.nav-link {
-  color: #202427;
-  padding: 0.5rem 1rem;
-  transition: color 0.3s ease;
+
+.custom-navbar {
+  background-color: #ffffff; /* Cor do fundo da navbar */
+  padding: 1rem; /* Espaçamento interno */
 }
 
-.nav-link:hover {
-  color: #061d36;
+.custom-navbar .nav-link {
+  color: #242222; /* Cor dos links */
+  font-weight: bold; /* Texto em negrito */
+  transition: color 0.3s ease; /* Suaviza a transição da cor */
 }
 
+.custom-navbar .nav-link:hover {
+  color: #727272; /* Cor ao passar o mouse */
+}
 p {
   max-width: 800px; /* Limita a largura máxima do texto */
   line-height: 1.8; /* Aumenta o espaçamento entre linhas */

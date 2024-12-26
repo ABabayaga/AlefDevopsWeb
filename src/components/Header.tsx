@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import Dropdown from "react-bootstrap/Dropdown";
 
 const Header: React.FC = () => {
   return (
@@ -7,13 +8,13 @@ const Header: React.FC = () => {
       {/* Icons Section */}
       <div className="position-absolute start-0 top-50 translate-middle-y d-flex ps-3">
         <a href="https://www.linkedin.com/in/alef-rodrigues-96768671/" target="_blank" className="text-dark me-3" rel="noopener noreferrer">
-          <img src="/linkedin.png" alt="Icon 1" width="35" height="35" />
+          <img src="/linkedin.png" alt="LinkedIn Icon" width="35" height="35" />
         </a>
         <a href="https://github.com/ABabayaga" target="_blank" className="text-dark me-3" rel="noopener noreferrer">
-          <img src="/github.png" alt="Icon 2" width="35" height="35" />
+          <img src="/github.png" alt="GitHub Icon" width="35" height="35" />
         </a>
         <a href="https://www.instagram.com/alef.lim4/" target="_blank" className="text-dark me-3" rel="noopener noreferrer">
-          <img src="/instagram.png" alt="Icon 3" width="35" height="35" />
+          <img src="/instagram.png" alt="Instagram Icon" width="35" height="35" />
         </a>
       </div>
 
@@ -27,23 +28,46 @@ const Header: React.FC = () => {
       </div>
 
       {/* Navbar */}
-      <nav>
-        <ul className="nav d-flex justify-content-center">
+      <nav className="custom-navbar">
+        <ul className="nav d-flex justify-content-center align-items-center">
           <li className="nav-item">
             <Link href="/" className="nav-link">
               Home
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item ">
             <Link href="/about" className="nav-link">
               About
             </Link>
           </li>
-          <li className="nav-item">
-            <Link href="/projects" className="nav-link">
-              Projects
-            </Link>
+
+          {/* Dropdown for Projects */}
+          <li className=" custom-navbar">
+            <Dropdown>
+              <Dropdown.Toggle variant="link" className="nav-link custom-navbar p-0 text-decoration-none">
+                Projects
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item as="span">
+                  <Link href="/projects/project1" className="dropdown-item">
+                    E-commerce Cripto
+                  </Link>
+                </Dropdown.Item>
+                <Dropdown.Item as="span">
+                  <Link href="/projects/project2" className="dropdown-item">
+                    Smart Contracts
+                  </Link>
+                </Dropdown.Item>
+                <Dropdown.Item as="span">
+                  <Link href="/projects/project3" className="dropdown-item">
+                    Project 3
+                  </Link>
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </li>
+
           <li className="nav-item">
             <Link href="/contacts" className="nav-link">
               Contact
