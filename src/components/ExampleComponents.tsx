@@ -1,17 +1,21 @@
 import React from "react";
-import { Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 const ExampleComponents: React.FC = () => {
   return (
     <>
-      <Col lg={8} className="px-0 mx-auto d-flex flex-column">
-        <p className="fs-4 text-justify">
-          Sou um desenvolvedor dedicado a criar soluções inovadoras em tecnologia blockchain. Meu propósito é projetar e implementar <strong>smart contracts</strong> eficientes, seguros e personalizados para diversas aplicações. Além disso, foco em desenvolver soluções que integram <strong>criptomoedas como meio de pagamento</strong>, oferecendo aos meus clientes uma abordagem moderna e descentralizada para transações financeiras. Com uma visão orientada para o futuro, trabalho para transformar ideias em sistemas tecnológicos robustos e adaptáveis às necessidades do mercado digital.
-        </p>
-      </Col>
+      <Container fluid className="px-0">
+        <div className="text-center my-4">
+          <img 
+            src="/wallpaper.jpg" 
+            alt="Imagem da pasta public" 
+            className="img-fluid" 
+            style={{ width: "100vw", height: "50vh", objectFit: "cover" }} 
+          />
+        </div>
+      </Container>
     </>
   );
 };
 
 export default ExampleComponents;
-

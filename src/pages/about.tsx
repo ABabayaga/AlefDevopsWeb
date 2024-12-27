@@ -1,9 +1,7 @@
 import Head from "next/head";
 import Container from "react-bootstrap/Container";
-import AppGuides from "@/components/AppGuides";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import ExampleComponents from "@/components/ExampleComponents";
 
 const About = () => {
     return (
@@ -17,16 +15,64 @@ const About = () => {
 
             <Container as="main" className="py-4 px-3 mx-auto large-text">
                 <Header />
-                <div style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    //justifyContent: "center",
-                    alignItems: "center",
-                    height: "40vh",
-                    textAlign: "center",
-                }}>
-                    <h1>About!</h1>
-                    <p>Esta página está em construção. Volte em breve!</p>
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        textAlign: "justify",
+                        lineHeight: "1.8",
+                    }}
+                >
+                    <h1>About Me</h1>
+                    <p>
+                        Sou um profissional com vasta experiência no setor de telecomunicações, acumulando mais de 15 anos de atuação no ramo de provedores de internet. Participei ativamente da criação e crescimento de uma empresa familiar, fundada em parceria com meu pai, que se destacou como referência na região, conquistando uma base sólida de clientes consolidados.
+                    </p>
+                    <p>
+                        Minhas contribuições foram estratégicas para o sucesso da empresa, abrangendo a implantação de infraestrutura técnica, desenvolvimento e otimização de processos gerenciais, criação de uma cultura de excelência no atendimento ao cliente e a gestão de diversas frentes operacionais. Esse trabalho contínuo e dedicado resultou na consolidação da empresa no mercado, sendo reconhecida pela qualidade de seus serviços de conexão à internet. Após anos de desenvolvimento, a empresa foi negociada com sucesso, coroando uma trajetória de crescimento sustentável e resultados sólidos.
+                    </p>
+                    <p>
+                        Sempre tive um interesse natural por programação, e atualmente estou em transição de carreira para a área de DevOps. Levo comigo a ampla experiência adquirida em minha trajetória no setor de telecomunicações, que me proporciona uma base sólida para agregar valor nesse novo caminho, unindo habilidades técnicas, visão estratégica e foco em excelência operacional.
+                    </p>
+                </div>
+
+                <div style={{ textAlign: "left", marginTop: "20px" }}>
+                    <h3 style={{ textAlign: "center", marginBottom: "20px" }}>Skills</h3>
+                    <h4 style={{ textDecoration: "underline" }}>Redes e Conectividade</h4>
+                    <ul>
+                        <li><b>Configuração de Redes:</b> Implementação e gerenciamento de redes locais (LAN), redes de longa distância (WAN) e redes sem fio.</li>
+                        <li><b>Segurança de Redes:</b> Firewalls, VPNs, IDS/IPS e políticas de segurança.</li>
+                        <li><b>Protocolos de Roteamento:</b> BGP e OSPF.</li>
+                        <li><b>Protocolo de Comunicação:</b> Conhecimento de TCP/IP, VLANs, DNS, DHCP, HTTP/HTTPS.</li>
+                        <li><b>Balanceamento de Carga:</b> Configuração para otimizar a distribuição de tráfego.</li>
+                    </ul>
+                    <h4 style={{ textDecoration: "underline" }}>Gerenciamento de Servidores</h4>
+                    <ul>
+                        <li><b>Sistemas Operacionais:</b> Experiência em Windows Server e Linux.</li>
+                        <li><b>Virtualização:</b> Uso de ferramentas como VMware.</li>
+                    </ul>
+                    <h4 style={{ textDecoration: "underline" }}>Armazenamento</h4>
+                    <ul>
+                        <li><b>Backup e Recuperação:</b> Implementação de políticas de backup e planos de recuperação.</li>
+                    </ul>
+                    <h4 style={{ textDecoration: "underline" }}>Segurança da Informação</h4>
+                    <ul>
+                        <li><b>Gestão de Acessos:</b> Controle de acesso VPN.</li>
+                        <li><b>Hardening de Sistemas:</b> Aumentar a segurança de servidores, dispositivos e infraestrutura.</li>
+                        <li><b>Trabalho conjunto com autoridades:</b> Fornecimento de dados sensíveis e cooperação com solicitações judiciais.</li>
+                    </ul>
+                    <h4 style={{ textDecoration: "underline" }}>Monitoramento e Diagnóstico</h4>
+                    <ul>
+                        <li><b>Ferramentas de Monitoramento:</b> Zabbix, Grafana, Smokeping.</li>
+                        <li><b>Análise de Logs:</b> Servidor de logs.</li>
+                        <li><b>Resolução de Problemas:</b> Diagnóstico de falhas de sistemas e redes.</li>
+                    </ul>
+                    <h4 style={{ textDecoration: "underline" }}>Design e Arquitetura de Infraestrutura</h4>
+                    <ul>
+                        <li><b>Planejamento de Capacidade:</b> Garantir que a infraestrutura possa lidar com o crescimento.</li>
+                        <li><b>Desenho de Topologias:</b> Projetar a estrutura lógica e física de redes e sistemas.</li>
+                        <li><b>Alta Disponibilidade (HA):</b> Soluções que evitam downtime (links alternativos, nobreaks, banco de baterias).</li>
+                    </ul>
                 </div>
                 <Footer />
             </Container>
