@@ -35,8 +35,8 @@ const Header: React.FC = () => {
               Home
             </Link>
           </li>
-
-          {/* Dropdown for Services */}
+          
+          {/* Dropdown for Services 
           <li className=" custom-navbar">
             <Dropdown>
               <Dropdown.Toggle variant="link" className="nav-link custom-navbar p-0 text-decoration-none">
@@ -62,7 +62,7 @@ const Header: React.FC = () => {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-          
+          */}
 
           {/* Dropdown for Projects */}
           <li className=" custom-navbar">
@@ -84,7 +84,12 @@ const Header: React.FC = () => {
                 </Dropdown.Item>
                 <Dropdown.Item as="span">
                   <Link href="/projects/project3" className="dropdown-item">
-                    Project 3
+                    DAO
+                  </Link>
+                </Dropdown.Item>
+                <Dropdown.Item as="span">
+                  <Link href="/projects/project3" className="dropdown-item">
+                    My Token
                   </Link>
                 </Dropdown.Item>
               </Dropdown.Menu>
