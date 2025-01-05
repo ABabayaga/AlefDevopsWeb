@@ -36,8 +36,9 @@ const About = () => {
                 >
                     <h1>About Me</h1>
                     <p>
-                        Sou um profissional com mais de 15 anos de experiência no setor de telecomunicações, atuando na criação e crescimento de uma empresa
-                        familiar. Atualmente, estou em transição de carreira para DevOps, unindo minha experiência em telecomunicações com habilidades técnicas.
+                        Sou um profissional com mais de 15 anos de experiência no setor de telecomunicações, atuando na criação e crescimento de uma empresa familiar, que se destacou como referência regional. Contribuí para o sucesso da empresa com a implantação de infraestrutura técnica, otimização de processos e excelência no atendimento ao cliente, consolidando sua posição no mercado até sua negociação bem-sucedida.
+
+                        Atualmente, estou em transição de carreira para DevOps, unindo minha experiência em telecomunicações com habilidades técnicas, visão estratégica e foco em excelência operacional.
                     </p>
                 </div>
 
@@ -179,8 +180,30 @@ const About = () => {
                             <div style={styles.closeIcon} onClick={() => toggleModal(null)}>
                                 <FaTimes />
                             </div>
-                            <h3>Personal Skills</h3>
-                            <p>Detalhes sobre habilidades pessoais...</p>
+                            <h4>Coordenação de Equipes: </h4>
+                            <ul>
+                                <li>Experiência em liderar setores como suporte, vendas, atendimento, financeiro e equipes de campo, com foco em integração e alinhamento de objetivos corporativos.</li>
+                            </ul>
+                            <h4>Otimização de Processos:</h4>
+                            <ul>
+                                <li>Desenvolvimento e implementação de estratégias para aumentar a eficiência operacional e reduzir custos, sempre priorizando a qualidade e a satisfação do cliente.</li>
+                            </ul>
+                            <h4>Desenvolvimento de Talentos:</h4>
+                            <ul>
+                                <li>Formação e treinamento de equipes multidisciplinares, promovendo o crescimento individual e coletivo para garantir alta performance e atingir metas organizacionais.</li>
+                            </ul>
+                            <h4>Gestão Financeira:</h4>
+                            <ul>
+                                <li>Supervisionei e otimizei processos financeiros, incluindo análise de orçamentos, controle de custos e planejamento financeiro, garantindo a sustentabilidade da empresa.</li>
+                            </ul>
+                            <h4>Cultura Organizacional:</h4>
+                            <ul>
+                                <li>Criei e promovi uma cultura de excelência, foco no cliente e inovação, estabelecendo valores corporativos que impulsionaram o engajamento e a produtividade das equipes.</li>
+                            </ul>
+                            <h4>Gestão de Projetos:</h4>
+                            <ul>
+                                <li>Experiência em liderar projetos complexos, desde a fase de concepção até a execução, garantindo que fossem entregues dentro dos prazos e orçamentos estabelecidos.</li>
+                            </ul>
                         </div>
                     </div>
                 )}
