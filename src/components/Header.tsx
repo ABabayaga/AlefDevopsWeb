@@ -4,7 +4,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 const Header: React.FC = () => {
   return (
-    <header className="d-flex flex-column align-items-center pb-3 mb-5 border-bottom position-relative" style={{ marginTop: "-35px" }}>
+    <header className="d-flex flex-column align-items-center mb-3 border-bottom position-relative" style={{ marginTop: "-35px" }}>
       {/* Icons Section */}
       <div className="position-absolute start-0 top-50 translate-middle-y d-flex ps-3">
         <a href="https://www.linkedin.com/in/alef-rodrigues-96768671/" target="_blank" className="text-dark me-3" rel="noopener noreferrer">
