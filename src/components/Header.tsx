@@ -74,24 +74,10 @@ const Header: React.FC = () => {
               <Dropdown.Menu>
                 <Dropdown.Item as="span">
                   <Link href="/projects/project1" className="dropdown-item">
-                    E-commerce Cripto
+                    Salve PDF blockhain
                   </Link>
                 </Dropdown.Item>
-                <Dropdown.Item as="span">
-                  <Link href="/projects/project2" className="dropdown-item">
-                    Smart Contracts
-                  </Link>
-                </Dropdown.Item>
-                <Dropdown.Item as="span">
-                  <Link href="/projects/project3" className="dropdown-item">
-                    DAO
-                  </Link>
-                </Dropdown.Item>
-                <Dropdown.Item as="span">
-                  <Link href="/projects/project3" className="dropdown-item">
-                    My Token
-                  </Link>
-                </Dropdown.Item>
+                
               </Dropdown.Menu>
             </Dropdown>
           </li>

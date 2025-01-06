@@ -36,9 +36,7 @@ const About = () => {
                 >
                     <h1>About Me</h1>
                     <p>
-                        Sou um profissional com mais de 15 anos de experiência no setor de telecomunicações, atuando na criação e crescimento de uma empresa familiar, que se destacou como referência regional. Contribuí para o sucesso da empresa com a implantação de infraestrutura técnica, otimização de processos e excelência no atendimento ao cliente, consolidando sua posição no mercado até sua negociação bem-sucedida.
-
-                        Atualmente, estou em transição de carreira para DevOps, unindo minha experiência em telecomunicações com habilidades técnicas, visão estratégica e foco em excelência operacional.
+                    Sou um profissional com mais de 15 anos de experiência no setor de telecomunicações, atuando na criação e crescimento de uma empresa familiar, que se destacou como referência regional. Contribuí para o sucesso da empresa com a implantação de infraestrutura técnica, otimização de processos e excelência no atendimento ao cliente, consolidando sua posição no mercado até sua negociação bem-sucedida. Atualmente, sou desenvolvedor júnior, buscando conhecimento e experiência na área de Web3, com foco em tecnologias inovadoras como blockchain, contratos inteligentes, tokens e DAOs.
                     </p>
                 </div>
 
@@ -215,8 +213,23 @@ const About = () => {
                             <div style={styles.closeIcon} onClick={() => toggleModal(null)}>
                                 <FaTimes />
                             </div>
-                            <h3>Developer Skills</h3>
-                            <p>Detalhes sobre habilidades de desenvolvimento...</p>
+                            <h4>FrontEnd:</h4>
+                            <ul>
+                                <img src="/react.svg" width="70"></img>
+                            </ul>
+                            <h4>BackEnd:</h4>
+                            <ul>
+                                <img src="/nodejs.svg" width="70"></img>
+                            </ul>
+                            <h4>Banco de dados:</h4>
+                            <ul>
+                                <img src="/mongo.svg" width="70"></img>
+                            </ul>
+                            <h4>Blockchain:</h4>
+                            <ul>
+                                <img src="/sol.svg" width="70"></img>
+                            </ul>
+                            
                         </div>
                     </div>
                 )}
