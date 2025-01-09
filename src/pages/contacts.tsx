@@ -1,11 +1,44 @@
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import Head from "next/head";
 import Container from "react-bootstrap/Container";
-import AppGuides from "@/components/AppGuides";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import ExampleComponents from "@/components/ExampleComponents";
 
 const Contacts = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [status, setStatus] = useState("");
+
+  // Tipagem para o evento de mudança no input
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Evita o comportamento padrão do navegador
+    setStatus("Enviando...");
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST", // Especifica o método POST
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // Envia os dados do formulário
+      });
+      if (response.ok) {
+        setStatus("Mensagem enviada com sucesso!");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setStatus("Erro ao enviar a mensagem.");
+      }
+    } catch (error) {
+      setStatus("Erro ao enviar a mensagem.");
+    }
+  };
+
   return (
     <>
       <Head>
@@ -17,16 +50,57 @@ const Contacts = () => {
 
       <Container as="main" className="py-4 px-3 mx-auto large-text">
         <Header />
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          //justifyContent: "center",
-          alignItems: "center",
-          height: "40vh",
-          textAlign: "center",
-        }}>
-          <h1>Contacts!</h1>
-          <p>Esta página está em construção. Volte em breve!</p>
+        
+        <div className="container">
+          <h1>Entre em Contato</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="name" className="form-label">
+                Nome
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                className="form-control"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="form-control"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="message" className="form-label">
+                Mensagem
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                className="form-control"
+                rows="5"
+                value={formData.message}
+                onChange={handleChange}
+                required
+              ></textarea>
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Enviar
+            </button>
+          </form>
+          {status && <p className="mt-3">{status}</p>}
         </div>
         <Footer />
       </Container>

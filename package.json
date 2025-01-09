@@ -8,8 +8,9 @@
     "startCommand": "npm start"
   },
   "scripts": {
+    "dev": "next dev",
     "build": "next build",
-    "start": "next dev",
+    "start": "next start",
     "lint": "next lint",
     "fix": "next lint --fix",
     "test": "npm run build"
@@ -21,6 +22,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "next": "^14.2.13",
+    "nodemailer": "^6.9.16",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
     "react-dom": "^18.3.1",
