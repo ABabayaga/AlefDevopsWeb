@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       await transporter.sendMail({
         from: `"${name}" <${email}>`, // Nome e e-mail do remetente (preenchido no formulário)
         to: "alef_rdl@hotmail.com", // Substitua pelo e-mail que você deseja receber as mensagens
-        subject: `Nova mensagem de contato de ${name}`, // Assunto do e-mail
+        subject: `New message AlefDevops ${name}`, // Assunto do e-mail
         text: `Você recebeu uma nova mensagem de contato:\n\nDe: ${name} <${email}>\n\nMensagem:\n${message}`, // Corpo do e-mail
       });
 

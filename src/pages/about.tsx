@@ -213,21 +213,27 @@ const About = () => {
                             <div style={styles.closeIcon} onClick={() => toggleModal(null)}>
                                 <FaTimes />
                             </div>
-                            <h4>FrontEnd:</h4>
-                            <ul>
-                                <img src="/react.svg" width="70"></img>
+                            <h4>Frontend:</h4>
+                            <ul >
+                                <img className="m-3" src="/react.svg" width="70"></img>
+                                <img  src="/bootstrap.svg" width="70"></img>
+                                <img className="m-3" src="/nextjs.svg" width="70"></img>
+                                <img  src="/vue.svg" width="70"></img>
                             </ul>
-                            <h4>BackEnd:</h4>
+                            <h4>Backend:</h4>
                             <ul>
-                                <img src="/nodejs.svg" width="70"></img>
+                                <img className="m-3" src="/nodejs.svg" width="70"></img>
+                                <img src="/javascript.svg" width="70"></img>
                             </ul>
-                            <h4>Banco de dados:</h4>
+                            <h4>Database:</h4>
                             <ul>
                                 <img src="/mongo.svg" width="70"></img>
                             </ul>
                             <h4>Blockchain:</h4>
                             <ul>
-                                <img src="/sol.svg" width="70"></img>
+                                <img className="m-3" src="/sol.svg" width="70"></img>
+                                <img src="/metamask.svg" width="70"></img>
+                                <img className="m-3" src="/bsc.svg" width="70"></img>
                             </ul>
                             
                         </div>

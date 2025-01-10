@@ -3,6 +3,7 @@ import Head from "next/head";
 import Container from "react-bootstrap/Container";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import Button from 'react-bootstrap/Button';
 
 const Contacts = () => {
   const [formData, setFormData] = useState({
@@ -50,60 +51,71 @@ const Contacts = () => {
 
       <Container as="main" className="py-4 px-3 mx-auto large-text">
         <Header />
-        
-        <div className="container">
-          <h1>Entre em Contato</h1>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">
-                Nome
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className="form-control"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="form-control"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="message" className="form-label">
-                Mensagem
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                className="form-control"
-                rows="5"
-                value={formData.message}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Enviar
-            </button>
-          </form>
-          {status && <p className="mt-3">{status}</p>}
-        </div>
-        <Footer />
       </Container>
+
+      <div
+        className="container"
+        style={{
+          maxWidth: "50%", // Reduz a largura pela metade
+          margin: "0 auto", // Centraliza horizontalmente
+          display: "flex", // Para centralizar verticalmente
+          flexDirection: "column", // Alinha elementos na coluna
+          justifyContent: "center", // Centraliza verticalmente
+          minHeight: "25vh", // Garante que ocupa toda a altura da tela
+        }}
+      >
+        <h2 className="text-center">Entre em Contato</h2> {/* Centraliza o texto */}
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="name" className="form-label">
+              Nome:
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              className="form-control"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">
+              Email:
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="form-control"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="message" className="form-label">
+              Mensagem:
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              className="form-control"
+              rows={5}
+              value={formData.message}
+              onChange={handleChange}
+              required
+            ></textarea>
+          </div>
+          <button type="submit" className="btn btn-primary w-100">
+            Enviar
+          </button>
+        </form>
+        {status && <Button variant="success" className="mt-3 text-center">{status}</Button>} {/* Centraliza a mensagem */}
+      </div>
+      <Footer />
+
     </>
   );
 };

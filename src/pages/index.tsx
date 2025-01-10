@@ -17,9 +17,9 @@ export default function Home() {
       <Container as="main" className="py-4 px-3 mx-auto large-text">
         <Header />
 
-        <h1 className="large-heading">
-          O futuro exige transparência, autonomia, confiabilidade e segurança
-          </h1>
+        <h2 className="large-heading">
+        "O futuro exige transparência, descentralização, autonomia, confiança e segurança"
+          </h2>
 
         <ExampleComponents />
 
