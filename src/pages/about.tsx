@@ -36,7 +36,7 @@ const About = () => {
                 >
                     <h1>About Me</h1>
                     <p>
-                    Sou um profissional com mais de 15 anos de experiência no setor de telecomunicações, atuando na criação e crescimento de uma empresa familiar, que se destacou como referência regional. Contribuí para o sucesso da empresa com a implantação de infraestrutura técnica, otimização de processos e excelência no atendimento ao cliente, consolidando sua posição no mercado até sua negociação bem-sucedida. Atualmente, sou desenvolvedor júnior, buscando conhecimento e experiência na área de Web3, com foco em tecnologias inovadoras como blockchain, contratos inteligentes, tokens e DAOs.
+                        Sou um profissional com mais de 15 anos de experiência no setor de telecomunicações, atuando na criação e crescimento de uma empresa familiar, que se destacou como referência regional. Contribuí para o sucesso da empresa com a implantação de infraestrutura técnica, otimização de processos e excelência no atendimento ao cliente, consolidando sua posição no mercado até sua negociação bem-sucedida. Atualmente, sou desenvolvedor júnior, buscando conhecimento e experiência na área de Web3, com foco em tecnologias inovadoras como blockchain, contratos inteligentes, tokens e DAOs.
                     </p>
                 </div>
 
@@ -99,7 +99,17 @@ const About = () => {
 
                 {/* Modal: Infrastructure */}
                 {activeModal === "infrastructure" && (
-                    <div style={styles.modalOverlay}>
+                    <div
+                        style={styles.modalOverlay}
+                        onClick={(e) => {
+                            // Verifica se o clique foi fora do modal (modalContent)
+                            if (e.target === e.currentTarget) {
+                                toggleModal(null); // Fecha o modal
+                            }
+                        }}
+                    >
+
+
                         <div style={styles.modalContent}>
                             <div style={styles.closeIcon} onClick={() => toggleModal(null)}>
                                 <FaTimes />
@@ -173,7 +183,17 @@ const About = () => {
 
                 {/* Modal: Personal */}
                 {activeModal === "personal" && (
-                    <div style={styles.modalOverlay}>
+                    <div
+                        style={styles.modalOverlay}
+                        onClick={(e) => {
+                            // Verifica se o clique foi fora do modal (modalContent)
+                            if (e.target === e.currentTarget) {
+                                toggleModal(null); // Fecha o modal
+                            }
+                        }}
+                    >
+
+
                         <div style={styles.modalContent}>
                             <div style={styles.closeIcon} onClick={() => toggleModal(null)}>
                                 <FaTimes />
@@ -208,7 +228,16 @@ const About = () => {
 
                 {/* Modal: Developer */}
                 {activeModal === "developer" && (
-                    <div style={styles.modalOverlay}>
+                    <div
+                        style={styles.modalOverlay}
+                        onClick={(e) => {
+                            // Verifica se o clique foi fora do modal (modalContent)
+                            if (e.target === e.currentTarget) {
+                                toggleModal(null); // Fecha o modal
+                            }
+                        }}
+                    >
+
                         <div style={styles.modalContent}>
                             <div style={styles.closeIcon} onClick={() => toggleModal(null)}>
                                 <FaTimes />
@@ -216,9 +245,9 @@ const About = () => {
                             <h4>Frontend:</h4>
                             <ul >
                                 <img className="m-3" src="/react.svg" width="70"></img>
-                                <img  src="/bootstrap.svg" width="70"></img>
+                                <img src="/bootstrap.svg" width="70"></img>
                                 <img className="m-3" src="/nextjs.svg" width="70"></img>
-                                <img  src="/vue.svg" width="70"></img>
+                                <img src="/vue.svg" width="70"></img>
                             </ul>
                             <h4>Backend:</h4>
                             <ul>
@@ -235,7 +264,7 @@ const About = () => {
                                 <img src="/metamask.svg" width="70"></img>
                                 <img className="m-3" src="/bsc.svg" width="70"></img>
                             </ul>
-                            
+
                         </div>
                     </div>
                 )}
@@ -253,7 +282,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         left: 0,
         width: "100%",
         height: "100%",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        backgroundColor: "rgba(0, 0, 0, 0.5)", // Fundo semitransparente
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

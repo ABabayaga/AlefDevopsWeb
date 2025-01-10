@@ -84,7 +84,7 @@ const Header: React.FC = () => {
 
           <li className="nav-item ">
             <Link href="/about" className="nav-link">
-              About 
+              About Me
             </Link>
           </li>
 

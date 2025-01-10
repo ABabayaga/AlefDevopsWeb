@@ -5,7 +5,9 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ExampleComponents from "@/components/ExampleComponents";
 
+
 export default function Home() {
+
   return (
     <>
       <Head>
@@ -18,7 +20,7 @@ export default function Home() {
         <Header />
 
         <h2 className="large-heading">
-        "O futuro exige transparência, descentralização, autonomia, confiança e segurança"
+        "The future demands transparency, decentralization, autonomy, trust, and security"
           </h2>
 
         <ExampleComponents />
