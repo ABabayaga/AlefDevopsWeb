@@ -74,7 +74,7 @@ const Header: React.FC = () => {
               <Dropdown.Menu>
                 <Dropdown.Item as="span">
                   <Link href="/projects/project1" className="dropdown-item">
-                    Salve PDF blockhain
+                    HashFile
                   </Link>
                 </Dropdown.Item>
                 
