@@ -4,6 +4,8 @@ import AppGuides from "@/components/AppGuides";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ExampleComponents from "@/components/ExampleComponents";
+import { Analytics } from '@vercel/analytics/next';
+
 
 export default function Home() {
   return (
@@ -31,7 +33,7 @@ export default function Home() {
 
         {/* Guias da aplicação */}
         <AppGuides />
-
+        <Analytics />
         {/* Rodapé */}
         <Footer />
       </Container>
