@@ -73,7 +73,7 @@ const Header: React.FC = () => {
 
               <Dropdown.Menu>
                 <Dropdown.Item as="span">
-                  <Link href="/projects/project1" className="dropdown-item">
+                  <Link href="https://www.hashfilegen.com/" className="dropdown-item">
                     HashFile
                   </Link>
                 </Dropdown.Item>

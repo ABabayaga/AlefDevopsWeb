@@ -55,4 +55,24 @@ footer hr {
   text-align: center; /* Opcional: centralizar o texto */
 }
 
+/* Ajustes para telas menores */
+@media (max-width: 768px) {
+  body {
+      font-size: 16px;
+  }
+
+  .menu {
+      flex-direction: column; /* Muda menu para coluna */
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+      font-size: 14px;
+  }
+
+  .container {
+      padding: 10px; /* Reduz o espaçamento */
+  }
+}
 

@@ -5,9 +5,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ExampleComponents from "@/components/ExampleComponents";
 
-
 export default function Home() {
-
   return (
     <>
       <Head>
@@ -17,19 +15,54 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container as="main" className="py-4 px-3 mx-auto large-text">
+        {/* Cabeçalho */}
         <Header />
 
-        <h2 className="large-heading">
-        "The future demands transparency, decentralization, autonomy, trust, and security"
-          </h2>
+        {/* Título principal com centralização e responsividade */}
+        <h2 className="large-heading text-center mt-4">
+          "The future demands transparency, decentralization, autonomy, trust, and security"
+        </h2>
 
+        {/* Componentes de exemplo */}
         <ExampleComponents />
 
+        {/* Separador */}
         <hr className="mt-5 mb-4" />
 
+        {/* Guias da aplicação */}
         <AppGuides />
+
+        {/* Rodapé */}
         <Footer />
       </Container>
+
+      {/* Estilos responsivos */}
+      <style jsx>{`
+        .large-text {
+          font-size: 1.5rem;
+        }
+
+        .large-heading {
+          font-size: 2rem;
+          line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+          .large-text {
+            font-size: 1.2rem;
+          }
+
+          .large-heading {
+            font-size: 1.5rem;
+          }
+        }
+
+        @media (max-width: 576px) {
+          .large-heading {
+            font-size: 1.2rem;
+          }
+        }
+      `}</style>
     </>
   );
 }

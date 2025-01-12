@@ -18,6 +18,8 @@ const About = () => {
         <>
             <Head>
                 <title>Alef Devops</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
@@ -281,7 +283,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         left: 0,
         width: "100%",
         height: "100%",
-        backgroundColor: "rgba(0, 0, 0, 0.5)", // Fundo semitransparente
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -306,6 +308,24 @@ const styles: { [key: string]: React.CSSProperties } = {
         cursor: "pointer",
         fontSize: "20px",
         color: "black",
+    },
+    // Novo estilo para o container principal
+    mainContainer: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "20px",
+    },
+    // Estilo para botões responsivos
+    button: {
+        padding: "10px 20px",
+        fontSize: "16px",
+        cursor: "pointer",
+        border: "none",
+        borderRadius: "5px",
+        margin: "5px",
+        width: "100%",
+        maxWidth: "200px",
     },
 };
 
