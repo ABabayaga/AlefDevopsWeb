@@ -18,7 +18,9 @@ const Blog = () => {
             <Container as="main" className="py-4 px-3 mx-auto large-text">
                 <Header />
 
-
+                    <div className="d-flex mb-5 justify-content-center align-items-center">
+                        <h1>Em construção!</h1>
+                    </div>
                 <div className="mb-5" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', height: '30vh' }}>
                     <a
                         href="https://www.linkedin.com/in/alef-rodrigues-96768671/"
