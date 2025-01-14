@@ -19,11 +19,10 @@ const Blog = () => {
                 <Header />
 
                     <div className="d-flex mb-5 justify-content-center align-items-center">
-                        <h1>Em construção!</h1>
                     </div>
                 <div className="mb-5" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', height: '30vh' }}>
                     <a
-                        href="https://www.linkedin.com/in/alef-rodrigues-96768671/"
+                        href="/blog/pagehashfile"
                         target="_blank" // Abre o link em uma nova aba
                         rel="noopener noreferrer" // Melhora a segurança ao abrir links externos
                     >
@@ -43,7 +42,7 @@ const Blog = () => {
                             marginTop: '9px', // Espaçamento entre a imagem e o texto
                             fontSize: '25px', // Tamanho da fonte do texto
                             color: '#333', // Cor do texto (opcional)
-                        }}>Sobre page HashFile</span>
+                        }}>Porque gerar Hash qualquer arquivo?</span>
                         
                     </div>
                     
