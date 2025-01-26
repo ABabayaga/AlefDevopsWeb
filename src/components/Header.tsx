@@ -73,8 +73,11 @@ const Header: React.FC = () => {
 
               <Dropdown.Menu>
                 <Dropdown.Item as="span">
-                  <Link href="https://www.hashfilegen.com/" className="dropdown-item">
+                  <Link href="https://www.hashfilegen.com/" target="_blank" className="dropdown-item">
                     HashFile
+                  </Link>
+                  <Link href="https://dapp-openc.vercel.app/" target="_blank" className="dropdown-item">
+                    NFTs Marketplace
                   </Link>
                 </Dropdown.Item>
                 
