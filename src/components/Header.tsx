@@ -7,7 +7,7 @@ const Header: React.FC = () => {
     <header className="d-flex flex-column align-items-center mb-3 border-bottom position-relative" style={{ marginTop: "-35px" }}>
       {/* Icons Section */}
       <div className="position-absolute start-0 top-50 translate-middle-y d-flex ps-3">
-        <a href="https://www.linkedin.com/in/alef-rodrigues-96768671/" target="_blank" className="text-dark me-3" rel="noopener noreferrer">
+        <a href="https://www.linkedin.com/in/alef-rodrigues-de-lima-96768671/" target="_blank" className="text-dark me-3" rel="noopener noreferrer">
           <img src="/linkedin.png" alt="LinkedIn Icon" width="35" height="35" />
         </a>
         <a href="https://github.com/ABabayaga" target="_blank" className="text-dark me-3" rel="noopener noreferrer">
