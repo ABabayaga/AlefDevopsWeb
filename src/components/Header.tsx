@@ -1,110 +1,50 @@
 import Link from "next/link";
 import React from "react";
-import Dropdown from "react-bootstrap/Dropdown";
+import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 
 const Header: React.FC = () => {
   return (
-    <header className="d-flex flex-column align-items-center mb-3 border-bottom position-relative" style={{ marginTop: "-35px" }}>
-      {/* Icons Section */}
-      <div className="position-absolute start-0 top-50 translate-middle-y d-flex ps-3">
-        <a href="https://www.linkedin.com/in/alef-rodrigues-de-lima-96768671/" target="_blank" className="text-dark me-3" rel="noopener noreferrer">
-          <img src="/linkedin.png" alt="LinkedIn Icon" width="35" height="35" />
-        </a>
-        <a href="https://github.com/ABabayaga" target="_blank" className="text-dark me-3" rel="noopener noreferrer">
-          <img src="/github.png" alt="GitHub Icon" width="35" height="35" />
-        </a>
-        <a href="https://www.instagram.com/alef.lim4/" target="_blank" className="text-dark me-3" rel="noopener noreferrer">
-          <img src="/instagram.png" alt="Instagram Icon" width="35" height="35" />
-        </a>
-      </div>
+    <Navbar expand="md" bg="white" variant="light" className="border-bottom py-0">
+      <Container className="d-flex flex-column align-items-center">
 
-      <div className="d-flex align-items-center mb-3">
-        <h1 className="h4">
-          <Link href="/" className="d-flex align-items-center text-dark text-decoration-none">
-            <img src="/code-square.svg" width="35" height="35" className="me-2" />
-            <span>Alef Devops</span>
-          </Link>
-        </h1>
-      </div>
+        {/* Linha do nome Alef Devops centralizado */}
+        <Navbar.Brand href="/" className="mb-1 d-flex align-items-center gap-2">
+          <img src="/code-square.svg" width="30" height="30" alt="Logo" />
+          <span className="fs-4 fw-bold">Alef Devops</span>
+        </Navbar.Brand>
 
-      {/* Navbar */}
-      <nav className="custom-navbar">
-        <ul className="nav d-flex justify-content-center align-items-center">
-          <li className="nav-item">
-            <Link href="/" className="nav-link">
-              Home
-            </Link>
-          </li>
-          
-          {/* Dropdown for Services 
-          <li className=" custom-navbar">
-            <Dropdown>
-              <Dropdown.Toggle variant="link" className="nav-link custom-navbar p-0 text-decoration-none">
-                Services
-              </Dropdown.Toggle>
+        {/* Linha das redes sociais e toggle */}
+        <div className="w-100 d-flex justify-content-between align-items-center mb-2 px-3">
+          <div className="d-flex gap-3">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+              <img src="/linkedin.png" alt="LinkedIn" width="24" height="24" />
+            </a>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+              <img src="/github.png" alt="GitHub" width="24" height="24" />
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+              <img src="/instagram.png" alt="Instagram" width="24" height="24" />
+            </a>
+          </div>
+          <Navbar.Toggle aria-controls="main-navbar" />
+        </div>
 
-              <Dropdown.Menu>
-                <Dropdown.Item as="span">
-                  <Link href="/smartcontracts" className="dropdown-item">
-                    Smart Contracts
-                  </Link>
-                </Dropdown.Item>
-                <Dropdown.Item as="span">
-                  <Link href="/services/project2" className="dropdown-item">
-                    DAOs
-                  </Link>
-                </Dropdown.Item>
-                <Dropdown.Item as="span">
-                  <Link href="/services/project3" className="dropdown-item">
-                    Tokens 
-                  </Link>
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </li>
-          */}
+        {/* Menu principal */}
+        <Navbar.Collapse id="main-navbar">
+          <Nav className="flex-column flex-md-row text-center gap-2 gap-md-4">
+            <Nav.Link as={Link} href="/">Home</Nav.Link>
+            <NavDropdown title="Projects" id="projects-dropdown">
+              <NavDropdown.Item href="https://www.hashfilegen.com/" target="_blank">HashFile</NavDropdown.Item>
+              <NavDropdown.Item href="https://dapp-openc.vercel.app/" target="_blank">NFTs Marketplace</NavDropdown.Item>
+            </NavDropdown>
+            <Nav.Link as={Link} href="/blog">Blog</Nav.Link>
+            <Nav.Link as={Link} href="/about">About Me</Nav.Link>
+            <Nav.Link as={Link} href="/contacts">Contact</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
 
-          {/* Dropdown for Projects */}
-          <li className=" custom-navbar">
-            <Dropdown>
-              <Dropdown.Toggle variant="link" className="nav-link custom-navbar p-0 text-decoration-none">
-                Projects
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu>
-                <Dropdown.Item as="span">
-                  <Link href="https://www.hashfilegen.com/" target="_blank" className="dropdown-item">
-                    HashFile
-                  </Link>
-                  <Link href="https://dapp-openc.vercel.app/" target="_blank" className="dropdown-item">
-                    NFTs Marketplace
-                  </Link>
-                </Dropdown.Item>
-                
-              </Dropdown.Menu>
-            </Dropdown>
-          </li>
-
-          <li className="nav-item ">
-            <Link href="/blog" className="nav-link">
-              Blog
-            </Link>
-          </li>
-
-          <li className="nav-item ">
-            <Link href="/about" className="nav-link">
-              About Me
-            </Link>
-          </li>
-
-          <li className="nav-item">
-            <Link href="/contacts" className="nav-link">
-              Contact
-            </Link>
-          </li>
-        </ul>
-      </nav>
-    </header>
   );
 };
 
