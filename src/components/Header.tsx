@@ -36,6 +36,7 @@ const Header: React.FC = () => {
             <NavDropdown title="Projects" id="projects-dropdown">
               <NavDropdown.Item href="https://www.hashfilegen.com/" target="_blank">HashFile</NavDropdown.Item>
               <NavDropdown.Item href="https://dapp-openc.vercel.app/" target="_blank">NFTs Marketplace</NavDropdown.Item>
+              <NavDropdown.Item href="https://token100-alef-devops-front.vercel.app/" target="_blank">Token100</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link as={Link} href="/blog">Blog</Nav.Link>
             <Nav.Link as={Link} href="/about">About Me</Nav.Link>
