@@ -38,6 +38,7 @@ const Header: React.FC = () => {
               <NavDropdown.Item href="https://dapp-openc.vercel.app/" target="_blank">NFTs Marketplace</NavDropdown.Item>
               <NavDropdown.Item href="https://token100-alef-devops-front.vercel.app/" target="_blank">Token100</NavDropdown.Item>
               <NavDropdown.Item href="https://market-place-alef-devops-frontend-no-backend.vercel.app/" target="_blank">MarketPlace Blockchain</NavDropdown.Item>
+              <NavDropdown.Item href="https://voting-frontend-xi.vercel.app/" target="_blank">Voting Blockchain</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link as={Link} href="/blog">Blog</Nav.Link>
             <Nav.Link as={Link} href="/about">About Me</Nav.Link>
