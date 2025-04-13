@@ -40,6 +40,7 @@ const Header: React.FC = () => {
               <NavDropdown.Item href="https://market-place-alef-devops-frontend-no-backend.vercel.app/" target="_blank">MarketPlace Blockchain</NavDropdown.Item>
               <NavDropdown.Item href="https://voting-frontend-xi.vercel.app/" target="_blank">Voting Blockchain</NavDropdown.Item>
               <NavDropdown.Item href="https://monitor-crypto-frontend.vercel.app/" target="_blank">MonitorCrypto</NavDropdown.Item>
+              <NavDropdown.Item href="https://cripto-market-qr-code.vercel.app/" target="_blank">CryptoMarketQRCode</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link as={Link} href="/blog">Blog</Nav.Link>
             <Nav.Link as={Link} href="/about">About Me</Nav.Link>
