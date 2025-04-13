@@ -16,13 +16,13 @@ const Header: React.FC = () => {
         {/* Linha das redes sociais e toggle */}
         <div className="w-100 d-flex justify-content-between align-items-center mb-2 px-3">
           <div className="d-flex gap-3">
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/in/alefdevops/" target="_blank" rel="noopener noreferrer">
               <img src="/linkedin.png" alt="LinkedIn" width="24" height="24" />
             </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/ABabayaga" target="_blank" rel="noopener noreferrer">
               <img src="/github.png" alt="GitHub" width="24" height="24" />
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/alef.lim4/" target="_blank" rel="noopener noreferrer">
               <img src="/instagram.png" alt="Instagram" width="24" height="24" />
             </a>
           </div>
