@@ -33,6 +33,7 @@ const Header: React.FC = () => {
         <Navbar.Collapse id="main-navbar">
           <Nav className="flex-column flex-md-row text-center gap-2 gap-md-4">
             <Nav.Link as={Link} href="/">Home</Nav.Link>
+            <Nav.Link as={Link} href="/services">Serviços</Nav.Link>
             <NavDropdown title="Projects" id="projects-dropdown">
               <NavDropdown.Item href="https://www.hashfilegen.com/" target="_blank">HashFile</NavDropdown.Item>
               <NavDropdown.Item href="https://dapp-openc.vercel.app/" target="_blank">NFTs Marketplace</NavDropdown.Item>
