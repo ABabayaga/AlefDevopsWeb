@@ -21,7 +21,7 @@ const About = () => {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.ico" />
+                <link rel="icon" href="/code-square.svg" />
             </Head>
 
             <Container as="main" className="py-4 px-3 mx-auto large-text">
