@@ -35,7 +35,7 @@ const services = [
     {
         title: "Consultória para compra de criptomoedas",
         description: "• Orientação sobre KYC e segurança",
-        description2: "• Custódia hot e cold wallet",
+        description2: "• Custódia hot wallet",
         description3: "• Criação de carteiras",
         icon: "/icons/buy.png"
     },
