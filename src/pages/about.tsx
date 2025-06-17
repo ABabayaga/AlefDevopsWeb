@@ -5,6 +5,10 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { FaTimes } from "react-icons/fa"; // Ícone de fechar (React Icons)
 
+import { GetStaticProps } from 'next'
+import { getI18nStaticProps } from '@/lib/getI18nStaticProps'
+import { useTranslation } from 'next-i18next'
+
 type ModalType = "infrastructure" | "personal" | "developer" | null;
 
 const About = () => {
@@ -330,3 +334,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 };
 
 export default About;
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+    return getI18nStaticProps(locale as string)
+  }

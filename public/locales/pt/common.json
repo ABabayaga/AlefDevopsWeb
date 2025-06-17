@@ -1,0 +1,52 @@
+{
+  "title": "O futuro exige transparência, descentralização, autonomia, confiança e segurança",
+  "home": "Início",
+  "services": "Serviços",
+  "projects": "Projetos",
+  "about": "Sobre",
+  "contact": "Contato",
+  "allfooter":"Todos os direitos reservados",
+  "blogtitle": "Por que gerar Hash qualquer arquivo?",
+
+
+
+  "services_header": "Serviços de Blockchain, Desenvolvimento de Sistemas e Consultorias.",
+  "services_description": "Oferecemos infraestrutura, automação e desenvolvimento sob medida para projetos tradicionais e descentralizados.",
+
+  "smart_contracts": {
+    "title": "Desenvolvimento de Smart Contracts",
+    "desc1": "• Tokens (ERC-20, ERC-721, ERC-1155)",
+    "desc2": "• Marketplaces NFT",
+    "desc3": "• Upgradeable contracts com proxy (OpenZeppelin)"
+  },
+  "responsive_web": {
+    "title": "Criação de sistemas Web responsivos",
+    "desc1": "• Painéis de controle para pequenas empresas",
+    "desc2": "• Gerenciamento de vendas, empréstimos ou clientes",
+    "desc3": "• Layouts em React + Bootstrap, Mobile Friendly"
+  },
+  "web3_integration": {
+    "title": "Integração Web3 com Frontend",
+    "desc1": "• dApps usando React + RainbowKit",
+    "desc2": "• Integração com carteiras (MetaMask, WalletConnect)",
+    "desc3": "• Controle de acesso"
+  },
+  "backend_api": {
+    "title": "Backend com API e banco de dados",
+    "desc1": "• Node.js + Express + MongoDB",
+    "desc2": "• Endpoints protegidos com autenticação",
+    "desc3": "• Painel administrativo com controle CRUD completo"
+  },
+  "crypto_consulting": {
+    "title": "Consultoria para compra de criptomoedas",
+    "desc1": "• Orientação sobre KYC e segurança",
+    "desc2": "• Custódia hot wallet",
+    "desc3": "• Criação de carteiras"
+  },
+  "custom_systems": {
+    "title": "Desenvolvimento de sistemas personalizados",
+    "desc1": "• Soluções para projetos pessoais e empresariais",
+    "desc2": "• Customização conforme modelo de negócio",
+    "desc3": "• MVPs rápidos com escopo bem definido"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "title": "The future demands transparency, decentralization, autonomy, trust, and security",
+  "home": "Home",
+  "services": "Services",
+  "projects": "Projects",
+  "about": "About",
+  "contact": "Contact",
+  "allfooter":"All rights reserved",
+  "blogtitle": "Why generate Hash for any file?",
+  
+    "services_header": "Blockchain Services, System Development and Consulting.",
+    "services_description": "We offer infrastructure, automation and custom development for traditional and decentralized projects.",
+  
+    "smart_contracts": {
+      "title": "Smart Contract Development",
+      "desc1": "• Tokens (ERC-20, ERC-721, ERC-1155)",
+      "desc2": "• NFT Marketplaces",
+      "desc3": "• Upgradeable contracts with proxy (OpenZeppelin)"
+    },
+    "responsive_web": {
+      "title": "Responsive Web System Creation",
+      "desc1": "• Control panels for small businesses",
+      "desc2": "• Management of sales, loans or clients",
+      "desc3": "• Layouts with React + Bootstrap, Mobile Friendly"
+    },
+    "web3_integration": {
+      "title": "Web3 Integration with Frontend",
+      "desc1": "• dApps using React + RainbowKit",
+      "desc2": "• Integration with wallets (MetaMask, WalletConnect)",
+      "desc3": "• Access control"
+    },
+    "backend_api": {
+      "title": "Backend with API and Database",
+      "desc1": "• Node.js + Express + MongoDB",
+      "desc2": "• Secure endpoints with authentication",
+      "desc3": "• Admin panel with full CRUD control"
+    },
+    "crypto_consulting": {
+      "title": "Cryptocurrency Purchase Consulting",
+      "desc1": "• Guidance on KYC and security",
+      "desc2": "• Hot wallet custody",
+      "desc3": "• Wallet creation"
+    },
+    "custom_systems": {
+      "title": "Custom System Development",
+      "desc1": "• Solutions for personal and business projects",
+      "desc2": "• Customization for specific business models",
+      "desc3": "• Fast MVPs with well-defined scope"
+    }
+  }
+  

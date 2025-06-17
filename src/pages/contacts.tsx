@@ -5,6 +5,10 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Button from 'react-bootstrap/Button';
 
+import { GetStaticProps } from 'next'
+import { getI18nStaticProps } from '@/lib/getI18nStaticProps'
+import { useTranslation } from 'next-i18next'
+
 const Contacts = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -121,3 +125,7 @@ const Contacts = () => {
 };
 
 export default Contacts;
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+    return getI18nStaticProps(locale as string)
+  }

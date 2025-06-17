@@ -6,7 +6,14 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ExampleComponents from "@/components/ExampleComponents";
 
+import { GetStaticProps } from 'next'
+import { getI18nStaticProps } from '@/lib/getI18nStaticProps'
+import { useTranslation } from 'next-i18next'
+
 const Blog = () => {
+
+    const { t } = useTranslation('common')
+    
     return (
         <>
             <Head>
@@ -42,7 +49,7 @@ const Blog = () => {
                             marginTop: '9px', // Espaçamento entre a imagem e o texto
                             fontSize: '25px', // Tamanho da fonte do texto
                             color: '#333', // Cor do texto (opcional)
-                        }}>Porque gerar Hash qualquer arquivo?</span>
+                        }}>{t('blogtitle')}</span>
                         
                     </div>
                     
@@ -57,3 +64,7 @@ const Blog = () => {
 };
 
 export default Blog;
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+    return getI18nStaticProps(locale as string)
+  }

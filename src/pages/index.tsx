@@ -6,8 +6,16 @@ import Header from "@/components/Header";
 import ExampleComponents from "@/components/ExampleComponents";
 import { Analytics } from '@vercel/analytics/next';
 
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
 
 export default function Home() {
+
+  const { t } = useTranslation('common')
+
+
   return (
     <>
       <Head>
@@ -16,14 +24,21 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/code-square.svg" />
       </Head>
+
+      <LanguageSwitcher/>
       <Container as="main" className="py-4 px-3 mx-auto large-text">
         {/* Cabeçalho */}
         <Header />
 
         {/* Título principal com centralização e responsividade */}
-        <h2 className="large-heading text-center mt-4">
+        { /*<h2 className="large-heading text-center mt-4">
           "The future demands transparency, decentralization, autonomy, trust, and security"
+        </h2>*/}
+
+        <h2 className="large-heading text-center mt-4">
+          {t('title')}
         </h2>
+
 
         {/* Componentes de exemplo */}
         <ExampleComponents />
@@ -67,4 +82,12 @@ export default function Home() {
       `}</style>
     </>
   );
+}
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  }
 }

@@ -2,7 +2,12 @@ import Link from "next/link";
 import React from "react";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 
+import { useTranslation } from 'next-i18next'
+
 const Header: React.FC = () => {
+
+  const { t } = useTranslation('common')
+
   return (
     <Navbar expand="md" bg="white" variant="light" className="border-bottom py-0">
       <Container className="d-flex flex-column align-items-center">
@@ -32,9 +37,9 @@ const Header: React.FC = () => {
         {/* Menu principal */}
         <Navbar.Collapse id="main-navbar">
           <Nav className="flex-column flex-md-row text-center gap-2 gap-md-4">
-            <Nav.Link as={Link} href="/">Home</Nav.Link>
-            <Nav.Link as={Link} href="/services">Serviços</Nav.Link>
-            <NavDropdown title="Projects" id="projects-dropdown">
+            <Nav.Link as={Link} href="/">{t('home')}</Nav.Link>
+            <Nav.Link as={Link} href="/services">{t('services')}</Nav.Link>
+            <NavDropdown title={t('projects')} id="projects-dropdown">
               <NavDropdown.Item href="https://www.hashfilegen.com/" target="_blank">HashFile</NavDropdown.Item>
               <NavDropdown.Item href="https://dapp-openc.vercel.app/" target="_blank">NFTs Marketplace</NavDropdown.Item>
               <NavDropdown.Item href="https://token100-alef-devops.vercel.app/" target="_blank">Token100</NavDropdown.Item>
@@ -44,8 +49,8 @@ const Header: React.FC = () => {
               <NavDropdown.Item href="https://cripto-market-qr-code.vercel.app/" target="_blank">CryptoMarketQRCode</NavDropdown.Item>
             </NavDropdown>
             <Nav.Link as={Link} href="/blog">Blog</Nav.Link>
-            <Nav.Link as={Link} href="/about">About Me</Nav.Link>
-            <Nav.Link as={Link} href="/contacts">Contact</Nav.Link>
+            <Nav.Link as={Link} href="/about">{t('about')}</Nav.Link>
+            <Nav.Link as={Link} href="/contacts">{t('contact')}</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
