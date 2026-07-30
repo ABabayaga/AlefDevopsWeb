@@ -28,7 +28,7 @@
 
 ### Task 1: Constante de WhatsApp compartilhada
 
-Hoje o número vive só em `Hero.tsx`. A Task 6 precisa dele no `Header` também, e duplicar um número de telefone em dois arquivos é como ele fica errado.
+Hoje o número vive só em `Hero.tsx`. A Task 8 precisa dele no `Header` também, e duplicar um número de telefone em dois arquivos é como ele fica errado.
 
 **Files:**
 - Create: `src/lib/whatsapp.ts`
@@ -741,7 +741,7 @@ Não é preciso escrever regra de `prefers-reduced-motion`: o bloco global em `@
 - [ ] **Step 2: Verificar build**
 
 Run: `npm run build`
-Expected: build conclui. Uma classe não usada não quebra nada; a Task 6 a consome.
+Expected: build conclui. Uma classe não usada não quebra nada; a Task 7 a consome.
 
 - [ ] **Step 3: Commit**
 
@@ -752,7 +752,126 @@ git commit -m "feat: reintroduz o indicador de scroll"
 
 ---
 
-### Task 6: Reescrita do Hero
+### Task 6: Extrair o conteúdo do card de área
+
+Os dois ramos do Hero mostram as mesmas quatro informações por área — número, título,
+descrição e stack — em layouts diferentes: faixa de três colunas no estático, coluna
+empilhada com entrada individual no coreografado. O **conteúdo** é o mesmo; só o
+**contêiner** muda. Esta task extrai o conteúdo antes que a Task 7 o duplique.
+
+A fronteira é deliberada: `AreaCard` devolve um fragmento e não conhece `<li>`, grid nem
+padding. Quem usa é dono do contêiner e do layout. Sem props de variante, sem condicional
+de estilo.
+
+**Files:**
+- Create: `src/components/AreaCard.tsx`
+- Modify: `src/components/ExpertiseAreas.tsx:22-46`
+
+**Interfaces:**
+- Consumes: nada
+- Produces: `default` export `AreaCard: React.FC<AreaCardProps>` com
+  ```ts
+  interface AreaCardProps {
+    /** "01" | "02" | "03" — decorativo, leva aria-hidden. */
+    index: string;
+    /** Chave do locale: "infra" | "web2" | "web3". */
+    areaKey: string;
+  }
+  ```
+
+- [ ] **Step 1: Criar o componente**
+
+`src/components/AreaCard.tsx`:
+
+```tsx
+import { useTranslation } from "next-i18next";
+
+interface AreaCardProps {
+  /** "01" | "02" | "03" — decorativo, leva aria-hidden. */
+  index: string;
+  /** Chave do locale: "infra" | "web2" | "web3". */
+  areaKey: string;
+}
+
+/**
+ * O conteúdo de uma área, sem contêiner. Devolve um fragmento de propósito:
+ * o hero mostra as mesmas quatro informações em dois layouts diferentes, então
+ * quem usa é dono do <li>, do grid e do padding — aqui mora só o que se lê.
+ *
+ * A numeração é a régua de eventos do traço de OTDR que ocupava esta coluna
+ * antes: o gráfico saiu, a gramática do instrumento ficou.
+ */
+const AreaCard: React.FC<AreaCardProps> = ({ index, areaKey }) => {
+  const { t } = useTranslation("common");
+
+  return (
+    <>
+      <span aria-hidden className="type-label text-om3">
+        {index}
+      </span>
+
+      <h2 className="type-display m-0 text-[1.375rem] text-fg">
+        {t(`areas.${areaKey}.title`)}
+      </h2>
+
+      <p className="m-0 text-[0.9375rem] leading-relaxed text-fg-muted">
+        {t(`areas.${areaKey}.desc`)}
+      </p>
+
+      {/* mt-auto alinha a stack pela base quando as colunas têm alturas
+          diferentes; num contêiner de altura própria é inofensivo. */}
+      <p className="m-0 mt-auto pt-3 font-mono text-[0.6875rem] leading-relaxed tracking-[0.14em] text-fg-muted/75">
+        {t(`areas.${areaKey}.stack`)}
+      </p>
+    </>
+  );
+};
+
+export default AreaCard;
+```
+
+- [ ] **Step 2: Consumir em `ExpertiseAreas`**
+
+Em `src/components/ExpertiseAreas.tsx`, acrescente o import:
+
+```tsx
+import AreaCard from "@/components/AreaCard";
+```
+
+O `useTranslation` deixa de ser usado neste arquivo — remova a linha `const { t } =
+useTranslation("common");` e o import de `useTranslation`, senão o build carrega binding
+morto. Troque o corpo do `<li>` (linhas 28-44) por:
+
+```tsx
+          <AreaCard index={area.id} areaKey={area.key} />
+```
+
+O `<li>` e suas classes ficam exatamente como estão — é ele que define a faixa de três
+colunas.
+
+- [ ] **Step 3: Verificar tipos e build**
+
+Run: `npx tsc --noEmit && npm run build`
+Expected: sem erros; build conclui com 8 páginas.
+
+- [ ] **Step 4: Conferir que nada mudou visualmente**
+
+Run: `npm run dev`, abrir a home.
+Expected: a faixa das três áreas está **pixel a pixel igual** a antes — mesma numeração
+aqua, mesmos títulos, mesmo alinhamento da stack pela base. Esta task é refatoração pura;
+qualquer diferença visível é um bug. Conferir também em ~375px, onde a faixa vira uma
+coluna, e nos dois idiomas.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/components/AreaCard.tsx src/components/ExpertiseAreas.tsx
+git commit -m "refactor: extrai o conteúdo do card de área"
+```
+
+---
+
+### Task 7: Reescrita do Hero
 
 O maior passo do plano. Um componente, dois ramos: estático e coreografado.
 
@@ -760,7 +879,7 @@ O maior passo do plano. Um componente, dois ramos: estático e coreografado.
 - Modify: `src/components/sections/Hero.tsx` (reescrita completa)
 
 **Interfaces:**
-- Consumes: `whatsappHref` de `@/lib/whatsapp`; `prefersStaticHero`, `useScrollProgress` de `@/hooks/useScrollProgress`; `PlanetScene` de `@/components/PlanetScene`; `ExpertiseAreas` de `@/components/ExpertiseAreas`
+- Consumes: `whatsappHref` de `@/lib/whatsapp`; `prefersStaticHero`, `useScrollProgress` de `@/hooks/useScrollProgress`; `PlanetScene` de `@/components/PlanetScene`; `ExpertiseAreas` de `@/components/ExpertiseAreas`; `AreaCard` de `@/components/AreaCard`
 - Produces: `default` export `Hero: React.FC`
 
 - [ ] **Step 1: Reescrever o componente**
@@ -771,6 +890,7 @@ O maior passo do plano. Um componente, dois ramos: estático e coreografado.
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "next-i18next";
+import AreaCard from "@/components/AreaCard";
 import ExpertiseAreas from "@/components/ExpertiseAreas";
 import { prefersStaticHero, useScrollProgress } from "@/hooks/useScrollProgress";
 import { whatsappHref } from "@/lib/whatsapp";
@@ -870,21 +990,7 @@ const Hero: React.FC = () => {
                   aria-hidden={!visible}
                   className={`flex flex-col gap-3 bg-ink px-6 py-7 ${reveal(visible)}`}
                 >
-                  <span aria-hidden className="type-label text-om3">
-                    {`0${index + 1}`}
-                  </span>
-
-                  <h2 className="type-display m-0 text-[1.375rem] text-fg">
-                    {t(`areas.${key}.title`)}
-                  </h2>
-
-                  <p className="m-0 text-[0.9375rem] leading-relaxed text-fg-muted">
-                    {t(`areas.${key}.desc`)}
-                  </p>
-
-                  <p className="m-0 pt-1 font-mono text-[0.6875rem] leading-relaxed tracking-[0.14em] text-fg-muted/75">
-                    {t(`areas.${key}.stack`)}
-                  </p>
+                  <AreaCard index={`0${index + 1}`} areaKey={key} />
                 </li>
               );
             })}
@@ -960,7 +1066,7 @@ git commit -m "feat: hero com planeta de cascas dirigido por scroll"
 
 ---
 
-### Task 7: WhatsApp no Header
+### Task 8: WhatsApp no Header
 
 Com o CTA aparecendo só em `progress ≥ 0.85`, quem abre o site e não rola nunca vê o botão. O header é `sticky`, então uma entrada aqui deixa o contato alcançável em qualquer ponto dos 300vh.
 
@@ -1075,7 +1181,7 @@ git commit -m "feat: contato do WhatsApp no header"
 
 ---
 
-### Task 8: Remoção do NetworkMesh e verificação final
+### Task 9: Remoção do NetworkMesh e verificação final
 
 **Files:**
 - Delete: `src/components/NetworkMesh.tsx`
