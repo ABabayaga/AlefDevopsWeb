@@ -28,9 +28,15 @@ planeta cujas cascas concêntricas se abrem conforme o visitante desce, de dentr
 | Mobile (<768px) e `reduced-motion` | Versão estática, sem scroll narrativo |
 | `NetworkMesh` | Deletado |
 
-A metáfora vira estrutura: a headline já é *"Da fibra ao smart contract"*, e num planeta de
-cascas o raio **é** essa frase. Amarelo OS2 no núcleo e aqua OM3 na superfície fazem o
-gradiente de cor ser o próprio arco da carreira.
+A metáfora vira estrutura: num planeta de cascas, o raio é a trajetória — a infra sustenta a
+web2, que sustenta a web3. Amarelo OS2 no núcleo e aqua OM3 na superfície fazem o gradiente
+de cor ser o próprio arco da carreira.
+
+Nota de copy: o `title` atual é *"Sites e sistemas sob medida."*. A frase *"Da fibra ao
+smart contract."* — que dizia esse arco literalmente e apareceu no spec de 2026-07-30 das
+áreas de experiência — foi trocada depois. A estrutura radial funciona sem ela, mas se a
+headline voltar a nomear o arco, a cena e o texto passam a dizer a mesma coisa. Fica como
+observação, não como requisito: **este design não altera copy.**
 
 GSAP + ScrollTrigger (~40KB gz) e Lenis (+~10KB) foram considerados e descartados: a
 coreografia inteira é dirigida por um escalar de 0 a 1, o que é uma função de `progress`,
