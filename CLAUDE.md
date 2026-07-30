@@ -1,0 +1,114 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project overview
+
+Personal portfolio for Alef Devops (https://alefdevops.com), built with Next.js 14 (pages router) + TypeScript + Tailwind CSS v4. Deployed on Vercel. Most user-facing copy is Brazilian Portuguese; `pt` is the default locale. Code comments are in Portuguese and explain *why*, not *what* — match that when editing.
+
+The site's positioning is a career arc from physical network infrastructure to on-chain development: fifteen years of fiber/POPs/monitoring, now applied to web systems and smart contracts. That framing drives both the copy and the visual language.
+
+## Commands
+
+```bash
+npm run dev      # dev server
+npm run build    # production build — this is the real check
+npm start        # serve production build
+npm run lint     # BROKEN, see below
+npm test         # alias for `npm run build`
+```
+
+There is no test runner. "Testing" a change means `npm run build` succeeding, plus `npm run dev` and clicking through at desktop and ~375px widths, then switching locale with `LanguageSwitcher` to confirm both languages of any new keys.
+
+**`npm run lint` is broken and silently so.** ESLint 9 is installed but Next 14's `next lint` passes removed options (`useEslintrc`, `extensions`, …), so it prints `Invalid Options:` and **exits 0**. `npm run build` hits the same failure, prints `⨯ ESLint: Invalid Options`, and then builds successfully anyway. So: lint output is noise, a clean build does *not* mean lint passed, and a build is only broken if compilation or type checking fails. Fixing lint means either migrating to `eslint.config.mjs` flat config or pinning ESLint 8.
+
+## Architecture
+
+**The live site is one page.** Successive refactors reduced a multi-page Bootstrap site to a single hero. Build output is 8 static pages — 4 routes × 2 locales:
+
+- `/` (`src/pages/index.tsx`) — `Header`, `Hero`, `Footer`, `<Analytics />`. That is the whole page.
+- `/api/send-email` — see Contact below.
+- `/404`.
+
+`Hero.tsx` holds the eyebrow, the single `<h1>`, a support paragraph, one WhatsApp CTA, and `<ExpertiseAreas />`. The WhatsApp number is a bare-digits constant at the top of `Hero.tsx` (`wa.me` rejects punctuation); the pre-filled message is a locale key, so it differs per language.
+
+`ExpertiseAreas.tsx` is the three-column band (Infrastructure / Web2 / Web3) at the end of the hero. It is data-driven in the same pattern as `ServicesSection`: a local `areas` array of `{ id, key }` with all text from `t(\`areas.${key}.title\`)`, `.desc`, `.stack`. Adding or renaming an area means the array plus both locale files — never the layout. The `01/02/03` numbering is `aria-hidden` decoration and is the surviving trace of a deleted OTDR graph (see below).
+
+**Most of the codebase is deliberately disabled, and it is still type-checked.** Two separate mechanisms:
+
+- `src/components/sections/` — `ServicesSection`, `AboutSection`, `ContactSection`, `SkillsSection` are imported nowhere.
+- `src/pages-disabled/` — the two blog pages (`blog.tsx`, `blog/pagehashfile.tsx`), moved out of `src/pages/` so Next stops routing them. `/blog` currently 404s.
+
+`tsconfig.json` includes `**/*.tsx` from the repo root, so **everything under `src/pages-disabled/` and the unused sections is still compiled and type-checked** — a type error in dormant code breaks the build even though the route doesn't exist. Verified with `npx tsc --noEmit --listFiles`. Conversely, they render nowhere, so a visual or runtime bug there is invisible until re-enabled.
+
+`AboutSection`, `ContactSection`, and `SkillsSection` each open with a `DESATIVADO` docblock explaining their state — read it before touching one. `ServicesSection` does not have one; it was switched off later, by removing its import from `index.tsx`.
+
+Their readiness differs sharply:
+- `ServicesSection`, `AboutSection`, `ContactSection` — dark-themed, translated, keys already in both locales. Cheap to re-enable.
+- `SkillsSection` — **still Bootstrap-era**: `className="container py-5"`, large inline `style={{}}` objects, white-background modals, `<img src="/bootstrap.svg">`. Bootstrap CSS is no longer loaded, so those classes resolve to nothing. Content was preserved verbatim from the old `AboutSection`; decide the form (tabs / expanding cards / timeline) before restyling.
+
+**Re-enabling anything requires restoring the nav.** `Header.tsx` has `const navItems: { href: string; label: string }[] = []` — explicitly typed and empty, kept as the single re-attachment point because the home page has no anchor or route to point at. It is mapped in both the desktop `<nav>` and the mobile drawer, so restoring one entry restores both. The hero CTA is WhatsApp-only for the same reason: with the page reduced to the hero there is no honest internal destination.
+
+`Header` itself is one `sticky top-0` component, transparent over the hero and switching to `bg-ink/85 backdrop-blur-md` past 24px of scroll via a `scroll` listener. It owns the mobile hamburger (`open` state) and renders `LanguageSwitcher` in both the desktop bar and the drawer.
+
+**Path alias**: `@/*` → `src/*`. `strict` is on.
+
+## Design docs
+
+`docs/superpowers/specs/` holds dated design specs written before implementation. `2026-07-30-hero-areas-de-experiencia-design.md` covers the current hero and is the best explanation of *why* the OTDR panel and manifesto headline were removed.
+
+Treat specs as historical intent, not current truth — that one is already partly superseded. It specifies two CTAs (an internal `/#services` pill plus an outline WhatsApp link) and says the `.scroll-cue` indicator stays; shipped reality is a single WhatsApp CTA in the pill style and the scroll indicator deleted, both because `ServicesSection` was disabled afterward.
+
+## Styling
+
+Tailwind v4 only — no Bootstrap, no Sass, no CSS modules. Config is CSS-first in `src/styles/globals.css` (imported by `_app.tsx`); there is no `tailwind.config.js`. `postcss.config.mjs` loads `@tailwindcss/postcss`.
+
+The design language is fiber-optic / network-operations-center: dark blue-tinted surfaces, mono technical labels, accents taken from fiber jacket colors. Use the `@theme` tokens rather than raw hex or Tailwind's default palette:
+
+- Surfaces: `ink` (page bg), `surface`, `raised`, `line`, `line-soft` (borders)
+- Text: `fg`, `fg-muted`
+- Accents: `os2` `#f4c542` (singlemode yellow — primary), `om3` `#22d3c5` (multimode aqua — secondary)
+
+`--ease-out-quint` is still declared in `@theme` but is now orphaned — the OTDR and scroll-cue animations that used it were deleted. Reuse it for the next animation or drop it.
+
+Component classes in `@layer components`:
+- `.type-display` — Archivo at `font-stretch: 125%`, headings only. Depends on the `wdth` axis being loaded.
+- `.type-hero` — `clamp(2.75rem, 7vw, 5.5rem)`. The high ceiling assumes the short two-line headline; it was raised from a much lower value when the long manifesto sentence was replaced. Only the hero `<h1>` uses it.
+- `.type-label` — mono uppercase, wide tracking, for eyebrows and technical data. It force-uppercases, so don't apply it to unit strings.
+- `.type-section`, `.measure` (62ch reading width, replaced an old `text-align: justify`) — currently used **only by disabled code** (`SectionHeader`, the dormant sections, the moved blog pages) plus `.measure` in the hero.
+
+`SectionHeader.tsx` (labeled rule + title) is likewise only consumed by disabled code right now. Keep it: it is the intended heading pattern for any section that comes back.
+
+Global base layer sets `color-scheme: dark`, `scroll-behavior: smooth`, `scroll-padding-top: 5rem` (so hash anchors clear the sticky header), an `os2` selection colour and focus ring, and a `prefers-reduced-motion` block that collapses all animation/transition durations.
+
+**Recurring layout idiom**: hairline separators are the background showing through a grid gap — `grid gap-px bg-line` with `bg-ink` children. Used in both `ExpertiseAreas` and `ServicesSection`, and it degrades to a single column with horizontal rules on mobile without extra rules.
+
+**Line-art PNGs need `className="invert"`.** The icons in `public/` and `public/icons/` are pure black line art; on the dark background they vanish without it.
+
+## i18n
+
+`next-i18next`, locales `pt` (default) and `en`, configured in `next-i18next.config.js` and spread into `next.config.js`. `localeDetection` is deliberately omitted — Next only accepts `false` there, and passing `true` fails config validation.
+
+- Strings live in `public/locales/{en,pt}/common.json` — 67 keys, with nested objects (`areas.infra.title`, `smart_contracts.desc1`, `form.send`, `about_bio.p1`). The two files are currently key-for-key in sync; keep them that way.
+- Many keys serve only disabled sections. Don't assume an unreferenced key is dead — check `src/components/sections/` and `src/pages-disabled/` before removing one.
+- Stack strings (`areas.*.stack`) are single strings with `·` separators baked in, not arrays joined in JSX. Translating one means editing the string.
+- `ServicesSection` looks up `t(\`${service.key}.title\`)` and `t(\`${service.key}.${detail}\`)` from local `services`/`details` arrays. Adding a service means the array entry **plus** `title`/`desc1`/`desc2`/`desc3` in both locale files.
+- Components call `useTranslation("common")`. `_app.tsx` wraps with `appWithTranslation`.
+- All pages load translations through `getI18nStaticProps(locale)` from `src/lib/getI18nStaticProps.ts` — use it for new pages rather than calling `serverSideTranslations` inline.
+- `LanguageSwitcher` switches via `router.push(asPath, asPath, { locale })` and handles outside-click/Escape dismissal itself.
+- `_document.tsx` reads `props.__NEXT_DATA__.locale` so `<Html lang>` follows the active locale.
+- Fonts: `Archivo` (with the `wdth` axis) and `IBM_Plex_Mono`, loaded via `next/font/google` in `_app.tsx` and bridged into Tailwind through `@theme inline` as `--font-sans` / `--font-mono`.
+
+## Contact
+
+The live path is the WhatsApp CTA in the hero. The hero design spec states email contact is being retired.
+
+`src/pages/api/send-email.js` nonetheless still exists and works: POST-only, `nodemailer` over Gmail SMTP using `SMTP_USER` / `SMTP_PASS` (see `.env.example`), relaying to a recipient hardcoded in the file. Its only consumer is the disabled `ContactSection`, so nothing currently calls it. An earlier version sat in `src/api/`, outside `pages/`, and 404'd — don't move it back.
+
+## Other notes
+
+- `package.json` still carries starter metadata from the Bootstrap template this was forked from: `"name": "react-nextjs"`, `"repository": "twbs/examples"`.
+- `react-router-dom` is in `dependencies` but unused (Next handles routing).
+- `public/` still holds assets only referenced by disabled code (`pagehashfile.jpg`, `bootstrap.svg`, the service icons) — check `src/pages-disabled/` and the dormant sections before deleting any.
+- `README.md` is the human-facing doc (Portuguese) and points here for architecture. Keep its tech-stack list and its note about the disabled sections in sync when either changes.
+- No Cursor (`.cursor/rules/`, `.cursorrules`) or Copilot (`.github/copilot-instructions.md`) rule files exist in this repo.

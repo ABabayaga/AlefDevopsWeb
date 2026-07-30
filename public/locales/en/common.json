@@ -1,51 +1,103 @@
 {
-  "title": "The future demands transparency, decentralization, autonomy, trust, and security",
+  "title": "Custom websites and systems.",
+  "meta_description": "Alef Devops — smart contracts, web systems and consulting, backed by fifteen years of telecom infrastructure.",
+
   "home": "Home",
   "services": "Services",
   "projects": "Projects",
   "about": "About",
   "contact": "Contact",
-  "allfooter":"All rights reserved",
-  "blogtitle": "Why generate Hash for any file?",
-  
-    "services_header": "Blockchain Services, System Development and Consulting.",
-    "services_description": "We offer infrastructure, automation and custom development for traditional and decentralized projects.",
-  
-    "smart_contracts": {
-      "title": "Smart Contract Development",
-      "desc1": "• Tokens (ERC-20, ERC-721, ERC-1155)",
-      "desc2": "• NFT Marketplaces",
-      "desc3": "• Upgradeable contracts with proxy (OpenZeppelin)"
+  "blog": "Blog",
+  "allfooter": "All rights reserved",
+
+  "nav_label": "Main navigation",
+  "nav_open": "Open menu",
+  "nav_close": "Close menu",
+
+  "hero_eyebrow": "Alef Lima · Alef Devops",
+  "hero_sub": "From front-end to database, from admin panel to on-chain contract. Fifteen years of infrastructure make sure what I ship stays up.",
+  "hero_whatsapp": "Chat on WhatsApp",
+  "hero_whatsapp_message": "Hi Alef! I came from your site.",
+
+  "areas": {
+    "infra": {
+      "title": "Infrastructure",
+      "desc": "Fiber, POPs and physical network monitoring",
+      "stack": "OTDR · NOC · Networks"
     },
-    "responsive_web": {
-      "title": "Responsive Web System Creation",
-      "desc1": "• Control panels for small businesses",
-      "desc2": "• Management of sales, loans or clients",
-      "desc3": "• Layouts with React + Bootstrap, Mobile Friendly"
+    "web2": {
+      "title": "Web2",
+      "desc": "Systems, APIs and admin panels",
+      "stack": "React · Next.js · Node · MongoDB"
     },
-    "web3_integration": {
-      "title": "Web3 Integration with Frontend",
-      "desc1": "• dApps using React + RainbowKit",
-      "desc2": "• Integration with wallets (MetaMask, WalletConnect)",
-      "desc3": "• Access control"
-    },
-    "backend_api": {
-      "title": "Backend with API and Database",
-      "desc1": "• Node.js + Express + MongoDB",
-      "desc2": "• Secure endpoints with authentication",
-      "desc3": "• Admin panel with full CRUD control"
-    },
-    "crypto_consulting": {
-      "title": "Cryptocurrency Purchase Consulting",
-      "desc1": "• Guidance on KYC and security",
-      "desc2": "• Hot wallet custody",
-      "desc3": "• Wallet creation"
-    },
-    "custom_systems": {
-      "title": "Custom System Development",
-      "desc1": "• Solutions for personal and business projects",
-      "desc2": "• Customization for specific business models",
-      "desc3": "• Fast MVPs with well-defined scope"
+    "web3": {
+      "title": "Web3",
+      "desc": "Smart contracts, tokens and dApps",
+      "stack": "Solidity · OpenZeppelin · RainbowKit"
     }
-  }
-  
+  },
+
+  "services_header": "Blockchain Services, System Development and Consulting.",
+  "services_description": "We offer infrastructure, automation and custom development for traditional and decentralized projects.",
+
+  "smart_contracts": {
+    "title": "Smart Contract Development",
+    "desc1": "Tokens (ERC-20, ERC-721, ERC-1155)",
+    "desc2": "NFT Marketplaces",
+    "desc3": "Upgradeable contracts with proxy (OpenZeppelin)"
+  },
+  "responsive_web": {
+    "title": "Responsive Web System Creation",
+    "desc1": "Control panels for small businesses",
+    "desc2": "Management of sales, loans or clients",
+    "desc3": "React layouts, mobile friendly"
+  },
+  "web3_integration": {
+    "title": "Web3 Integration with Frontend",
+    "desc1": "dApps using React + RainbowKit",
+    "desc2": "Integration with wallets (MetaMask, WalletConnect)",
+    "desc3": "Access control"
+  },
+  "backend_api": {
+    "title": "Backend with API and Database",
+    "desc1": "Node.js + Express + MongoDB",
+    "desc2": "Secure endpoints with authentication",
+    "desc3": "Admin panel with full CRUD control"
+  },
+  "crypto_consulting": {
+    "title": "Cryptocurrency Purchase Consulting",
+    "desc1": "Guidance on KYC and security",
+    "desc2": "Hot wallet custody",
+    "desc3": "Wallet creation"
+  },
+  "custom_systems": {
+    "title": "Custom System Development",
+    "desc1": "Solutions for personal and business projects",
+    "desc2": "Customization for specific business models",
+    "desc3": "Fast MVPs with well-defined scope"
+  },
+
+  "about_header": "Fifteen years of infrastructure, now in code.",
+  "about_bio": {
+    "p1": "I have more than 15 years of experience in telecommunications, building and growing a family company that became a regional reference.",
+    "p2": "I contributed to that success by deploying technical infrastructure, streamlining processes and holding a high bar for customer service, consolidating the company's position in the market until its successful sale.",
+    "p3": "I am currently a junior developer, building knowledge and experience in Web3, focused on blockchain, smart contracts, tokens and DAOs."
+  },
+
+  "contact_header": "Let's talk about your project.",
+  "contact_description": "Tell me what you need and I'll reply to the same address.",
+
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending",
+    "sent": "Message sent. I'll reply soon.",
+    "error": "The message didn't go through. Try again in a moment."
+  },
+
+  "blog_header": "Notes on blockchain and infrastructure.",
+  "blog_back": "All notes",
+  "blogtitle": "Why generate a Hash for any file?"
+}

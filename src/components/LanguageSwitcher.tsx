@@ -1,81 +1,83 @@
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-import Image from 'next/image'
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 const locales = [
-  { code: 'en', label: 'English', flag: '/icons/usa.svg' },
-  { code: 'pt', label: 'Português', flag: '/icons/brazil.svg' },
-]
+  { code: "pt", label: "Português", short: "PT", flag: "/icons/brazil.svg" },
+  { code: "en", label: "English", short: "EN", flag: "/icons/usa.svg" },
+] as const;
 
-export default function LanguageSwitcher() {
-  const router = useRouter()
-  const { locale, asPath } = router
-  const [open, setOpen] = useState(false)
+type LocaleCode = (typeof locales)[number]["code"];
 
-  const currentLocale = locales.find((l) => l.code === locale) || locales[0]
+const LanguageSwitcher: React.FC = () => {
+  const router = useRouter();
+  const { locale, asPath } = router;
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const changeLanguage = (lng: 'en' | 'pt') => {
-    setOpen(false)
-    router.push(asPath, asPath, { locale: lng })
-  }
+  const current = locales.find((l) => l.code === locale) ?? locales[0];
+
+  // Fecha ao clicar fora ou no Esc — sem isso o menu fica preso aberto no toque.
+  useEffect(() => {
+    if (!open) return;
+
+    const onPointerDown = (e: MouseEvent | TouchEvent) => {
+      if (!containerRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  const changeLanguage = (code: LocaleCode) => {
+    setOpen(false);
+    router.push(asPath, asPath, { locale: code });
+  };
 
   return (
-    <div
-    style={{
-      position: 'fixed',
-      top: '20px',
-      right: '80px',
-      zIndex: 9999,
-    }}
-  >
+    <div ref={containerRef} className="relative">
       <button
-        onClick={() => setOpen(!open)}
-        style={{
-          background: 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-        }}
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-haspopup="listbox"
+        aria-label={current.label}
+        className="type-label flex items-center gap-2 rounded-full border border-line px-3 py-2 text-fg-muted transition-colors hover:border-fg-muted hover:text-fg"
       >
-        <Image src={currentLocale.flag} alt={currentLocale.label} width={24} height={24} />
-        <span style={{ marginLeft: 6 }}>▼</span>
+        <Image src={current.flag} alt="" width={16} height={16} />
+        {current.short}
       </button>
 
       {open && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '120%',
-            right: 0,
-            background: '#222',
-            borderRadius: 8,
-            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-            padding: 8,
-            zIndex: 100,
-            minWidth: 140,
-          }}
+        <ul
+          role="listbox"
+          className="absolute right-0 top-[calc(100%+0.5rem)] z-50 m-0 min-w-40 list-none overflow-hidden rounded-sm border border-line bg-surface p-0 shadow-lg shadow-black/40"
         >
           {locales.map((lng) => (
-            <div
-              key={lng.code}
-              onClick={() => changeLanguage(lng.code as 'en' | 'pt')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: '6px 10px',
-                color: '#fff',
-                cursor: 'pointer',
-                borderRadius: 6,
-                transition: 'background 0.2s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = '#333')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
-            >
-              <Image src={lng.flag} alt={lng.label} width={20} height={20} />
-              <span style={{ marginLeft: 10 }}>{lng.label}</span>
-            </div>
+            <li key={lng.code} role="option" aria-selected={lng.code === current.code}>
+              <button
+                type="button"
+                onClick={() => changeLanguage(lng.code)}
+                className={`flex w-full items-center gap-3 px-4 py-3 text-left text-[0.9375rem] transition-colors hover:bg-raised ${
+                  lng.code === current.code ? "text-os2" : "text-fg-muted"
+                }`}
+              >
+                <Image src={lng.flag} alt="" width={18} height={18} />
+                {lng.label}
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
-  )
-}
+  );
+};
+
+export default LanguageSwitcher;

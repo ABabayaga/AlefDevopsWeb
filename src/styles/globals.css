@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/* Fontes injetadas por next/font em _app.tsx.
+   `inline` para o valor entrar cru no token, sem var() aninhada. */
+@theme inline {
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+@theme {
+  /* Superfícies: escuro de tela de NOC à noite, com viés azul — nunca preto puro. */
+  --color-ink: #070b10;
+  --color-surface: #0e141c;
+  --color-raised: #141d28;
+  --color-line: #1c2733;
+  --color-line-soft: #131b24;
+
+  --color-fg: #dde5ee;
+  --color-fg-muted: #7c8a9c;
+
+  /* Acentos tirados das jaquetas padronizadas de fibra:
+     amarelo = monomodo OS2 (FTTH, backbone), aqua = multimodo OM3. */
+  --color-os2: #f4c542;
+  --color-om3: #22d3c5;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* faz o browser desenhar scrollbar, form controls e autofill em escuro */
+    color-scheme: dark;
+    /* âncoras de seção não ficam escondidas atrás do header fixo */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-os2);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-os2);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Archivo no eixo de largura expandido. Só para títulos — em texto corrido
+     a largura extra cansa. */
+  .type-display {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-stretch: 125%;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  /* Headline curta, de duas linhas, então o teto é alto: é a escala que faz o
+     hero parecer intencional em vez de vazio. */
+  .type-hero {
+    font-size: clamp(2.75rem, 7vw, 5.5rem);
+  }
+
+  .type-section {
+    font-size: clamp(1.625rem, 3.4vw, 2.5rem);
+  }
+
+  /* Rótulo de patch panel: mono, caixa alta, tracking largo. Usado nos eyebrows
+     das seções e em qualquer dado técnico. */
+  .type-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* Medida de leitura. Substitui o text-align: justify que existia antes —
+     justificado em telas abre rios de espaço entre palavras. */
+  .measure {
+    max-width: 62ch;
+  }
+}
+
