@@ -108,5 +108,41 @@
   .measure {
     max-width: 62ch;
   }
+
+  /* Um pulso descendo um filete. Sinaliza que a cena do hero não é a página
+     inteira — sem isso, os 300vh de narrativa ficam invisíveis.
+     Reusa --ease-out-quint, que ficou órfão quando as animações do OTDR saíram. */
+  .scroll-cue {
+    position: relative;
+    width: 1px;
+    height: 3rem;
+    overflow: hidden;
+    background: linear-gradient(to bottom, var(--color-line), transparent);
+  }
+
+  .scroll-cue::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 40%;
+    background: var(--color-os2);
+    animation: scroll-cue-run 2.2s var(--ease-out-quint) infinite;
+  }
+
+  @keyframes scroll-cue-run {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    35% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(300%);
+      opacity: 0;
+    }
+  }
 }
 
