@@ -1,15 +1,11 @@
 import { useTranslation } from "next-i18next";
 import ExpertiseAreas from "@/components/ExpertiseAreas";
-
-// wa.me só aceita dígitos, com DDI e DDD e sem sinais de pontuação.
-const WHATSAPP_NUMBER = "5567981846847";
+import { whatsappHref } from "@/lib/whatsapp";
 
 const Hero: React.FC = () => {
   const { t } = useTranslation("common");
 
-  const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    t("hero_whatsapp_message"),
-  )}`;
+  const href = whatsappHref(t("hero_whatsapp_message"));
 
   return (
     <section className="relative overflow-hidden">
@@ -36,7 +32,7 @@ const Hero: React.FC = () => {
             onde mandar ninguém. */}
         <div className="mt-10">
           <a
-            href={whatsappHref}
+            href={href}
             target="_blank"
             rel="noopener noreferrer"
             className="type-label inline-block rounded-full bg-os2 px-6 py-3.5 text-ink no-underline transition-opacity hover:opacity-85"
