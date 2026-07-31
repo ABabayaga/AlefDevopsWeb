@@ -92,3 +92,25 @@ export function layerScreenRadius(layer: Layer, open: number): number {
   const sceneRadius = COLLAPSED_RADIUS + (layer.radius - COLLAPSED_RADIUS) * open;
   return screenRadiusFraction(sceneRadius);
 }
+
+/**
+ * Limiares dos estágios do HTML, derivados da tabela acima.
+ *
+ * Marcam o FIM de cada janela, não o começo: com raiz, o texto de uma camada
+ * tem que chegar quando a linha encosta no bloco, não quando ela parte do
+ * planeta. O primeiro limiar é a saída do título — que ocupa o mesmo canto do
+ * bloco de Infraestrutura — e o último traz o CTA.
+ *
+ * Rende [0.1, 0.35, 0.58, 0.82, 0.9].
+ */
+export const STAGE_THRESHOLDS: readonly number[] = [
+  LAYERS[0].from,
+  ...LAYERS.map((layer) => layer.to),
+  0.9,
+];
+
+/** A partir daqui o título sai e a primeira raiz já está crescendo. */
+export const STAGE_TITLE_OUT = 1;
+
+/** O último: as três raízes chegaram, o CTA entra. */
+export const STAGE_CTA = STAGE_THRESHOLDS.length;

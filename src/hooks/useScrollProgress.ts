@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import type { MutableRefObject, RefObject } from "react";
+import { STAGE_THRESHOLDS } from "@/lib/shellStages";
 
 // Abaixo disto o hero é estático: WebGL pinado em celular custa bateria e o
 // scroll narrativo atrapalha mais do que entrega.
-export const STATIC_BREAKPOINT = 768;
-
-// Limiares que separam os estágios da narrativa. Espelham as janelas de
-// progresso das cascas em PlanetScene — mudou lá, muda aqui.
-export const STAGE_THRESHOLDS = [0.1, 0.32, 0.55, 0.85] as const;
+//
+// Era 768 enquanto o coreografado era uma grid de duas colunas. O layout radial
+// dimensiona o planeta pela ALTURA e os blocos pela LARGURA, então numa janela
+// quadrada a casca externa passa por baixo do texto da Web2 e o torna ilegível.
+// A 1024 de largura a sobreposição já é aceitável; abaixo disso o ramo estático
+// entrega o mesmo conteúdo sem disputa de espaço.
+export const STATIC_BREAKPOINT = 1024;
 
 /**
  * Decide entre a versão animada e a estática. Chamado uma vez, na montagem:
@@ -30,7 +33,7 @@ export function stageFromProgress(progress: number): number {
 interface ScrollProgress {
   /** Contínuo, 0 a 1. Lido pelo WebGL a cada frame — não causa re-render. */
   progressRef: MutableRefObject<number>;
-  /** Discreto, 0 a 4. Dirige as classes do HTML — cinco re-renders no total. */
+  /** Discreto, 0 a 5. Dirige as classes do HTML — seis re-renders no total. */
   stage: number;
 }
 
