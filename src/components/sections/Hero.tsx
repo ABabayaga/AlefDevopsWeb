@@ -41,11 +41,17 @@ const Hero: React.FC = () => {
     </p>
   );
 
-  const cta = (
+  // Cria o CTA com tabIndex condicional para respeitar aria-hidden.
+  // Quando oculto (aria-hidden=true), tabIndex={-1} tira o link do fluxo de tabulação,
+  // evitando foco em elemento invisível e violação de WAI-ARIA APG (axe-core).
+  // No ramo estático o link está sempre visível; na coreografia o link é focável
+  // apenas quando stage >= 4.
+  const createCta = (isFocusable: boolean) => (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      tabIndex={isFocusable ? 0 : -1}
       className="type-label inline-block rounded-full bg-os2 px-6 py-3.5 text-ink no-underline transition-opacity hover:opacity-85"
     >
       {t("hero_whatsapp")}
@@ -63,7 +69,7 @@ const Hero: React.FC = () => {
           {eyebrow}
           <h1 className="type-display type-hero m-0 max-w-[18ch] text-fg">{t("title")}</h1>
           <p className="measure mt-7 text-fg-muted">{t("hero_sub")}</p>
-          <div className="mt-10">{cta}</div>
+          <div className="mt-10">{createCta(true)}</div>
           <ExpertiseAreas />
         </div>
       </section>
@@ -88,7 +94,7 @@ const Hero: React.FC = () => {
             </div>
 
             <div className={`mt-10 ${reveal(stage >= 4)}`} aria-hidden={stage < 4}>
-              {cta}
+              {createCta(stage >= 4)}
             </div>
           </div>
 
