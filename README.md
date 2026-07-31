@@ -14,7 +14,7 @@ O site foi desenvolvido com o objetivo de ser um ponto de contato profissional, 
 
 ## 🎨 Identidade visual
 
-O layout usa o vocabulário de quem trabalha com fibra óptica e monitoramento de rede: fundo escuro com viés azul de tela de NOC, rótulos técnicos em fonte monoespaçada e acentos tirados das jaquetas padronizadas de fibra — amarelo para monomodo (OS2) e aqua para multimodo (OM3). A assinatura da home é um traço de OTDR desenhado em SVG, em que cada evento marca uma etapa da trajetória: telecom, gestão e web3.
+O layout usa o vocabulário de quem trabalha com fibra óptica e monitoramento de rede: fundo escuro com viés azul de tela de NOC, rótulos técnicos em fonte monoespaçada e acentos tirados das jaquetas padronizadas de fibra — amarelo para monomodo (OS2) e aqua para multimodo (OM3). A assinatura da home é um planeta de três cascas concêntricas em WebGL — infraestrutura no núcleo, web2 no meio, web3 na superfície — que se abre conforme a rolagem. De cada casca cresce uma linha ortogonal, no traçado de um patch panel, até o bloco de texto daquela camada.
 
 ## 🛠️ Tecnologias Utilizadas
 
