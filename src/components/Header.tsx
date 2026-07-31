@@ -3,12 +3,46 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { whatsappHref } from "@/lib/whatsapp";
 
 const socialLinks = [
   { href: "https://www.linkedin.com/in/alefdevops/", icon: "/linkedin.png", alt: "LinkedIn" },
   { href: "https://github.com/ABabayaga", icon: "/github.png", alt: "GitHub" },
   { href: "https://www.instagram.com/alef.lim4/", icon: "/instagram.png", alt: "Instagram" },
 ];
+
+interface NavItem {
+  href: string;
+  label: string;
+  /** Link externo: abre em aba nova e leva rel de segurança. */
+  external?: boolean;
+}
+
+const NavEntry: React.FC<{
+  item: NavItem;
+  className: string;
+  onNavigate?: () => void;
+}> = ({ item, className, onNavigate }) => {
+  if (item.external) {
+    return (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onNavigate}
+        className={className}
+      >
+        {item.label}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={item.href} onClick={onNavigate} className={className}>
+      {item.label}
+    </Link>
+  );
+};
 
 const Header: React.FC = () => {
   const { t } = useTranslation("common");
@@ -23,10 +57,11 @@ const Header: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // A home é só o hero: não há âncora nem rota para onde apontar. O array fica
-  // aqui porque é o ponto de religamento — voltar um item devolve o menu inteiro,
-  // no desktop e no mobile.
-  const navItems: { href: string; label: string }[] = [];
+  // O CTA do hero só aparece no fim da narrativa de scroll; o header é sticky,
+  // então é aqui que o contato fica sempre alcançável.
+  const navItems: NavItem[] = [
+    { href: whatsappHref(t("hero_whatsapp_message")), label: t("hero_whatsapp"), external: true },
+  ];
 
   return (
     <header
@@ -52,13 +87,11 @@ const Header: React.FC = () => {
         {navItems.length > 0 && (
           <nav className="hidden items-center gap-8 md:flex" aria-label={t("nav_label")}>
             {navItems.map((item) => (
-              <Link
+              <NavEntry
                 key={item.href}
-                href={item.href}
+                item={item}
                 className="type-label text-fg-muted no-underline transition-colors hover:text-fg"
-              >
-                {item.label}
-              </Link>
+              />
             ))}
           </nav>
         )}
@@ -110,14 +143,12 @@ const Header: React.FC = () => {
         >
           <nav className="mx-auto flex max-w-6xl flex-col px-5 py-2 sm:px-8" aria-label={t("nav_label")}>
             {navItems.map((item) => (
-              <Link
+              <NavEntry
                 key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
+                item={item}
+                onNavigate={() => setOpen(false)}
                 className="type-label border-b border-line-soft py-4 text-fg-muted no-underline transition-colors hover:text-fg"
-              >
-                {item.label}
-              </Link>
+              />
             ))}
             {/* sem itens de menu, o filete de topo encostaria na borda do drawer */}
             <div
