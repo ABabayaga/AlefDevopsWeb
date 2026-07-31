@@ -30,9 +30,14 @@ There is no test runner. "Testing" a change means `npm run build` succeeding, pl
 - `/api/send-email` — see Contact below.
 - `/404`.
 
-`Hero.tsx` holds the eyebrow, the single `<h1>`, a support paragraph, one WhatsApp CTA, and `<ExpertiseAreas />`. The WhatsApp number is a bare-digits constant at the top of `Hero.tsx` (`wa.me` rejects punctuation); the pre-filled message is a locale key, so it differs per language.
+`Hero.tsx` renders one of two branches, decided once on mount by `prefersStaticHero()`. Below the 768px breakpoint, under `prefers-reduced-motion`, and in the server-rendered HTML, it falls back to a static branch: eyebrow, the single `<h1>`, a support paragraph, one always-visible WhatsApp CTA, and `<ExpertiseAreas />`. Otherwise it mounts the choreographed branch: a `300vh` container (`containerRef`) with a `sticky top-0` child that stays pinned while `useScrollProgress` drives a WebGL scene and reveals the headline, the WhatsApp CTA, and the three area cards stage by stage as the visitor scrolls. The WhatsApp number and URL builder live in `src/lib/whatsapp.ts`, shared by `Hero.tsx` and `Header.tsx`; the pre-filled message is a locale key, so it differs per language.
 
-`ExpertiseAreas.tsx` is the three-column band (Infrastructure / Web2 / Web3) at the end of the hero. It is data-driven in the same pattern as `ServicesSection`: a local `areas` array of `{ id, key }` with all text from `t(\`areas.${key}.title\`)`, `.desc`, `.stack`. Adding or renaming an area means the array plus both locale files — never the layout. The `01/02/03` numbering is `aria-hidden` decoration and is the surviving trace of a deleted OTDR graph (see below).
+- `src/hooks/useScrollProgress.ts` — tracks scroll position against the 300vh container and exposes a continuous `progressRef` plus a discrete `stage` used to gate reveals.
+- `src/lib/planetGeometry.ts` — Fibonacci-sphere point distribution, inter-shell link positions, and the `smoothstep` easing shared by the scene.
+- `src/lib/whatsapp.ts` — the WhatsApp number constant and `whatsappHref()` builder, consumed by both `Hero.tsx` and `Header.tsx`.
+- `src/components/PlanetScene.tsx` — the three-concentric-shell WebGL scene (raw `three`, no renderer library), loaded via `next/dynamic` with `ssr: false` so `three` stays out of the first paint and the static HTML.
+
+`ExpertiseAreas.tsx` is the three-column band (Infrastructure / Web2 / Web3) rendered in the static hero branch. It is data-driven in the same pattern as `ServicesSection`: a local `areas` array of `{ id, key }` mapped over `<li>`s. The actual content of a card — the index, `t(\`areas.${key}.title\`)`, `.desc`, `.stack` — lives in `src/components/AreaCard.tsx`, which returns a bare fragment (no `<li>`, no grid) so it can be dropped into two different containers: `ExpertiseAreas`'s grid and the choreographed Hero's own `<ul>`, which reveals each `<li>` at its own scroll stage instead of all at once. Adding or renaming an area means the `areas`/`AREA_KEYS` array in whichever component plus both locale files — never the layout. The `01/02/03` numbering is `aria-hidden` decoration and is the surviving trace of a deleted OTDR graph (see below).
 
 **Most of the codebase is deliberately disabled, and it is still type-checked.** Two separate mechanisms:
 
@@ -47,7 +52,7 @@ Their readiness differs sharply:
 - `ServicesSection`, `AboutSection`, `ContactSection` — dark-themed, translated, keys already in both locales. Cheap to re-enable.
 - `SkillsSection` — **still Bootstrap-era**: `className="container py-5"`, large inline `style={{}}` objects, white-background modals, `<img src="/bootstrap.svg">`. Bootstrap CSS is no longer loaded, so those classes resolve to nothing. Content was preserved verbatim from the old `AboutSection`; decide the form (tabs / expanding cards / timeline) before restyling.
 
-**Re-enabling anything requires restoring the nav.** `Header.tsx` has `const navItems: { href: string; label: string }[] = []` — explicitly typed and empty, kept as the single re-attachment point because the home page has no anchor or route to point at. It is mapped in both the desktop `<nav>` and the mobile drawer, so restoring one entry restores both. The hero CTA is WhatsApp-only for the same reason: with the page reduced to the hero there is no honest internal destination.
+**`navItems` in `Header.tsx` is the re-attachment point for internal nav.** It is no longer empty: it carries one entry, the WhatsApp link built from `whatsappHref()`, with `external: true` so `NavEntry` renders it as an `<a target="_blank">` instead of a `next/link`. The `NavItem` type has an `external?: boolean` field for exactly this. Re-enabling an internal section means adding a non-external entry to the same array — it's mapped in both the desktop `<nav>` and the mobile drawer, so restoring one entry restores both.
 
 `Header` itself is one `sticky top-0` component, transparent over the hero and switching to `bg-ink/85 backdrop-blur-md` past 24px of scroll via a `scroll` listener. It owns the mobile hamburger (`open` state) and renders `LanguageSwitcher` in both the desktop bar and the drawer.
 
@@ -55,9 +60,9 @@ Their readiness differs sharply:
 
 ## Design docs
 
-`docs/superpowers/specs/` holds dated design specs written before implementation. `2026-07-30-hero-areas-de-experiencia-design.md` covers the current hero and is the best explanation of *why* the OTDR panel and manifesto headline were removed.
+`docs/superpowers/specs/` holds dated design specs written before implementation, three of them so far. `2026-07-30-hero-planeta-cascas-scroll-design.md` covers the current hero — the three-concentric-shell WebGL scene and its scroll choreography — and is the best explanation of the geometry, staging, and `three` integration decisions. `2026-07-30-hero-areas-de-experiencia-design.md` covers the generation before it (eyebrow/`<h1>`/single static CTA/`<ExpertiseAreas />`, no WebGL) and is the best explanation of *why* the OTDR panel and manifesto headline were removed. `2026-07-30-hero-network-mesh-design.md` is an intermediate exploration — a `NetworkMesh` particle-mesh component — that was scrapped in favor of the planet scene before ever being committed; it survives only as an uncommitted `git stash` entry, not as a file in `src/`.
 
-Treat specs as historical intent, not current truth — that one is already partly superseded. It specifies two CTAs (an internal `/#services` pill plus an outline WhatsApp link) and says the `.scroll-cue` indicator stays; shipped reality is a single WhatsApp CTA in the pill style and the scroll indicator deleted, both because `ServicesSection` was disabled afterward.
+Treat specs as historical intent, not current truth. The áreas-de-experiência spec specifies two CTAs (an internal `/#services` pill plus an outline WhatsApp link) and says the `.scroll-cue` indicator stays; shipped reality at that point was a single WhatsApp CTA in the pill style and the scroll indicator deleted, both because `ServicesSection` was disabled afterward. The planet-hero work then reintroduced a choreographed, scroll-pinned hero, and `.scroll-cue` came back with it (see Styling below) — so "indicator deleted" is no longer current either, only a description of that intermediate state.
 
 ## Styling
 
@@ -69,7 +74,7 @@ The design language is fiber-optic / network-operations-center: dark blue-tinted
 - Text: `fg`, `fg-muted`
 - Accents: `os2` `#f4c542` (singlemode yellow — primary), `om3` `#22d3c5` (multimode aqua — secondary)
 
-`--ease-out-quint` is still declared in `@theme` but is now orphaned — the OTDR and scroll-cue animations that used it were deleted. Reuse it for the next animation or drop it.
+`--ease-out-quint`, declared in `@theme`, is used again: `.scroll-cue` (the pinned-hero scroll indicator, back after the planet hero reintroduced a choreographed scroll) animates with it, and `Hero.tsx`'s `reveal()` helper applies it inline via `ease-[var(--ease-out-quint)]` for the staged reveal transitions.
 
 Component classes in `@layer components`:
 - `.type-display` — Archivo at `font-stretch: 125%`, headings only. Depends on the `wdth` axis being loaded.
@@ -101,7 +106,7 @@ Global base layer sets `color-scheme: dark`, `scroll-behavior: smooth`, `scroll-
 
 ## Contact
 
-The live path is the WhatsApp CTA in the hero. The hero design spec states email contact is being retired.
+The live path is WhatsApp: the CTA in the hero (static branch always, choreographed branch once `stage >= 4`) and the always-present entry in `Header.tsx`'s `navItems`. The hero design spec states email contact is being retired.
 
 `src/pages/api/send-email.js` nonetheless still exists and works: POST-only, `nodemailer` over Gmail SMTP using `SMTP_USER` / `SMTP_PASS` (see `.env.example`), relaying to a recipient hardcoded in the file. Its only consumer is the disabled `ContactSection`, so nothing currently calls it. An earlier version sat in `src/api/`, outside `pages/`, and 404'd — don't move it back.
 

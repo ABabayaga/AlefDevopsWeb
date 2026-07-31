@@ -21,6 +21,7 @@ O layout usa o vocabulário de quem trabalha com fibra óptica e monitoramento d
 - **Next.js 14** (React, pages router)
 - **TypeScript**
 - **Tailwind CSS v4** para o layout e responsividade
+- **three.js** para a cena WebGL do hero (três cascas concêntricas dirigidas por scroll)
 - **next-i18next** para internacionalização (português como padrão e inglês)
 - **Vercel** para deploy contínuo
 - **Nodemailer** (no backend) para envio de e-mails via formulário de contato
