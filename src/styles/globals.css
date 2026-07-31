@@ -29,10 +29,21 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* faz o browser desenhar scrollbar, form controls e autofill em escuro */
+    /* mantém form controls e autofill em escuro; a scrollbar em si some abaixo */
     color-scheme: dark;
     /* âncoras de seção não ficam escondidas atrás do header fixo */
     scroll-padding-top: 5rem;
+    /* A barra lateral disputava atenção com a coreografia do hero: o polegar
+       saltando entregava a mecânica dos 300vh antes da narrativa. Some só o
+       desenho — a rolagem continua inteira, e o indicador do hero é quem passa
+       a dizer que a página desce. */
+    scrollbar-width: none;
+  }
+
+  /* Chromium e Safari ignoram scrollbar-width; aqui o alvo é o pseudo-elemento.
+     Vale para qualquer contêiner rolável, não só o documento. */
+  ::-webkit-scrollbar {
+    display: none;
   }
 
   body {
@@ -113,35 +124,54 @@
      inteira — sem isso, os 300vh de narrativa ficam invisíveis.
      Reusa --ease-out-quint, que ficou órfão quando as animações do OTDR saíram. */
   .scroll-cue {
-    position: relative;
-    width: 1px;
-    height: 3rem;
-    overflow: hidden;
-    background: linear-gradient(to bottom, var(--color-line), transparent);
+    color: var(--color-fg-muted);
   }
 
-  .scroll-cue::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 1px;
-    height: 40%;
-    background: var(--color-os2);
-    animation: scroll-cue-run 2.2s var(--ease-out-quint) infinite;
+  /* A roda desce dentro do corpo do mouse e some antes de voltar ao topo:
+     reaparecer subindo leria como rolar para cima. */
+  .scroll-cue-wheel {
+    animation: scroll-cue-wheel 2.2s var(--ease-out-quint) infinite;
   }
 
-  @keyframes scroll-cue-run {
+  @keyframes scroll-cue-wheel {
     0% {
-      transform: translateY(-100%);
+      transform: translateY(0);
       opacity: 0;
     }
-    35% {
+    25% {
       opacity: 1;
     }
+    70%,
     100% {
-      transform: translateY(300%);
+      transform: translateY(9px);
       opacity: 0;
+    }
+  }
+
+  /* As duas setas repetem o gesto da roda, deslocadas no tempo — o olho lê uma
+     descida contínua, não dois piscas. */
+  .scroll-cue-arrow {
+    opacity: 0;
+    animation: scroll-cue-arrow 2.2s var(--ease-out-quint) infinite;
+  }
+
+  .scroll-cue-arrow + .scroll-cue-arrow {
+    animation-delay: 0.18s;
+  }
+
+  @keyframes scroll-cue-arrow {
+    0%,
+    100% {
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+    40% {
+      opacity: 0.9;
+      transform: translateY(0);
+    }
+    75% {
+      opacity: 0;
+      transform: translateY(3px);
     }
   }
 }

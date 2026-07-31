@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "next-i18next";
 import CircuitRoots from "@/components/CircuitRoots";
 import ExpertiseAreas from "@/components/ExpertiseAreas";
+import ScrollCue from "@/components/ScrollCue";
 import { prefersStaticHero, useScrollProgress } from "@/hooks/useScrollProgress";
 import { reveal } from "@/lib/reveal";
 import { STAGE_CTA, STAGE_TITLE_OUT } from "@/lib/shellStages";
@@ -104,11 +105,15 @@ const Hero: React.FC = () => {
           {createCta(ctaVisible)}
         </div>
 
+        {/* bottom-28 e não bottom-8: no topo da página o filho sticky ainda não
+            está pinado, então seus 100vh começam abaixo do header e transbordam
+            a dobra na altura dele (~67px). O indicador só aparece nesse trecho,
+            justamente onde a folga é necessária. */}
         <div
           aria-hidden
-          className={`absolute bottom-10 left-1/2 -translate-x-1/2 ${reveal(stage === 0)}`}
+          className={`absolute bottom-28 left-1/2 -translate-x-1/2 ${reveal(stage === 0)}`}
         >
-          <span className="scroll-cue block" />
+          <ScrollCue />
         </div>
       </div>
     </section>
