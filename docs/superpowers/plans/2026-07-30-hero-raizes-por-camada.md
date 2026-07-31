@@ -312,7 +312,7 @@ console.log(orthogonalRoot({x: 900, y: 450}, {x: 1100, y: 440}, {x: 1400, y: 440
 Esperado:
 
 ```
-{ d: 'M 700 500 H 550 V 200 H 100', length: 750 }
+{ d: 'M 700 500 H 550 V 200 H 100', length: 900 }
 { d: 'M 900 450 H 1000 V 440 H 1400', length: 510 }
 ```
 

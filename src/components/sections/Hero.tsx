@@ -4,19 +4,13 @@ import { useTranslation } from "next-i18next";
 import AreaCard from "@/components/AreaCard";
 import ExpertiseAreas from "@/components/ExpertiseAreas";
 import { prefersStaticHero, useScrollProgress } from "@/hooks/useScrollProgress";
+import { reveal } from "@/lib/reveal";
 import { whatsappHref } from "@/lib/whatsapp";
 
 // ssr:false mantém o three fora do JS da primeira pintura e do HTML estático.
 const PlanetScene = dynamic(() => import("@/components/PlanetScene"), { ssr: false });
 
 const AREA_KEYS = ["infra", "web2", "web3"] as const;
-
-/** Entrada e saída dos blocos coreografados. */
-function reveal(visible: boolean): string {
-  return `transition-[opacity,transform] duration-700 ease-[var(--ease-out-quint)] ${
-    visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-  }`;
-}
 
 const Hero: React.FC = () => {
   const { t } = useTranslation("common");
