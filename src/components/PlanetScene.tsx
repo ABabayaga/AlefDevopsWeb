@@ -7,30 +7,16 @@ import {
   shellLinkPositions,
   smoothstep,
 } from "@/lib/planetGeometry";
-
-/**
- * Três cascas concêntricas: Infra é o núcleo, Web2 o meio, Web3 a superfície.
- * O raio é a trajetória — a infra sustenta a web2, que sustenta a web3.
- *
- * As cores espelham --color-os2, --color-fg e --color-om3 de globals.css;
- * mudou lá, muda aqui.
- */
-const SHELLS = [
-  { color: 0xf4c542, count: 260, radius: 0.72, from: 0.1, to: 0.35 },
-  { color: 0xdde5ee, count: 380, radius: 1.2, from: 0.32, to: 0.58 },
-  { color: 0x22d3c5, count: 520, radius: 1.6, from: 0.55, to: 0.82 },
-] as const;
-
-// Raio comum das três cascas em repouso: fechadas uma sobre a outra, leem como
-// um planeta sólido. A revelação é geométrica — as de fora se afastam e expõem
-// o núcleo, que quase não se move.
-const COLLAPSED_RADIUS = 0.67;
+import {
+  CAMERA_FOV,
+  CAMERA_Z,
+  COLLAPSED_RADIUS,
+  LAYERS,
+} from "@/lib/shellStages";
 
 // Multiplicador sobre o espaçamento médio entre vizinhos. Ver Task 3, Step 2.
 const LINK_FACTOR = 1.2;
 
-const CAMERA_FOV = 45;
-const CAMERA_Z = 5.2;
 // Inclinação para o planeta não ser lido de frente exata.
 const TILT_X = 0.35;
 // Radianos por frame a 60fps: a cena continua viva se o visitante parar de rolar.
@@ -87,7 +73,7 @@ const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode }) =>
 
     // Geometria construída UMA vez, em raio próprio. A animação depois é só
     // escala de grupo e opacidade — nada é reescrito por frame.
-    const shells: Shell[] = SHELLS.map((config) => {
+    const shells: Shell[] = LAYERS.map((config) => {
       const points = fibonacciSphere(config.count, config.radius);
       const linkDistance = LINK_FACTOR * neighborSpacing(config.count, config.radius);
       const links = shellLinkPositions(points, linkDistance);
