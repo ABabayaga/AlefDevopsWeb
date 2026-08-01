@@ -14,13 +14,14 @@ O site foi desenvolvido com o objetivo de ser um ponto de contato profissional, 
 
 ## 🎨 Identidade visual
 
-O layout usa o vocabulário de quem trabalha com fibra óptica e monitoramento de rede: fundo escuro com viés azul de tela de NOC, rótulos técnicos em fonte monoespaçada e acentos tirados das jaquetas padronizadas de fibra — amarelo para monomodo (OS2) e aqua para multimodo (OM3). A assinatura da home é um traço de OTDR desenhado em SVG, em que cada evento marca uma etapa da trajetória: telecom, gestão e web3.
+O layout usa o vocabulário de quem trabalha com fibra óptica e monitoramento de rede: fundo escuro com viés azul de tela de NOC, rótulos técnicos em fonte monoespaçada e acentos tirados das jaquetas padronizadas de fibra — amarelo para monomodo (OS2) e aqua para multimodo (OM3). A assinatura da home é um planeta de três cascas concêntricas em WebGL — infraestrutura no núcleo, web2 no meio, web3 na superfície — que se abre conforme a rolagem. De cada casca cresce uma linha ortogonal, no traçado de um patch panel, até o bloco de texto daquela camada.
 
 ## 🛠️ Tecnologias Utilizadas
 
 - **Next.js 14** (React, pages router)
 - **TypeScript**
 - **Tailwind CSS v4** para o layout e responsividade
+- **three.js** para a cena WebGL do hero (três cascas concêntricas dirigidas por scroll)
 - **next-i18next** para internacionalização (português como padrão e inglês)
 - **Vercel** para deploy contínuo
 - **Nodemailer** (no backend) para envio de e-mails via formulário de contato

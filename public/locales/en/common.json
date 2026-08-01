@@ -99,5 +99,12 @@
 
   "blog_header": "Notes on blockchain and infrastructure.",
   "blog_back": "All notes",
-  "blogtitle": "Why generate a Hash for any file?"
+  "blogtitle": "Why generate a Hash for any file?",
+
+  "intro": {
+    "connecting": "Connecting",
+    "handshake": "Handshake",
+    "receiving": "Receiving scene",
+    "ready": "Ready"
+  }
 }

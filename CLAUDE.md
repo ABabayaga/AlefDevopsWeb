@@ -26,18 +26,31 @@ There is no test runner. "Testing" a change means `npm run build` succeeding, pl
 
 **The live site is one page.** Successive refactors reduced a multi-page Bootstrap site to a single hero. Build output is 8 static pages — 4 routes × 2 locales:
 
-- `/` (`src/pages/index.tsx`) — `Header`, `Hero`, `Footer`, `<Analytics />`. That is the whole page.
+- `/` (`src/pages/index.tsx`) — `Header`, `Hero`, `<Analytics />`. That is the whole page.
 - `/api/send-email` — see Contact below.
 - `/404`.
 
-`Hero.tsx` holds the eyebrow, the single `<h1>`, a support paragraph, one WhatsApp CTA, and `<ExpertiseAreas />`. The WhatsApp number is a bare-digits constant at the top of `Hero.tsx` (`wa.me` rejects punctuation); the pre-filled message is a locale key, so it differs per language.
+`Hero.tsx` renders one of two branches, decided once on mount by `prefersStaticHero()`. Below the 1024px breakpoint, under `prefers-reduced-motion`, and in the server-rendered HTML, it falls back to a static branch: eyebrow, the single `<h1>`, a support paragraph, one always-visible WhatsApp CTA, and `<ExpertiseAreas />`. Otherwise it mounts the choreographed branch: a `300vh` container (`containerRef`) with a `sticky top-0` child that stays pinned while `useScrollProgress` drives a WebGL scene. That branch is **radial**: the headline sits centred over the closed planet and leaves as soon as the first root starts growing, and the three area blocks are absolutely positioned around the planet — Infrastructure upper-left, Web2 right, Web3 lower-left — each joined to its own shell by an orthogonal "root" that grows with the scroll. The WhatsApp CTA returns centred at the bottom in the last stage. The WhatsApp number and URL builder live in `src/lib/whatsapp.ts`, shared by `Hero.tsx` and `Header.tsx`; the pre-filled message is a locale key, so it differs per language.
 
-`ExpertiseAreas.tsx` is the three-column band (Infrastructure / Web2 / Web3) at the end of the hero. It is data-driven in the same pattern as `ServicesSection`: a local `areas` array of `{ id, key }` with all text from `t(\`areas.${key}.title\`)`, `.desc`, `.stack`. Adding or renaming an area means the array plus both locale files — never the layout. The `01/02/03` numbering is `aria-hidden` decoration and is the surviving trace of a deleted OTDR graph (see below).
+**The 1024px breakpoint is load-bearing, not a round number.** The radial layout sizes the planet off the viewport *height* and the text blocks off its *width*, so a squarish window puts the outer shell underneath the Web2 block and the text stops being readable. It was 768 while the choreographed branch was a two-column grid.
+
+- `src/lib/shellStages.ts` — **the single source for the three layers**: colour (both the `three` hex and the CSS custom property), point count, shell radius, the progress window in which the shell opens, and the branch angle. Also the camera constants and `STAGE_THRESHOLDS`. Consumed by `PlanetScene`, `useScrollProgress` and `CircuitRoots` — this table used to be duplicated across the first two, with a comment asking you to keep them in sync by hand.
+- `src/hooks/useScrollProgress.ts` — tracks scroll position against the 300vh container and exposes a continuous `progressRef` plus a discrete `stage` (0 to 5) used to gate reveals. The thresholds now live in `shellStages.ts` and mark the **end** of each shell's window, not the start: a layer's text arrives when its root reaches the block, not when it leaves the planet.
+- `src/components/CircuitRoots.tsx` — the three roots and the three text blocks. Owns an overlaid `<svg>` and its own rAF loop, which reads `progressRef` and writes each path's `d`, `strokeDasharray` and `strokeDashoffset` directly — no React re-render. The text blocks stay put and only the path's planet-side end tracks the expanding shell; tracking the shell with the whole block would push Web3's text off-screen. A `ResizeObserver` on the container and the blocks re-measures the joins, which is what keeps the roots attached when fonts load or the locale changes.
+- `src/lib/rootPath.ts` — `orthogonalRoot()`: three segments, two 90° elbows, plus the closed-form length (`getTotalLength()` would cost a reflow per frame). The last horizontal segment *is* the hairline above the text block.
+- `src/lib/reveal.ts` — the shared enter/leave transition string, used by `Hero` and `CircuitRoots`.
+- `src/lib/planetGeometry.ts` — Fibonacci-sphere point distribution, inter-shell link positions, and the `smoothstep` easing shared by the scene and the roots.
+- `src/lib/whatsapp.ts` — the WhatsApp number constant and `whatsappHref()` builder, consumed by both `Hero.tsx` and `Header.tsx`.
+- `src/components/PlanetScene.tsx` — the three-concentric-shell WebGL scene (raw `three`, no renderer library), loaded via `next/dynamic` with `ssr: false` so `three` stays out of the first paint and the static HTML.
+
+`ExpertiseAreas.tsx` is the three-column band (Infrastructure / Web2 / Web3) rendered in the static hero branch. It is data-driven in the same pattern as `ServicesSection`: a local `areas` array of `{ id, key }` mapped over `<li>`s. The actual content of a card — the index, `t(\`areas.${key}.title\`)`, `.desc`, `.stack` — lives in `src/components/AreaCard.tsx`, which returns a bare fragment (no `<li>`, no grid) so it can be dropped into two different containers: `ExpertiseAreas`'s grid and `CircuitRoots`'s absolutely positioned blocks. Adding or renaming an area means the `areas` array in `ExpertiseAreas` **and** the `LAYERS` table in `shellStages.ts`, plus both locale files — never the layout. The `01/02/03` numbering is `aria-hidden` decoration and is the surviving trace of a deleted OTDR graph (see below).
 
 **Most of the codebase is deliberately disabled, and it is still type-checked.** Two separate mechanisms:
 
 - `src/components/sections/` — `ServicesSection`, `AboutSection`, `ContactSection`, `SkillsSection` are imported nowhere.
 - `src/pages-disabled/` — the two blog pages (`blog.tsx`, `blog/pagehashfile.tsx`), moved out of `src/pages/` so Next stops routing them. `/blog` currently 404s.
+
+`src/components/Footer.tsx` is a third case: dropped from `index.tsx` so the live page ends with the hero, but still imported and rendered by both blog pages in `src/pages-disabled/`. It carries a `DESATIVADO` docblock and its `allfooter` key stays in both locales.
 
 `tsconfig.json` includes `**/*.tsx` from the repo root, so **everything under `src/pages-disabled/` and the unused sections is still compiled and type-checked** — a type error in dormant code breaks the build even though the route doesn't exist. Verified with `npx tsc --noEmit --listFiles`. Conversely, they render nowhere, so a visual or runtime bug there is invisible until re-enabled.
 
@@ -47,17 +60,27 @@ Their readiness differs sharply:
 - `ServicesSection`, `AboutSection`, `ContactSection` — dark-themed, translated, keys already in both locales. Cheap to re-enable.
 - `SkillsSection` — **still Bootstrap-era**: `className="container py-5"`, large inline `style={{}}` objects, white-background modals, `<img src="/bootstrap.svg">`. Bootstrap CSS is no longer loaded, so those classes resolve to nothing. Content was preserved verbatim from the old `AboutSection`; decide the form (tabs / expanding cards / timeline) before restyling.
 
-**Re-enabling anything requires restoring the nav.** `Header.tsx` has `const navItems: { href: string; label: string }[] = []` — explicitly typed and empty, kept as the single re-attachment point because the home page has no anchor or route to point at. It is mapped in both the desktop `<nav>` and the mobile drawer, so restoring one entry restores both. The hero CTA is WhatsApp-only for the same reason: with the page reduced to the hero there is no honest internal destination.
+**`navItems` in `Header.tsx` is the re-attachment point for internal nav.** It is no longer empty: it carries one entry, the WhatsApp link built from `whatsappHref()`, with `external: true` so `NavEntry` renders it as an `<a target="_blank">` instead of a `next/link`. The `NavItem` type has an `external?: boolean` field for exactly this. Re-enabling an internal section means adding a non-external entry to the same array — it's mapped in both the desktop `<nav>` and the mobile drawer, so restoring one entry restores both.
 
 `Header` itself is one `sticky top-0` component, transparent over the hero and switching to `bg-ink/85 backdrop-blur-md` past 24px of scroll via a `scroll` listener. It owns the mobile hamburger (`open` state) and renders `LanguageSwitcher` in both the desktop bar and the drawer.
+
+**The loading intro is server-rendered on purpose, and that is the whole design.** `src/components/Intro.tsx` is a full-screen curtain — a server icon, a desktop icon, and a filling cable with packets, a percentage and a status line between them — mounted in `index.tsx` (not `_app.tsx`, so it never lands on `/404`).
+
+- It renders in the server HTML. If it only appeared after mount, a first-time visitor would see the hero for an instant before being covered, which is worse than having no intro at all.
+- The flip side is that whoever must *not* see it needs it gone before the first paint, and both conditions (`sessionStorage`, `matchMedia`) are client-only. So an inline script in `_document.tsx` runs pre-paint and sets `data-intro="seen"` on `<html>`; CSS hides the curtain by that attribute. React only arrives later, to unmount.
+- **That CSS rule lives outside every `@layer`, deliberately.** The curtain carries the `flex` utility, and in Tailwind v4 layer order beats specificity — inside `@layer components` the rule lost to the utility and the curtain stayed visible on reload. Unlayered CSS wins over all layers.
+- The curtain is `z-60` because `Header` is `z-50` and comes later in the DOM; on a tie the header would paint over it.
+- A `<noscript>` block hides the curtain too — without JS it would never be removed and the site would be unreachable behind an overlay.
+- Readiness is `document.fonts.ready` plus `import("@/components/PlanetScene")`. The module registry dedupes, so awaiting the same import the Hero's `next/dynamic` will make *is* "the `three` chunk landed" — no `onReady` prop threaded through `Hero`. `src/hooks/useIntroProgress.ts` owns the curve: self-runs to 90%, closes only when both resolve, floors the total at 1.8s and caps it at 6s. **The cap completes the intro by itself, without the rAF** — in a background tab rAF is suspended, and without that net the curtain would stay up until the visitor returned.
+- The curtain is `aria-hidden` so screen readers skip the theatre and read the page underneath. Known trade-off: a keyboard user tabbing during those ~2s can focus a link behind it. The fix, if it ever matters, is `inert` on the content — not a focus trap.
 
 **Path alias**: `@/*` → `src/*`. `strict` is on.
 
 ## Design docs
 
-`docs/superpowers/specs/` holds dated design specs written before implementation. `2026-07-30-hero-areas-de-experiencia-design.md` covers the current hero and is the best explanation of *why* the OTDR panel and manifesto headline were removed.
+`docs/superpowers/specs/` holds dated design specs written before implementation, five of them so far. `2026-07-30-hero-raizes-por-camada-design.md` covers the current hero — the radial layout, the orthogonal roots, the anchor-radius formula and the stage table — and its implementation plan sits in `docs/superpowers/plans/`. `2026-07-30-intro-de-carregamento-design.md` covers the loading curtain (`Intro.tsx`) — the dual-readiness promise, the 1.8s floor / 6s cap curve, and why the server must render it. `2026-07-30-hero-planeta-cascas-scroll-design.md` covers the generation before the radial hero and is still the best explanation of the three-shell geometry and the `three` integration decisions, but the two-column choreography it describes is no longer what ships. `2026-07-30-hero-areas-de-experiencia-design.md` covers the generation before *that* (eyebrow/`<h1>`/single static CTA/`<ExpertiseAreas />`, no WebGL) and is the best explanation of *why* the OTDR panel and manifesto headline were removed. `2026-07-30-hero-network-mesh-design.md` is an intermediate exploration — a `NetworkMesh` particle-mesh component — that was scrapped in favor of the planet scene before ever being committed; it survives only as an uncommitted `git stash` entry, not as a file in `src/`.
 
-Treat specs as historical intent, not current truth — that one is already partly superseded. It specifies two CTAs (an internal `/#services` pill plus an outline WhatsApp link) and says the `.scroll-cue` indicator stays; shipped reality is a single WhatsApp CTA in the pill style and the scroll indicator deleted, both because `ServicesSection` was disabled afterward.
+Treat specs as historical intent, not current truth. The áreas-de-experiência spec specifies two CTAs (an internal `/#services` pill plus an outline WhatsApp link) and says the `.scroll-cue` indicator stays; shipped reality at that point was a single WhatsApp CTA in the pill style and the scroll indicator deleted, both because `ServicesSection` was disabled afterward. The planet-hero work then reintroduced a choreographed, scroll-pinned hero, and `.scroll-cue` came back with it (see Styling below) — so "indicator deleted" is no longer current either, only a description of that intermediate state.
 
 ## Styling
 
@@ -69,7 +92,7 @@ The design language is fiber-optic / network-operations-center: dark blue-tinted
 - Text: `fg`, `fg-muted`
 - Accents: `os2` `#f4c542` (singlemode yellow — primary), `om3` `#22d3c5` (multimode aqua — secondary)
 
-`--ease-out-quint` is still declared in `@theme` but is now orphaned — the OTDR and scroll-cue animations that used it were deleted. Reuse it for the next animation or drop it.
+`--ease-out-quint`, declared in `@theme`, is used again: `.scroll-cue` (the pinned-hero scroll indicator, back after the planet hero reintroduced a choreographed scroll) animates with it, and the shared `reveal()` helper in `src/lib/reveal.ts` applies it inline via `ease-[var(--ease-out-quint)]` for the staged reveal transitions.
 
 Component classes in `@layer components`:
 - `.type-display` — Archivo at `font-stretch: 125%`, headings only. Depends on the `wdth` axis being loaded.
@@ -81,6 +104,8 @@ Component classes in `@layer components`:
 
 Global base layer sets `color-scheme: dark`, `scroll-behavior: smooth`, `scroll-padding-top: 5rem` (so hash anchors clear the sticky header), an `os2` selection colour and focus ring, and a `prefers-reduced-motion` block that collapses all animation/transition durations.
 
+**The scrollbar is hidden site-wide** — `scrollbar-width: none` plus a bare `::-webkit-scrollbar { display: none }` — because the thumb jumping through the hero's 300vh gave away the mechanics before the narrative. Scrolling itself is untouched. Two consequences: `src/components/ScrollCue.tsx` (the mouse-and-chevrons indicator at the foot of stage 0) is now the *only* affordance saying the page continues, so don't remove it without putting something else there; and the `::-webkit-scrollbar` rule is deliberately unscoped, so any scrollable container added later inherits it.
+
 **Recurring layout idiom**: hairline separators are the background showing through a grid gap — `grid gap-px bg-line` with `bg-ink` children. Used in both `ExpertiseAreas` and `ServicesSection`, and it degrades to a single column with horizontal rules on mobile without extra rules.
 
 **Line-art PNGs need `className="invert"`.** The icons in `public/` and `public/icons/` are pure black line art; on the dark background they vanish without it.
@@ -89,7 +114,7 @@ Global base layer sets `color-scheme: dark`, `scroll-behavior: smooth`, `scroll-
 
 `next-i18next`, locales `pt` (default) and `en`, configured in `next-i18next.config.js` and spread into `next.config.js`. `localeDetection` is deliberately omitted — Next only accepts `false` there, and passing `true` fails config validation.
 
-- Strings live in `public/locales/{en,pt}/common.json` — 67 keys, with nested objects (`areas.infra.title`, `smart_contracts.desc1`, `form.send`, `about_bio.p1`). The two files are currently key-for-key in sync; keep them that way.
+- Strings live in `public/locales/{en,pt}/common.json` — 71 keys, with nested objects (`areas.infra.title`, `smart_contracts.desc1`, `form.send`, `about_bio.p1`). The two files are currently key-for-key in sync; keep them that way.
 - Many keys serve only disabled sections. Don't assume an unreferenced key is dead — check `src/components/sections/` and `src/pages-disabled/` before removing one.
 - Stack strings (`areas.*.stack`) are single strings with `·` separators baked in, not arrays joined in JSX. Translating one means editing the string.
 - `ServicesSection` looks up `t(\`${service.key}.title\`)` and `t(\`${service.key}.${detail}\`)` from local `services`/`details` arrays. Adding a service means the array entry **plus** `title`/`desc1`/`desc2`/`desc3` in both locale files.
@@ -101,7 +126,7 @@ Global base layer sets `color-scheme: dark`, `scroll-behavior: smooth`, `scroll-
 
 ## Contact
 
-The live path is the WhatsApp CTA in the hero. The hero design spec states email contact is being retired.
+The live path is WhatsApp: the CTA in the hero (static branch always, choreographed branch once `stage >= 4`) and the always-present entry in `Header.tsx`'s `navItems`. The hero design spec states email contact is being retired.
 
 `src/pages/api/send-email.js` nonetheless still exists and works: POST-only, `nodemailer` over Gmail SMTP using `SMTP_USER` / `SMTP_PASS` (see `.env.example`), relaying to a recipient hardcoded in the file. Its only consumer is the disabled `ContactSection`, so nothing currently calls it. An earlier version sat in `src/api/`, outside `pages/`, and 404'd — don't move it back.
 

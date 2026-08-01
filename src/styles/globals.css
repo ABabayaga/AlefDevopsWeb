@@ -29,10 +29,21 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* faz o browser desenhar scrollbar, form controls e autofill em escuro */
+    /* mantém form controls e autofill em escuro; a scrollbar em si some abaixo */
     color-scheme: dark;
     /* âncoras de seção não ficam escondidas atrás do header fixo */
     scroll-padding-top: 5rem;
+    /* A barra lateral disputava atenção com a coreografia do hero: o polegar
+       saltando entregava a mecânica dos 300vh antes da narrativa. Some só o
+       desenho — a rolagem continua inteira, e o indicador do hero é quem passa
+       a dizer que a página desce. */
+    scrollbar-width: none;
+  }
+
+  /* Chromium e Safari ignoram scrollbar-width; aqui o alvo é o pseudo-elemento.
+     Vale para qualquer contêiner rolável, não só o documento. */
+  ::-webkit-scrollbar {
+    display: none;
   }
 
   body {
@@ -108,5 +119,90 @@
   .measure {
     max-width: 62ch;
   }
+
+  /* Os pacotes atravessam o cabo do servidor ao desktop, defasados no tempo
+     pelo animation-delay que o componente aplica. */
+  .intro-packet {
+    animation: intro-packet 1.35s linear infinite;
+  }
+
+  @keyframes intro-packet {
+    0% {
+      left: 0;
+      opacity: 0;
+    }
+    12%,
+    88% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+
+  /* Mouse com a roda descendo e duas setas abaixo. Sinaliza que a cena do hero
+     não é a página inteira — sem isso, os 300vh de narrativa ficam invisíveis.
+     Reusa --ease-out-quint, que ficou órfão quando as animações do OTDR saíram. */
+  .scroll-cue {
+    color: var(--color-fg-muted);
+  }
+
+  /* A roda desce dentro do corpo do mouse e some antes de voltar ao topo:
+     reaparecer subindo leria como rolar para cima. */
+  .scroll-cue-wheel {
+    animation: scroll-cue-wheel 2.2s var(--ease-out-quint) infinite;
+  }
+
+  @keyframes scroll-cue-wheel {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    70%,
+    100% {
+      transform: translateY(9px);
+      opacity: 0;
+    }
+  }
+
+  /* As duas setas repetem o gesto da roda, deslocadas no tempo — o olho lê uma
+     descida contínua, não dois piscas. */
+  .scroll-cue-arrow {
+    opacity: 0;
+    animation: scroll-cue-arrow 2.2s var(--ease-out-quint) infinite;
+  }
+
+  .scroll-cue-arrow + .scroll-cue-arrow {
+    animation-delay: 0.18s;
+  }
+
+  @keyframes scroll-cue-arrow {
+    0%,
+    100% {
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+    40% {
+      opacity: 0.9;
+      transform: translateY(0);
+    }
+    75% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+  }
 }
 
+
+/* Fora de qualquer @layer de propósito. Quem já viu a intro nesta sessão, ou
+   pediu movimento reduzido, não pode ver nem um quadro dela — e a cortina tem a
+   utility `flex`, que vive na layer utilities. No Tailwind v4 a ordem de layer
+   vence especificidade, então dentro de @layer components esta regra perdia
+   para a utility. CSS sem layer ganha de todas. Ver Intro.tsx e _document.tsx. */
+[data-intro="seen"] [data-intro-curtain] {
+  display: none;
+}

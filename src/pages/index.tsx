@@ -4,12 +4,13 @@ import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
 
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Hero from "@/components/sections/Hero";
+import Intro from "@/components/Intro";
 import { getI18nStaticProps } from "@/lib/getI18nStaticProps";
 
 // A home é só o hero. ServicesSection, AboutSection, ContactSection e
 // SkillsSection continuam em src/components/sections, sem serem renderizadas;
+// o Footer segue em src/components/Footer.tsx, também sem ser renderizado aqui;
 // o blog está em src/pages-disabled, fora do roteamento do Next. Ao religar
 // qualquer um deles, devolver também o item de menu correspondente no Header.
 
@@ -26,13 +27,16 @@ export default function Home() {
         <link rel="icon" href="/code-square.svg" />
       </Head>
 
+      {/* Antes do Header de propósito: a cortina é fixed e cobre tudo, mas
+          renderizar cedo deixa claro que ela é a primeira coisa da página. */}
+      <Intro />
+
       <Header />
 
       <main id="main">
         <Hero />
       </main>
 
-      <Footer />
       <Analytics />
     </>
   );

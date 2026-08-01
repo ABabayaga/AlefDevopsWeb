@@ -99,5 +99,12 @@
 
   "blog_header": "Notas sobre blockchain e infraestrutura.",
   "blog_back": "Todas as notas",
-  "blogtitle": "Por que gerar Hash qualquer arquivo?"
+  "blogtitle": "Por que gerar Hash qualquer arquivo?",
+
+  "intro": {
+    "connecting": "Conectando",
+    "handshake": "Handshake",
+    "receiving": "Recebendo cena",
+    "ready": "Pronto"
+  }
 }
