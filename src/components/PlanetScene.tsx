@@ -11,6 +11,8 @@ import {
   CAMERA_FOV,
   CAMERA_Z,
   COLLAPSED_RADIUS,
+  GLOBE_INTRO_OFFSET_VW,
+  INTRO_SHIFT_END,
   LAYERS,
 } from "@/lib/shellStages";
 
@@ -129,9 +131,20 @@ const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode }) =>
       }
     };
 
+    // No topo da página o globo nasce deslocado à direita (a frase ocupa a
+    // coluna esquerda) e desliza até o centro assim que o scroll começa. Escrita
+    // direta de DOM, mesmo padrão do CircuitRoots — não vale um re-render React
+    // por frame. No modo estático não há coluna de texto para abrir espaço.
+    const applyContainerShift = (progress: number) => {
+      if (staticMode) return;
+      const shifted = 1 - smoothstep(0, INTRO_SHIFT_END, progress);
+      container.style.transform = `translateX(${shifted * GLOBE_INTRO_OFFSET_VW}vw)`;
+    };
+
     // No modo estático a cena mostra o estado final: as três cascas abertas,
     // que é o mesmo que o HTML estático diz.
     applyProgress(staticMode ? 1 : progressRef.current);
+    applyContainerShift(staticMode ? 1 : progressRef.current);
     renderer.render(scene, camera);
 
     let frameId: number | null = null;
@@ -147,6 +160,7 @@ const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode }) =>
 
       root.rotation.y += SPIN_SPEED * step;
       applyProgress(progressRef.current);
+      applyContainerShift(progressRef.current);
       renderer.render(scene, camera);
     };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { FADE_MS, FLASH_MS, useIntroProgress } from "@/hooks/useIntroProgress";
+import { WIPE_MS, FLASH_MS, useIntroProgress } from "@/hooks/useIntroProgress";
 
 /** Chaves de locale, na ordem das faixas de porcentagem do hook. */
 const STAGE_KEYS = [
@@ -103,8 +103,8 @@ const Intro: React.FC = () => {
   const [enabled, setEnabled] = useState<boolean | null>(null);
   const { percent, stage, done } = useIntroProgress(enabled === true);
 
-  // "leaving" é o fade; "gone" desmonta. Separados porque o elemento precisa
-  // continuar no DOM durante a transição.
+  // "leaving" é o wipe (desliza pra cima); "gone" desmonta. Separados porque o
+  // elemento precisa continuar no DOM durante a transição.
   const [leaving, setLeaving] = useState(false);
   const [gone, setGone] = useState(false);
 
@@ -150,7 +150,7 @@ const Intro: React.FC = () => {
         // Storage bloqueado (modo privado, cookies off): a intro simplesmente
         // volta na próxima navegação. Não é motivo para quebrar a página.
       }
-    }, FLASH_MS + FADE_MS);
+    }, FLASH_MS + WIPE_MS);
 
     return () => {
       window.clearTimeout(flash);
@@ -166,10 +166,10 @@ const Intro: React.FC = () => {
     <div
       aria-hidden
       data-intro-curtain
-      className={`fixed inset-0 z-60 flex items-center justify-center bg-ink transition-opacity ease-[var(--ease-out-quint)] ${
-        leaving ? "opacity-0" : "opacity-100"
+      className={`fixed inset-0 z-60 flex items-center justify-center bg-ink transition-transform ease-[var(--ease-out-quint)] ${
+        leaving ? "-translate-y-full" : "translate-y-0"
       }`}
-      style={{ transitionDuration: `${FADE_MS}ms` }}
+      style={{ transitionDuration: `${WIPE_MS}ms` }}
     >
       <div className="flex w-full max-w-3xl flex-col items-center gap-7 px-6">
         <div className="flex w-full items-center gap-4 text-fg-muted sm:gap-8">

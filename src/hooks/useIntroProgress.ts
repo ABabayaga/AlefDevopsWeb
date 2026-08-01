@@ -18,8 +18,8 @@ const CLOSING_MIN_MS = 400;
 /** A tela do desktop acende antes de a cortina sair. */
 export const FLASH_MS = 200;
 
-/** Fade de saída. */
-export const FADE_MS = 500;
+/** Duração do wipe: a cortina desliza pra cima e sai da viewport. */
+export const WIPE_MS = 5100;
 
 /**
  * Faixas de porcentagem de cada etapa. O índice é o que o componente usa para

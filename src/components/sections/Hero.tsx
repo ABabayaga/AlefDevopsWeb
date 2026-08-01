@@ -87,15 +87,21 @@ const Hero: React.FC = () => {
         <PlanetScene progressRef={progressRef} staticMode={false} />
         <CircuitRoots progressRef={progressRef} stage={stage} />
 
-        {/* O título vive sobre o planeta fechado e sai quando a primeira raiz
-            começa a crescer — o bloco de Infraestrutura ocupa este canto. */}
+        {/* Nasce ancorado à esquerda — o globo nasce deslocado à direita no
+            PlanetScene e desliza ao centro junto com o scroll. O título sai
+            quando a primeira raiz começa a crescer — o bloco de Infraestrutura
+            ocupa o canto onde o globo já está centralizado. Centralização
+            vertical por flex, não por -translate-y-1/2: essa transform
+            colidiria com o translate-y que reveal() usa pro fade. */}
         <div
           aria-hidden={!titleVisible}
-          className={`relative max-w-3xl px-8 text-center ${reveal(titleVisible)}`}
+          className={`absolute inset-y-0 left-8 flex items-center lg:left-16 ${reveal(titleVisible)}`}
         >
-          {eyebrow(true)}
-          <h1 className="type-display type-hero m-0 text-fg">{t("title")}</h1>
-          <p className="measure mx-auto mt-7 text-fg-muted">{t("hero_sub")}</p>
+          <div className="max-w-lg px-4 text-left">
+            {eyebrow(false)}
+            <h1 className="type-display type-hero m-0 text-fg">{t("title")}</h1>
+            <p className="measure mt-7 text-fg-muted">{t("hero_sub")}</p>
+          </div>
         </div>
 
         <div

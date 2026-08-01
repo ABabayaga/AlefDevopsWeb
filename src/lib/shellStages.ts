@@ -13,6 +13,17 @@
 export const CAMERA_FOV = 45;
 export const CAMERA_Z = 5.2;
 
+/**
+ * No topo da página (progress 0) o globo nasce deslocado à direita, com a
+ * frase ocupando a coluna esquerda; ao rolar, ele desliza até o centro. A
+ * janela desse deslizamento tem que fechar antes de `LAYERS[0].from` (0.1),
+ * senão a primeira raiz começa a crescer com o globo ainda fora do centro.
+ */
+export const INTRO_SHIFT_END = 0.08;
+
+/** Deslocamento inicial do globo, em vw, no progress 0. */
+export const GLOBE_INTRO_OFFSET_VW = 18;
+
 /** Raio comum das cascas em repouso: fechadas, leem como um planeta sólido. */
 export const COLLAPSED_RADIUS = 0.67;
 
