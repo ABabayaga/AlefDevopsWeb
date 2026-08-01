@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Analytics } from "@vercel/analytics/next";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
+import { useState } from "react";
 
 import Header from "@/components/Header";
 import Hero from "@/components/sections/Hero";
@@ -17,6 +18,11 @@ import { getI18nStaticProps } from "@/lib/getI18nStaticProps";
 export default function Home() {
   const { t } = useTranslation("common");
 
+  // Sinal de "cortina sumiu": o Hero usa isso pra saber quando é seguro
+  // começar o nascimento do globo — sem ele a animação rodaria escondida
+  // atrás do Intro na primeira visita.
+  const [introGone, setIntroGone] = useState(false);
+
   return (
     <>
       <Head>
@@ -29,12 +35,12 @@ export default function Home() {
 
       {/* Antes do Header de propósito: a cortina é fixed e cobre tudo, mas
           renderizar cedo deixa claro que ela é a primeira coisa da página. */}
-      <Intro />
+      <Intro onGone={() => setIntroGone(true)} />
 
       <Header />
 
       <main id="main">
-        <Hero />
+        <Hero introGone={introGone} />
       </main>
 
       <Analytics />

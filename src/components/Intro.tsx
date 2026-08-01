@@ -94,7 +94,14 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({ lit }) => (
  * marca data-intro="seen" no <html> antes da primeira pintura e o CSS esconde a
  * cortina por esse atributo. O React só chega depois, para desmontar.
  */
-const Intro: React.FC = () => {
+interface IntroProps {
+  /** Chamado nos dois pontos em que a cortina marca `gone` — é o sinal que o
+   * Hero usa pra saber quando é seguro começar o nascimento do globo. Sem
+   * isso a animação rodaria escondida atrás da cortina na primeira visita. */
+  onGone?: () => void;
+}
+
+const Intro: React.FC<IntroProps> = ({ onGone }) => {
   const { t } = useTranslation("common");
 
   // null enquanto não se sabe: a decisão depende de matchMedia e sessionStorage,
@@ -116,10 +123,12 @@ const Intro: React.FC = () => {
     if (skip) {
       setEnabled(false);
       setGone(true);
+      onGone?.();
       return;
     }
 
     setEnabled(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // A trava de rolagem depende de `gone`, não do ciclo de vida do componente:
@@ -143,6 +152,7 @@ const Intro: React.FC = () => {
     const flash = window.setTimeout(() => setLeaving(true), FLASH_MS);
     const unmount = window.setTimeout(() => {
       setGone(true);
+      onGone?.();
       window.scrollTo(0, 0);
       try {
         sessionStorage.setItem(SEEN_KEY, "1");
@@ -156,6 +166,7 @@ const Intro: React.FC = () => {
       window.clearTimeout(flash);
       window.clearTimeout(unmount);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [done]);
 
   if (gone) return null;
