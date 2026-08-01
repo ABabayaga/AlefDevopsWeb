@@ -4,7 +4,6 @@ import { useTranslation } from "next-i18next";
 import CircuitRoots from "@/components/CircuitRoots";
 import ExpertiseAreas from "@/components/ExpertiseAreas";
 import ScrollCue from "@/components/ScrollCue";
-import { useHeroBirth } from "@/hooks/useHeroBirth";
 import { prefersStaticHero, useScrollProgress } from "@/hooks/useScrollProgress";
 import { reveal } from "@/lib/reveal";
 import { STAGE_CTA, STAGE_TITLE_OUT } from "@/lib/shellStages";
@@ -13,13 +12,7 @@ import { whatsappHref } from "@/lib/whatsapp";
 // ssr:false mantém o three fora do JS da primeira pintura e do HTML estático.
 const PlanetScene = dynamic(() => import("@/components/PlanetScene"), { ssr: false });
 
-interface HeroProps {
-  /** Sinal do index.tsx: a cortina do Intro já saiu. Dispara o nascimento do
-   * globo — ver useHeroBirth. */
-  introGone: boolean;
-}
-
-const Hero: React.FC<HeroProps> = ({ introGone }) => {
+const Hero: React.FC = () => {
   const { t } = useTranslation("common");
   const containerRef = useRef<HTMLElement>(null);
 
@@ -32,12 +25,6 @@ const Hero: React.FC<HeroProps> = ({ introGone }) => {
   }, []);
 
   const { progressRef, stage } = useScrollProgress(containerRef, !isStatic);
-
-  // Chamado incondicionalmente (regra dos hooks) mesmo no ramo estático, que
-  // simplesmente nunca lê o resultado. scrollStarted é a válvula de escape:
-  // rolar antes do nascimento terminar não deve parecer que o scroll está
-  // preso esperando uma animação de entrada.
-  const birth = useHeroBirth(introGone, stage >= STAGE_TITLE_OUT);
 
   const href = whatsappHref(t("hero_whatsapp_message"));
 
@@ -72,8 +59,7 @@ const Hero: React.FC<HeroProps> = ({ introGone }) => {
   );
 
   // Versão estática: mobile, prefers-reduced-motion e o HTML do servidor.
-  // Mesmos textos, mesmas chaves — o que muda é só a apresentação. Sem
-  // nascimento: o planeta já entra pronto, igual a hoje.
+  // Mesmos textos, mesmas chaves — o que muda é só a apresentação.
   if (isStatic) {
     return (
       <section className="relative overflow-hidden">
@@ -90,28 +76,19 @@ const Hero: React.FC<HeroProps> = ({ introGone }) => {
     );
   }
 
-  // Título some por dois motivos possíveis — o nascimento terminou, ou o
-  // scroll começou — e não volta por nenhum dos dois: useHeroBirth nunca
-  // reseta titleVisible para true, e stage voltar a 0 não muda isso.
-  const titleVisible = birth.titleVisible && stage < STAGE_TITLE_OUT;
+  const titleVisible = stage < STAGE_TITLE_OUT;
   const ctaVisible = stage >= STAGE_CTA;
-  const scrollCueVisible = stage === 0 && birth.done;
 
   return (
     // 300vh é a distância de scroll que a narrativa consome; o filho sticky é
     // a tela que fica parada enquanto isso.
     <section ref={containerRef} className="relative h-[300vh]">
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
-        <PlanetScene
-          progressRef={progressRef}
-          staticMode={false}
-          birthProgressRef={birth.birthProgressRef}
-        />
+        <PlanetScene progressRef={progressRef} staticMode={false} />
         <CircuitRoots progressRef={progressRef} stage={stage} />
 
-        {/* O título vive sobre o planeta fechado e dissolve nele assim que o
-            nascimento termina — o bloco de Infraestrutura ocupa este canto
-            depois que o título já se foi. */}
+        {/* O título vive sobre o planeta fechado e sai quando a primeira raiz
+            começa a crescer — o bloco de Infraestrutura ocupa este canto. */}
         <div
           aria-hidden={!titleVisible}
           className={`relative max-w-3xl px-8 text-center ${reveal(titleVisible)}`}
@@ -131,11 +108,10 @@ const Hero: React.FC<HeroProps> = ({ introGone }) => {
         {/* bottom-28 e não bottom-8: no topo da página o filho sticky ainda não
             está pinado, então seus 100vh começam abaixo do header e transbordam
             a dobra na altura dele (~67px). O indicador só aparece nesse trecho,
-            justamente onde a folga é necessária. Some até o nascimento
-            terminar, pra nada competir com a transição título→globo. */}
+            justamente onde a folga é necessária. */}
         <div
           aria-hidden
-          className={`absolute bottom-28 left-1/2 -translate-x-1/2 ${reveal(scrollCueVisible)}`}
+          className={`absolute bottom-28 left-1/2 -translate-x-1/2 ${reveal(stage === 0)}`}
         >
           <ScrollCue />
         </div>

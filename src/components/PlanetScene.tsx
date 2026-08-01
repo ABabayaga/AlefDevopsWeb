@@ -34,11 +34,9 @@ interface Shell {
 interface PlanetSceneProps {
   progressRef: MutableRefObject<number>;
   staticMode: boolean;
-  /** 0 a 1, já com easing. Ausente = sempre 1 — é o caso do ramo estático. */
-  birthProgressRef?: MutableRefObject<number>;
 }
 
-const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode, birthProgressRef }) => {
+const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -121,14 +119,9 @@ const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode, birt
     });
 
     const applyProgress = (progress: number) => {
-      // Antes do nascimento terminar, birth multiplica a escala por algo
-      // entre 0 e 1 — o planeta cresce do nada no mesmo lugar onde já ia
-      // ficar parado. Sem a prop (ramo estático), o multiplicador é sempre 1.
-      const birth = birthProgressRef ? birthProgressRef.current : 1;
-
       for (const shell of shells) {
         const open = smoothstep(shell.from, shell.to, progress);
-        const scale = (shell.collapsedScale + (1 - shell.collapsedScale) * open) * birth;
+        const scale = shell.collapsedScale + (1 - shell.collapsedScale) * open;
 
         shell.group.scale.setScalar(scale);
         shell.pointsMaterial.opacity = 0.5 + 0.5 * open;
@@ -226,7 +219,7 @@ const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode, birt
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [progressRef, staticMode, birthProgressRef]);
+  }, [progressRef, staticMode]);
 
   return (
     <div
