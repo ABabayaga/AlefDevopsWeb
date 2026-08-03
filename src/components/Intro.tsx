@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { WIPE_MS, FLASH_MS, useIntroProgress } from "@/hooks/useIntroProgress";
+import BrandLogo from "@/components/BrandLogo";
+import { MORPH_MS, type IntroPhase } from "@/hooks/useIntroSequence";
 
 /** Chaves de locale, na ordem das faixas de porcentagem do hook. */
 const STAGE_KEYS = [
@@ -9,22 +9,6 @@ const STAGE_KEYS = [
   "intro.receiving",
   "intro.ready",
 ] as const;
-
-/** Marca no sessionStorage. O mesmo nome é lido pelo script do _document. */
-const SEEN_KEY = "intro-seen";
-
-/**
- * Storage pode estar bloqueado (modo privado, cookies desligados) e o acesso
- * lança. Nesses casos a intro simplesmente reaparece — não é motivo para
- * derrubar a página.
- */
-function readSeen(): boolean {
-  try {
-    return sessionStorage.getItem(SEEN_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
 
 /** Três pacotes correndo, defasados no tempo. */
 const PACKETS = [0, 1, 2];
@@ -83,82 +67,40 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({ lit }) => (
   </svg>
 );
 
+interface IntroProps {
+  phase: IntroPhase;
+  /** Válido durante "pending"/"loading"; nas fases seguintes não é mais lido. */
+  percent: number;
+  stage: number;
+}
+
 /**
  * Cortina de carregamento: um servidor entregando a resposta a um desktop, com
- * a barra e a porcentagem no cabo entre os dois.
+ * a barra e a porcentagem no cabo entre os dois — que dá lugar ao logo
+ * centralizado e depois ao Header, sem nunca desaparecer via slide.
  *
- * Renderiza também no servidor, de propósito. Se ela só existisse depois da
- * montagem, o visitante veria o hero por um instante antes de ser coberto — que
- * é pior do que não ter intro. Quem não deve vê-la (já viu nesta sessão, ou pediu
- * movimento reduzido) não vê nem um quadro, porque o script inline do _document
- * marca data-intro="seen" no <html> antes da primeira pintura e o CSS esconde a
- * cortina por esse atributo. O React só chega depois, para desmontar.
+ * `phase` vem de useIntroSequence, levantado até index.tsx (Header e Hero
+ * também dependem dele). Renderiza também no servidor, de propósito: se ela
+ * só existisse depois da montagem, o visitante veria o hero por um instante
+ * antes de ser coberto — que é pior do que não ter intro. Quem não deve vê-la
+ * (já viu nesta sessão, ou pediu movimento reduzido) não vê nem um quadro,
+ * porque o script inline do _document marca data-intro="seen" no <html> antes
+ * da primeira pintura e o CSS esconde a cortina por esse atributo. O React só
+ * chega depois, com phase já em "done".
  */
-const Intro: React.FC = () => {
+const Intro: React.FC<IntroProps> = ({ phase, percent, stage }) => {
   const { t } = useTranslation("common");
 
-  // null enquanto não se sabe: a decisão depende de matchMedia e sessionStorage,
-  // que só existem no cliente. Decidir no primeiro render daria mismatch de
-  // hidratação, porque o servidor não tem como saber a resposta.
-  const [enabled, setEnabled] = useState<boolean | null>(null);
-  const { percent, stage, done } = useIntroProgress(enabled === true);
+  if (phase === "done") return null;
 
-  // "leaving" é o wipe (desliza pra cima); "gone" desmonta. Separados porque o
-  // elemento precisa continuar no DOM durante a transição.
-  const [leaving, setLeaving] = useState(false);
-  const [gone, setGone] = useState(false);
-
-  useEffect(() => {
-    const skip =
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      readSeen();
-
-    if (skip) {
-      setEnabled(false);
-      setGone(true);
-      return;
-    }
-
-    setEnabled(true);
-  }, []);
-
-  // A trava de rolagem depende de `gone`, não do ciclo de vida do componente:
-  // quando a cortina sai ele passa a devolver null, mas continua montado, então
-  // um cleanup de unmount nunca rodaria e a página ficaria travada para sempre.
-  useEffect(() => {
-    if (enabled !== true) return;
-
-    // Sem isso a coreografia de 300vh do hero avança por trás da cortina e o
-    // visitante sai dela já no meio da narrativa.
-    document.body.style.overflow = gone ? "" : "hidden";
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [enabled, gone]);
-
-  useEffect(() => {
-    if (!done) return;
-
-    const flash = window.setTimeout(() => setLeaving(true), FLASH_MS);
-    const unmount = window.setTimeout(() => {
-      setGone(true);
-      window.scrollTo(0, 0);
-      try {
-        sessionStorage.setItem(SEEN_KEY, "1");
-      } catch {
-        // Storage bloqueado (modo privado, cookies off): a intro simplesmente
-        // volta na próxima navegação. Não é motivo para quebrar a página.
-      }
-    }, FLASH_MS + WIPE_MS);
-
-    return () => {
-      window.clearTimeout(flash);
-      window.clearTimeout(unmount);
-    };
-  }, [done]);
-
-  if (gone) return null;
+  // Ícones/barra somem em fade assim que o logo entra — a cortina continua
+  // opaca (bg-ink) o tempo todo, só troca o que mostra por cima.
+  const showLoading = phase === "pending" || phase === "loading";
+  // A cópia grande do logo só existe aqui durante "reveal". Ao entrar em
+  // "morphing" ela deixa de ser renderizada e o Header passa a montar a sua
+  // com o mesmo layoutId — é essa troca de árvore que o Framer Motion lê como
+  // um único elemento migrando de posição, não duas animações independentes.
+  const showLogo = phase === "reveal";
 
   return (
     // z-60 e não z-50: o Header também é z-50 e vem depois no DOM, então no
@@ -166,42 +108,58 @@ const Intro: React.FC = () => {
     <div
       aria-hidden
       data-intro-curtain
-      className={`fixed inset-0 z-60 flex items-center justify-center bg-ink transition-transform ease-[var(--ease-out-quint)] ${
-        leaving ? "-translate-y-full" : "translate-y-0"
+      className={`fixed inset-0 z-60 bg-ink transition-opacity ease-[var(--ease-out-quint)] ${
+        phase === "morphing" ? "opacity-0" : "opacity-100"
       }`}
-      style={{ transitionDuration: `${WIPE_MS}ms` }}
+      style={{ transitionDuration: `${MORPH_MS}ms` }}
     >
-      <div className="flex w-full max-w-3xl flex-col items-center gap-7 px-6">
-        <div className="flex w-full items-center gap-4 text-fg-muted sm:gap-8">
-          <ServerIcon />
+      {/* Cada camada centraliza a si mesma via absolute inset-0, em vez de
+          serem irmãs numa mesma linha flex — senão, enquanto o bloco de
+          loading ainda ocupa espaço (só com opacity-0), ele empurra o logo
+          para fora do centro real da tela junto com justify-center. */}
+      <div
+        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
+          showLoading ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      >
+        <div className="flex w-full max-w-3xl flex-col items-center gap-7 px-6">
+          <div className="flex w-full items-center gap-4 text-fg-muted sm:gap-8">
+            <ServerIcon />
 
-          {/* O cabo. A porcentagem fica sobre ele, centrada. */}
-          <div className="relative min-w-0 flex-1">
-            <p className="mb-4 text-center font-mono text-[clamp(1.5rem,5vw,2rem)] leading-none text-fg">
-              {percent}%
-            </p>
+            {/* O cabo. A porcentagem fica sobre ele, centrada. */}
+            <div className="relative min-w-0 flex-1">
+              <p className="mb-4 text-center font-mono text-[clamp(1.5rem,5vw,2rem)] leading-none text-fg">
+                {percent}%
+              </p>
 
-            <div className="relative h-px w-full bg-line">
-              <div
-                className="absolute inset-y-0 left-0 bg-os2"
-                style={{ width: `${percent}%` }}
-              />
-
-              {PACKETS.map((packet) => (
-                <span
-                  key={packet}
-                  className="intro-packet absolute top-1/2 left-0 block h-1 w-1 -translate-y-1/2 rounded-full bg-om3"
-                  style={{ animationDelay: `${packet * 0.45}s` }}
+              <div className="relative h-px w-full bg-line">
+                <div
+                  className="absolute inset-y-0 left-0 bg-os2"
+                  style={{ width: `${percent}%` }}
                 />
-              ))}
+
+                {PACKETS.map((packet) => (
+                  <span
+                    key={packet}
+                    className="intro-packet absolute top-1/2 left-0 block h-1 w-1 -translate-y-1/2 rounded-full bg-om3"
+                    style={{ animationDelay: `${packet * 0.45}s` }}
+                  />
+                ))}
+              </div>
             </div>
+
+            <DesktopIcon lit={percent >= 100} />
           </div>
 
-          <DesktopIcon lit={percent >= 100} />
+          <p className="type-label text-center text-fg-muted">{t(STAGE_KEYS[stage])}</p>
         </div>
-
-        <p className="type-label text-center text-fg-muted">{t(STAGE_KEYS[stage])}</p>
       </div>
+
+      {showLogo && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <BrandLogo size="lg" layoutId="brand-logo" reveal />
+        </div>
+      )}
     </div>
   );
 };

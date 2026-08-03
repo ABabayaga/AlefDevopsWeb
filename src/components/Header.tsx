@@ -2,7 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
+import BrandLogo from "@/components/BrandLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import type { IntroPhase } from "@/hooks/useIntroSequence";
 import { whatsappHref } from "@/lib/whatsapp";
 
 const socialLinks = [
@@ -44,8 +46,21 @@ const NavEntry: React.FC<{
   );
 };
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  /** "done" por padrão: páginas fora do fluxo da intro (ex. blog desativado)
+   *  não passam essa prop e devem só mostrar o logo final, sem animação. */
+  introPhase?: IntroPhase;
+}
+
+const Header: React.FC<HeaderProps> = ({ introPhase = "done" }) => {
   const { t } = useTranslation("common");
+  // O logo só carrega o layoutId compartilhado a partir de "morphing": é o
+  // instante em que a cópia grande da cortina deixa de ser renderizada, e a
+  // troca de árvore é o que o Framer Motion lê como o elemento migrando até
+  // aqui. Nas fases anteriores (e sem JS/skip, que nunca saem de "pending")
+  // este logo já é o conteúdo final, visível normalmente — a cortina opaca
+  // cobre a tela por cima dele enquanto a intro roda.
+  const morphed = introPhase === "morphing" || introPhase === "done";
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -70,18 +85,8 @@ const Header: React.FC = () => {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
-        <Link
-          href="/"
-          className="flex items-center gap-2.5 text-fg no-underline"
-          onClick={() => setOpen(false)}
-        >
-          {/* o SVG é fill="currentColor", mas como <img> ele vira um documento
-              isolado e currentColor cai para preto — sem chip claro atrás, o
-              glifo some no fundo escuro */}
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-fg">
-            <Image src="/code-square.svg" width={17} height={17} alt="" />
-          </span>
-          <span className="type-display text-[1.05rem] tracking-tight">Alef Devops</span>
+        <Link href="/" className="no-underline" onClick={() => setOpen(false)}>
+          <BrandLogo layoutId={morphed ? "brand-logo" : undefined} />
         </Link>
 
         {navItems.length > 0 && (
