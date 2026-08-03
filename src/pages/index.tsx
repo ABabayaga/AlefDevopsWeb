@@ -6,6 +6,7 @@ import { GetStaticProps } from "next";
 import Header from "@/components/Header";
 import Hero from "@/components/sections/Hero";
 import Intro from "@/components/Intro";
+import { useIntroSequence } from "@/hooks/useIntroSequence";
 import { getI18nStaticProps } from "@/lib/getI18nStaticProps";
 
 // A home é só o hero. ServicesSection, AboutSection, ContactSection e
@@ -16,6 +17,10 @@ import { getI18nStaticProps } from "@/lib/getI18nStaticProps";
 
 export default function Home() {
   const { t } = useTranslation("common");
+  // Fonte única da sequência intro→logo→hero: Header e Hero recebem a mesma
+  // `phase` pra saber quando assumir o logo compartilhado e revelar o
+  // conteúdo, sem cada um reimplementar a leitura de matchMedia/sessionStorage.
+  const intro = useIntroSequence();
 
   return (
     <>
@@ -29,12 +34,12 @@ export default function Home() {
 
       {/* Antes do Header de propósito: a cortina é fixed e cobre tudo, mas
           renderizar cedo deixa claro que ela é a primeira coisa da página. */}
-      <Intro />
+      <Intro phase={intro.phase} percent={intro.percent} stage={intro.stage} />
 
-      <Header />
+      <Header introPhase={intro.phase} />
 
       <main id="main">
-        <Hero />
+        <Hero introPhase={intro.phase} />
       </main>
 
       <Analytics />

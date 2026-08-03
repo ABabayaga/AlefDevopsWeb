@@ -4,6 +4,7 @@ import { useTranslation } from "next-i18next";
 import CircuitRoots from "@/components/CircuitRoots";
 import ExpertiseAreas from "@/components/ExpertiseAreas";
 import ScrollCue from "@/components/ScrollCue";
+import type { IntroPhase } from "@/hooks/useIntroSequence";
 import { prefersStaticHero, useScrollProgress } from "@/hooks/useScrollProgress";
 import { reveal } from "@/lib/reveal";
 import { STAGE_CTA, STAGE_TITLE_OUT } from "@/lib/shellStages";
@@ -12,9 +13,21 @@ import { whatsappHref } from "@/lib/whatsapp";
 // ssr:false mantém o three fora do JS da primeira pintura e do HTML estático.
 const PlanetScene = dynamic(() => import("@/components/PlanetScene"), { ssr: false });
 
-const Hero: React.FC = () => {
+interface HeroProps {
+  introPhase: IntroPhase;
+}
+
+const Hero: React.FC<HeroProps> = ({ introPhase }) => {
   const { t } = useTranslation("common");
   const containerRef = useRef<HTMLElement>(null);
+
+  // Visível por padrão — igual ao HTML que o servidor entrega e ao que um
+  // visitante sem JS vê. Só fica falso enquanto a intro está de fato correndo
+  // ("loading"/"reveal"), atrás da cortina opaca; nesse meio-tempo o conteúdo
+  // já está oculto quando a cortina começa a desaparecer, pronto pra entrar
+  // com reveal(). Sem gambiarra de hidratação: "pending" (servidor e primeiro
+  // render do cliente) sempre bate com este valor inicial.
+  const contentRevealed = introPhase !== "loading" && introPhase !== "reveal";
 
   // Começa estático de propósito: é o que o servidor renderiza, então o HTML
   // entregue já traz headline, sub, as três áreas e o CTA. O desktop promove
@@ -59,24 +72,35 @@ const Hero: React.FC = () => {
   );
 
   // Versão estática: mobile, prefers-reduced-motion e o HTML do servidor.
-  // Mesmos textos, mesmas chaves — o que muda é só a apresentação.
+  // Mesmos textos, mesmas chaves — o que muda é só a apresentação. O bloco de
+  // texto ganha a entrada de reveal() só quando há intro rodando de fato: em
+  // reduced-motion/sem-JS contentRevealed já nasce true e reveal() resolve
+  // pro estado visível sem nenhuma transição visível.
   if (isStatic) {
     return (
       <section className="relative overflow-hidden">
         <PlanetScene progressRef={progressRef} staticMode />
 
         <div className="relative mx-auto max-w-6xl px-5 pt-16 pb-20 sm:px-8 lg:pt-24 lg:pb-28">
-          {eyebrow(false)}
-          <h1 className="type-display type-hero m-0 max-w-[18ch] text-fg">{t("title")}</h1>
-          <p className="measure mt-7 text-fg-muted">{t("hero_sub")}</p>
-          <div className="mt-10">{createCta(true)}</div>
+          <div
+            aria-hidden={!contentRevealed}
+            className={reveal(contentRevealed)}
+          >
+            {eyebrow(false)}
+            <h1 className="type-display type-hero m-0 max-w-[18ch] text-fg">{t("title")}</h1>
+            <p className="measure mt-7 text-fg-muted">{t("hero_sub")}</p>
+            <div className="mt-10">{createCta(contentRevealed)}</div>
+          </div>
           <ExpertiseAreas />
         </div>
       </section>
     );
   }
 
-  const titleVisible = stage < STAGE_TITLE_OUT;
+  // contentRevealed trava o título escondido enquanto a intro roda — depois
+  // que vira true ele nunca volta a false, então a partir daí quem manda é só
+  // o stage do scroll, como já era.
+  const titleVisible = stage < STAGE_TITLE_OUT && contentRevealed;
   const ctaVisible = stage >= STAGE_CTA;
 
   return (
