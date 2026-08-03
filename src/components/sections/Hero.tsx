@@ -4,7 +4,6 @@ import { useTranslation } from "next-i18next";
 import CircuitRoots from "@/components/CircuitRoots";
 import ExpertiseAreas from "@/components/ExpertiseAreas";
 import ScrollCue from "@/components/ScrollCue";
-import type { IntroPhase } from "@/hooks/useIntroSequence";
 import { prefersStaticHero, useScrollProgress } from "@/hooks/useScrollProgress";
 import { reveal } from "@/lib/reveal";
 import { STAGE_CTA, STAGE_TITLE_OUT } from "@/lib/shellStages";
@@ -14,20 +13,16 @@ import { whatsappHref } from "@/lib/whatsapp";
 const PlanetScene = dynamic(() => import("@/components/PlanetScene"), { ssr: false });
 
 interface HeroProps {
-  introPhase: IntroPhase;
+  /** Vem de useIntroSequence: falso enquanto a cortina cobre o hero, e volta a
+   *  verdadeiro um pouco depois de o logo começar a viajar pro header, pro
+   *  conteúdo entrar atrás dele em vez de junto. Já nasce verdadeiro sem intro
+   *  (sem JS, reduced-motion, sessão repetida) — que é o HTML do servidor. */
+  contentRevealed: boolean;
 }
 
-const Hero: React.FC<HeroProps> = ({ introPhase }) => {
+const Hero: React.FC<HeroProps> = ({ contentRevealed }) => {
   const { t } = useTranslation("common");
   const containerRef = useRef<HTMLElement>(null);
-
-  // Visível por padrão — igual ao HTML que o servidor entrega e ao que um
-  // visitante sem JS vê. Só fica falso enquanto a intro está de fato correndo
-  // ("loading"/"reveal"), atrás da cortina opaca; nesse meio-tempo o conteúdo
-  // já está oculto quando a cortina começa a desaparecer, pronto pra entrar
-  // com reveal(). Sem gambiarra de hidratação: "pending" (servidor e primeiro
-  // render do cliente) sempre bate com este valor inicial.
-  const contentRevealed = introPhase !== "loading" && introPhase !== "reveal";
 
   // Começa estático de propósito: é o que o servidor renderiza, então o HTML
   // entregue já traz headline, sub, as três áreas e o CTA. O desktop promove

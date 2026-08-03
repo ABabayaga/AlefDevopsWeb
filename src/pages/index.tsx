@@ -19,7 +19,7 @@ export default function Home() {
   const { t } = useTranslation("common");
   // Fonte única da sequência intro→logo→hero: Header e Hero recebem a mesma
   // `phase` pra saber quando assumir o logo compartilhado e revelar o
-  // conteúdo, sem cada um reimplementar a leitura de matchMedia/sessionStorage.
+  // conteúdo, sem cada um reimplementar a leitura de matchMedia nem os tempos.
   const intro = useIntroSequence();
 
   return (
@@ -36,10 +36,10 @@ export default function Home() {
           renderizar cedo deixa claro que ela é a primeira coisa da página. */}
       <Intro phase={intro.phase} percent={intro.percent} stage={intro.stage} />
 
-      <Header introPhase={intro.phase} />
+      <Header introPhase={intro.phase} contentRevealed={intro.contentRevealed} />
 
       <main id="main">
-        <Hero introPhase={intro.phase} />
+        <Hero contentRevealed={intro.contentRevealed} />
       </main>
 
       <Analytics />

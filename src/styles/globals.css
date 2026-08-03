@@ -198,11 +198,19 @@
 }
 
 
-/* Fora de qualquer @layer de propósito. Quem já viu a intro nesta sessão, ou
-   pediu movimento reduzido, não pode ver nem um quadro dela — e a cortina tem a
-   utility `flex`, que vive na layer utilities. No Tailwind v4 a ordem de layer
-   vence especificidade, então dentro de @layer components esta regra perdia
-   para a utility. CSS sem layer ganha de todas. Ver Intro.tsx e _document.tsx. */
-[data-intro="seen"] [data-intro-curtain] {
-  display: none;
+/* Fora de qualquer @layer de propósito. Quem pediu movimento reduzido não pode
+   ver nem um quadro da cortina — e ela carrega a utility `flex`, que vive na
+   layer utilities. No Tailwind v4 a ordem de layer vence especificidade, então
+   dentro de @layer components esta regra perdia para a utility. CSS sem layer
+   ganha de todas.
+
+   Media query e não atributo no <html>: a cortina é renderizada pelo servidor,
+   então quem não deve vê-la precisa dela escondida antes da primeira pintura, e
+   o React só chega depois. Isso já exigiu um script inline no _document lendo
+   matchMedia; hoje a única condição de pulo é a preferência de movimento, que o
+   CSS resolve sozinho — a intro em si volta a cada carregamento. Ver Intro.tsx. */
+@media (prefers-reduced-motion: reduce) {
+  [data-intro-curtain] {
+    display: none;
+  }
 }

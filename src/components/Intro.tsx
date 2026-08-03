@@ -83,10 +83,9 @@ interface IntroProps {
  * também dependem dele). Renderiza também no servidor, de propósito: se ela
  * só existisse depois da montagem, o visitante veria o hero por um instante
  * antes de ser coberto — que é pior do que não ter intro. Quem não deve vê-la
- * (já viu nesta sessão, ou pediu movimento reduzido) não vê nem um quadro,
- * porque o script inline do _document marca data-intro="seen" no <html> antes
- * da primeira pintura e o CSS esconde a cortina por esse atributo. O React só
- * chega depois, com phase já em "done".
+ * (pediu movimento reduzido) não vê nem um quadro, porque o globals.css a
+ * esconde por media query, antes da primeira pintura. O React só chega depois,
+ * com phase já em "done".
  */
 const Intro: React.FC<IntroProps> = ({ phase, percent, stage }) => {
   const { t } = useTranslation("common");

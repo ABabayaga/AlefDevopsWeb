@@ -5,6 +5,7 @@ import { useTranslation } from "next-i18next";
 import BrandLogo from "@/components/BrandLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import type { IntroPhase } from "@/hooks/useIntroSequence";
+import { reveal } from "@/lib/reveal";
 import { whatsappHref } from "@/lib/whatsapp";
 
 const socialLinks = [
@@ -50,9 +51,11 @@ interface HeaderProps {
   /** "done" por padrão: páginas fora do fluxo da intro (ex. blog desativado)
    *  não passam essa prop e devem só mostrar o logo final, sem animação. */
   introPhase?: IntroPhase;
+  /** Idem: sem intro, o resto do header já nasce visível. */
+  contentRevealed?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ introPhase = "done" }) => {
+const Header: React.FC<HeaderProps> = ({ introPhase = "done", contentRevealed = true }) => {
   const { t } = useTranslation("common");
   // O logo só carrega o layoutId compartilhado a partir de "morphing": é o
   // instante em que a cópia grande da cortina deixa de ser renderizada, e a
@@ -86,11 +89,21 @@ const Header: React.FC<HeaderProps> = ({ introPhase = "done" }) => {
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
         <Link href="/" className="no-underline" onClick={() => setOpen(false)}>
-          <BrandLogo layoutId={morphed ? "brand-logo" : undefined} />
+          {/* A `key` é o que faz o morph existir: o Framer só registra um
+              layoutId no grupo compartilhado quando o nó de projeção monta.
+              Sem remontar, este logo apenas ganharia a prop, nada seria
+              promovido e a cópia grande sumiria sem viajar. */}
+          <BrandLogo
+            key={morphed ? "shared" : "plain"}
+            layoutId={morphed ? "brand-logo" : undefined}
+          />
         </Link>
 
         {navItems.length > 0 && (
-          <nav className="hidden items-center gap-8 md:flex" aria-label={t("nav_label")}>
+          <nav
+            className={`hidden items-center gap-8 md:flex ${reveal(contentRevealed)}`}
+            aria-label={t("nav_label")}
+          >
             {navItems.map((item) => (
               <NavEntry
                 key={item.href}
@@ -101,7 +114,7 @@ const Header: React.FC<HeaderProps> = ({ introPhase = "done" }) => {
           </nav>
         )}
 
-        <div className="hidden items-center gap-4 md:flex">
+        <div className={`hidden items-center gap-4 md:flex ${reveal(contentRevealed)}`}>
           <LanguageSwitcher />
 
           <div className="flex items-center gap-2">
@@ -126,7 +139,9 @@ const Header: React.FC<HeaderProps> = ({ introPhase = "done" }) => {
           aria-expanded={open}
           aria-controls="main-nav"
           aria-label={open ? t("nav_close") : t("nav_open")}
-          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
+          className={`flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden ${reveal(
+            contentRevealed
+          )}`}
         >
           <span
             className={`h-px w-5 bg-fg transition-transform duration-300 ${
