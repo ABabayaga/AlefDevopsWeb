@@ -13,6 +13,46 @@
   "nav_label": "Main navigation",
   "nav_open": "Open menu",
   "nav_close": "Close menu",
+  "nav_trabalhos": "Work",
+  "nav_sobre": "About me",
+
+  "trabalhos_header": "Websites, apps and systems in production.",
+  "trabalhos_sites_label": "Websites",
+  "trabalhos_apps_label": "Apps",
+  "trabalhos_sistemas_label": "Systems",
+  "modal_close": "Close",
+  "modal_see_more": "See more",
+
+  "trabalhos_projects": {
+    "mm": {
+      "title": "Motora Match",
+      "desc": "A platform that connects professional drivers and freight carriers intelligently, safely and efficiently. Find loads, build your professional profile and join an exclusive community.",
+      "stack": "Vite · Tailwind · TypeScript"
+    },
+    "gsn": {
+      "title": "Sandra Novas Gallery",
+      "desc": "Website for the Sandra Novas art gallery.",
+      "stack": "React · Vite · Tailwind · TypeScript"
+    },
+    "rt2": {
+      "title": "RepenseTrack",
+      "desc": "Connects drivers, carriers and operations centers in one complete app for trip management, real-time communication and delivery tracking.",
+      "stack": "Flutter · NestJS · MongoDB · Redis"
+    },
+    "rpa": {
+      "title": "RPA Fácil Contábil",
+      "desc": "System for automated document delivery via WhatsApp.",
+      "stack": "NestJS · MongoDB · Vite · TypeScript · Tailwind · Docker"
+    }
+  },
+
+  "sobre_header": "From ISP to code.",
+  "sobre_photo_alt": "Photo of Alef Lima",
+  "sobre_bio": {
+    "p1": "I'm a full-stack developer based in Campo Grande, Brazil, working with React, TypeScript, NestJS and MongoDB to build production systems — currently focused on logistics and fleet management software.",
+    "p2": "Before coding full-time, I spent over 14 years as co-founder and CTO of a regional internet service provider (ISP), where I built and operated the entire network infrastructure from scratch: BGP/OSPF routing, GPON/FTTH deployment, peering at the local internet exchange, and monitoring with Zabbix and Grafana. I sold the company in 2024 and moved fully into software development, bringing that systems-level view and infrastructure mindset with me.",
+    "p3": "I'm currently finishing my degree in Systems Analysis and Development, and I'm always building something — whether shipping features for clients or working on my own projects in my spare time."
+  },
 
   "hero_eyebrow": "Alef Lima · Alef Devops",
   "hero_sub": "From front-end to database, from admin panel to on-chain contract. Fifteen years of infrastructure make sure what I ship stays up.",

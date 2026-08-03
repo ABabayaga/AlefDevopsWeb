@@ -13,6 +13,46 @@
   "nav_label": "Navegação principal",
   "nav_open": "Abrir menu",
   "nav_close": "Fechar menu",
+  "nav_trabalhos": "Trabalhos",
+  "nav_sobre": "Sobre mim",
+
+  "trabalhos_header": "Sites, apps e sistemas em produção.",
+  "trabalhos_sites_label": "Sites",
+  "trabalhos_apps_label": "Apps",
+  "trabalhos_sistemas_label": "Sistemas",
+  "modal_close": "Fechar",
+  "modal_see_more": "Ver mais",
+
+  "trabalhos_projects": {
+    "mm": {
+      "title": "Motora Match",
+      "desc": "Plataforma que conecta motoristas profissionais e transportadoras de forma inteligente, segura e eficiente. Encontre fretes, construa seu perfil profissional e faça parte de uma comunidade exclusiva.",
+      "stack": "Vite · Tailwind · TypeScript"
+    },
+    "gsn": {
+      "title": "Galeria Sandra Novas",
+      "desc": "Site da galeria de artes Sandra Novas.",
+      "stack": "React · Vite · Tailwind · TypeScript"
+    },
+    "rt2": {
+      "title": "RepenseTrack",
+      "desc": "Conecta motoristas, transportadoras e centros de operação em um aplicativo completo para gestão da jornada, comunicação em tempo real e controle das entregas.",
+      "stack": "Flutter · NestJS · MongoDB · Redis"
+    },
+    "rpa": {
+      "title": "RPA Fácil Contábil",
+      "desc": "Sistema para envio de documentos automáticos via WhatsApp.",
+      "stack": "NestJS · MongoDB · Vite · TypeScript · Tailwind · Docker"
+    }
+  },
+
+  "sobre_header": "De ISP a código.",
+  "sobre_photo_alt": "Foto de Alef Lima",
+  "sobre_bio": {
+    "p1": "Sou um desenvolvedor full-stack baseado em Campo Grande, Brasil, trabalhando com React, TypeScript, NestJS e MongoDB na construção de sistemas em produção — atualmente com foco em software de logística e gestão de frotas.",
+    "p2": "Antes de programar em tempo integral, passei mais de 14 anos como cofundador e CTO de um provedor de internet (ISP) regional, onde construí e operei toda a infraestrutura de rede do zero: roteamento BGP/OSPF, implantação de GPON/FTTH, peering no ponto de troca de tráfego local e monitoramento com Zabbix e Grafana. Vendi a empresa em 2024 e migrei totalmente para desenvolvimento de software, levando comigo essa visão sistêmica e essa mentalidade de infraestrutura.",
+    "p3": "Atualmente estou concluindo a graduação em Análise e Desenvolvimento de Sistemas, e estou sempre construindo algo — seja entregando funcionalidades para clientes ou trabalhando em projetos próprios nas horas vagas."
+  },
 
   "hero_eyebrow": "Alef Lima · Alef Devops",
   "hero_sub": "Do front-end ao banco, do painel administrativo ao contrato on-chain. Quinze anos de infraestrutura garantem que o que eu entrego fica de pé.",
