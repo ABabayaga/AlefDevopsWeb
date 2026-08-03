@@ -24,9 +24,11 @@ There is no test runner. "Testing" a change means `npm run build` succeeding, pl
 
 ## Architecture
 
-**The live site is one page.** Successive refactors reduced a multi-page Bootstrap site to a single hero. Build output is 8 static pages — 4 routes × 2 locales:
+**The live site is mostly one page, plus two content routes reached through a nav modal.** Successive refactors reduced a multi-page Bootstrap site to a single hero; `/trabalhos` and `/sobre` are the first real pages added since. Build output is 10 static pages — 5 routes × 2 locales — plus one dynamic API route:
 
 - `/` (`src/pages/index.tsx`) — `Intro`, `Header`, `Hero`, `<Analytics />`, all fed by one `useIntroSequence()` call. That is the whole page.
+- `/trabalhos` (`src/pages/trabalhos.tsx`) — projects showcase: three category sections (Sites/Apps/Sistemas), each a grid of `ProjectCard`.
+- `/sobre` (`src/pages/sobre.tsx`) — full bio and photo.
 - `/api/send-email` — see Contact below.
 - `/404`.
 

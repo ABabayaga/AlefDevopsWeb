@@ -27,6 +27,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectKey, image, orientatio
           src={image}
           alt={title}
           fill
+          sizes="(min-width: 640px) 50vw, 100vw"
           className={orientation === "portrait" ? "object-contain" : "object-cover"}
         />
       </div>
