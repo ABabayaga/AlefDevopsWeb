@@ -5,8 +5,8 @@ import { useTranslation } from "next-i18next";
 import BrandLogo from "@/components/BrandLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import type { IntroPhase } from "@/hooks/useIntroSequence";
+import type { NavModalKey } from "@/lib/navModal";
 import { reveal } from "@/lib/reveal";
-import { whatsappHref } from "@/lib/whatsapp";
 
 const socialLinks = [
   { href: "https://www.linkedin.com/in/alefdevops/", icon: "/linkedin.png", alt: "LinkedIn" },
@@ -15,17 +15,23 @@ const socialLinks = [
 ];
 
 interface NavItem {
-  href: string;
   label: string;
+  /** Só itens externos usam href pra navegar de verdade. */
+  href?: string;
   /** Link externo: abre em aba nova e leva rel de segurança. */
   external?: boolean;
+  /** Dispara a raiz até o planeta e abre o modal correspondente. Todo item
+   *  interno tem um — não existe mais página por trás pra navegar, então o
+   *  item renderiza como <button>, não <Link>. */
+  modalKey?: NavModalKey;
 }
 
 const NavEntry: React.FC<{
   item: NavItem;
   className: string;
   onNavigate?: () => void;
-}> = ({ item, className, onNavigate }) => {
+  onModalClick?: (key: NavModalKey, origin: DOMRect) => void;
+}> = ({ item, className, onNavigate, onModalClick }) => {
   if (item.external) {
     return (
       <a
@@ -40,10 +46,17 @@ const NavEntry: React.FC<{
     );
   }
 
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (item.modalKey && onModalClick) {
+      onModalClick(item.modalKey, event.currentTarget.getBoundingClientRect());
+    }
+    onNavigate?.();
+  };
+
   return (
-    <Link href={item.href} onClick={onNavigate} className={className}>
+    <button type="button" onClick={handleClick} className={className}>
       {item.label}
-    </Link>
+    </button>
   );
 };
 
@@ -53,9 +66,17 @@ interface HeaderProps {
   introPhase?: IntroPhase;
   /** Idem: sem intro, o resto do header já nasce visível. */
   contentRevealed?: boolean;
+  /** Só a home passa isso: intercepta os itens com modalKey pra tocar a raiz
+   *  e abrir o modal, em vez de navegar. Fora da home os links funcionam
+   *  normalmente (ex. páginas de blog em src/pages-disabled). */
+  onModalNav?: (key: NavModalKey, origin: DOMRect) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ introPhase = "done", contentRevealed = true }) => {
+const Header: React.FC<HeaderProps> = ({
+  introPhase = "done",
+  contentRevealed = true,
+  onModalNav,
+}) => {
   const { t } = useTranslation("common");
   // O logo só carrega o layoutId compartilhado a partir de "morphing": é o
   // instante em que a cópia grande da cortina deixa de ser renderizada, e a
@@ -75,10 +96,9 @@ const Header: React.FC<HeaderProps> = ({ introPhase = "done", contentRevealed = 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // O CTA do hero só aparece no fim da narrativa de scroll; o header é sticky,
-  // então é aqui que o contato fica sempre alcançável.
   const navItems: NavItem[] = [
-    { href: whatsappHref(t("hero_whatsapp_message")), label: t("hero_whatsapp"), external: true },
+    { label: t("nav_trabalhos"), modalKey: "trabalhos" },
+    { label: t("nav_sobre"), modalKey: "sobre" },
   ];
 
   return (
@@ -106,8 +126,9 @@ const Header: React.FC<HeaderProps> = ({ introPhase = "done", contentRevealed = 
           >
             {navItems.map((item) => (
               <NavEntry
-                key={item.href}
+                key={item.label}
                 item={item}
+                onModalClick={onModalNav}
                 className="type-label text-fg-muted no-underline transition-colors hover:text-fg"
               />
             ))}
@@ -164,9 +185,10 @@ const Header: React.FC<HeaderProps> = ({ introPhase = "done", contentRevealed = 
           <nav className="mx-auto flex max-w-6xl flex-col px-5 py-2 sm:px-8" aria-label={t("nav_label")}>
             {navItems.map((item) => (
               <NavEntry
-                key={item.href}
+                key={item.label}
                 item={item}
                 onNavigate={() => setOpen(false)}
+                onModalClick={onModalNav}
                 className="type-label border-b border-line-soft py-4 text-fg-muted no-underline transition-colors hover:text-fg"
               />
             ))}

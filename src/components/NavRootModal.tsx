@@ -1,14 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { useTranslation } from "next-i18next";
 import { reveal } from "@/lib/reveal";
 import { NAV_MODAL_TITLE_KEY, type NavModalKey } from "@/lib/navModal";
-
-/** Chave de nav → página cheia correspondente, pro link de "ver mais". */
-const SEE_MORE_HREF: Partial<Record<NavModalKey, string>> = {
-  trabalhos: "/trabalhos",
-  sobre: "/sobre",
-};
+import TrabalhosContent from "@/components/TrabalhosContent";
+import SobreContent from "@/components/SobreContent";
 
 interface NavRootModalProps {
   modalKey: NavModalKey | null;
@@ -16,9 +11,10 @@ interface NavRootModalProps {
 }
 
 /**
- * Placeholder aberto pela raiz do nav (ver NavRootReveal) ou, no branch
- * estático do Hero, direto pelo clique. O título é a mesma chave que a
- * página cheia (/trabalhos, /sobre) usa — o texto mora num lugar só.
+ * Aberto pela raiz do nav (ver NavRootReveal) ou, no branch estático do
+ * Hero, direto pelo clique. O conteúdo mora aqui mesmo — não há mais página
+ * cheia por trás; o título é a mesma chave que o conteúdo usaria como
+ * cabeçalho de seção, se ainda existisse uma página.
  */
 const NavRootModal: React.FC<NavRootModalProps> = ({ modalKey, onClose }) => {
   const { t } = useTranslation("common");
@@ -49,8 +45,6 @@ const NavRootModal: React.FC<NavRootModalProps> = ({ modalKey, onClose }) => {
 
   if (!modalKey) return null;
 
-  const seeMoreHref = SEE_MORE_HREF[modalKey];
-
   return (
     <div
       className={`fixed inset-0 z-70 flex items-center justify-center bg-ink/85 px-5 backdrop-blur-md ${reveal(
@@ -61,7 +55,7 @@ const NavRootModal: React.FC<NavRootModalProps> = ({ modalKey, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg rounded-sm border border-line bg-surface p-8 sm:p-10"
+        className="max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-sm border border-line bg-surface p-8 sm:p-10"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-6">
@@ -77,14 +71,8 @@ const NavRootModal: React.FC<NavRootModalProps> = ({ modalKey, onClose }) => {
           </button>
         </div>
 
-        {seeMoreHref && (
-          <Link
-            href={seeMoreHref}
-            className="type-label mt-6 inline-block text-os2 no-underline transition-opacity hover:opacity-80"
-          >
-            {t("modal_see_more")} →
-          </Link>
-        )}
+        {modalKey === "trabalhos" && <TrabalhosContent />}
+        {modalKey === "sobre" && <SobreContent />}
       </div>
     </div>
   );
