@@ -9,14 +9,14 @@
 
 @theme {
   /* Superfícies: escuro de tela de NOC à noite, com viés azul — nunca preto puro. */
-  --color-ink: #070b10;
+  --color-ink: #00002B;
   --color-surface: #0e141c;
   --color-raised: #141d28;
   --color-line: #1c2733;
   --color-line-soft: #131b24;
 
-  --color-fg: #dde5ee;
-  --color-fg-muted: #7c8a9c;
+  --color-fg: #f0f5fb;
+  --color-fg-muted: #a3b3c7;
 
   /* Acentos tirados das jaquetas padronizadas de fibra:
      amarelo = monomodo OS2 (FTTH, backbone), aqua = multimodo OM3. */
