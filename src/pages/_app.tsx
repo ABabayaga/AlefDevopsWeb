@@ -3,6 +3,8 @@ import type { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import { Archivo, IBM_Plex_Mono } from "next/font/google";
 
+import MusicToggle from "@/components/MusicToggle";
+
 // Archivo é variável nos eixos de peso e largura. O eixo wdth é o que dá aos
 // títulos a largura de placa de sinalização técnica (.type-display usa 125%).
 const archivo = Archivo({
@@ -24,6 +26,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${archivo.variable} ${plexMono.variable} font-sans`}>
       <Component {...pageProps} />
+      <MusicToggle />
     </div>
   );
 }

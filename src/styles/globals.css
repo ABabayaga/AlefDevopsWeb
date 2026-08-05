@@ -202,6 +202,24 @@
       transform: translateY(3px);
     }
   }
+
+  /* Barra do toggle de música: escala a própria altura, então o mesmo keyframe
+     serve pras três barras independente da altura de repouso de cada uma
+     (definida inline pelo componente). */
+  .music-bar {
+    transform-origin: bottom;
+    animation: music-bar 0.9s ease-in-out infinite;
+  }
+
+  @keyframes music-bar {
+    0%,
+    100% {
+      transform: scaleY(0.4);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
 }
 
 

@@ -165,5 +165,10 @@
     "handshake": "Handshake",
     "receiving": "Receiving scene",
     "ready": "Ready"
+  },
+
+  "music": {
+    "play": "Play background music",
+    "pause": "Pause background music"
   }
 }

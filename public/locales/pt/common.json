@@ -164,5 +164,10 @@
     "handshake": "Handshake",
     "receiving": "Recebendo cena",
     "ready": "Pronto"
+  },
+
+  "music": {
+    "play": "Tocar música de fundo",
+    "pause": "Pausar música de fundo"
   }
 }
