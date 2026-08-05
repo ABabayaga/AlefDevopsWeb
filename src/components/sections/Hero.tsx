@@ -66,7 +66,6 @@ const Hero: React.FC<HeroProps> = ({ contentRevealed, pendingTarget, onRootArriv
         centered ? "justify-center" : ""
       }`}
     >
-      <span aria-hidden className="h-px w-8 shrink-0 bg-os2" />
       <span className="min-w-0 leading-relaxed">{t("hero_eyebrow")}</span>
     </p>
   );

@@ -110,8 +110,8 @@ const Header: React.FC<HeaderProps> = ({
         scrolled ? "border-b border-line bg-ink/85 backdrop-blur-md" : "border-b border-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
-        <Link href="/" className="no-underline" onClick={() => setOpen(false)}>
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8 md:grid md:grid-cols-[1fr_auto_1fr] md:pr-2">
+        <Link href="/" className="no-underline md:justify-self-start" onClick={() => setOpen(false)}>
           {/* A `key` é o que faz o morph existir: o Framer só registra um
               layoutId no grupo compartilhado quando o nó de projeção monta.
               Sem remontar, este logo apenas ganharia a prop, nada seria
@@ -124,7 +124,7 @@ const Header: React.FC<HeaderProps> = ({
 
         {navItems.length > 0 && (
           <nav
-            className={`hidden items-center gap-8 md:flex ${reveal(contentRevealed)}`}
+            className={`hidden items-center gap-8 md:flex md:justify-self-center ${reveal(contentRevealed)}`}
             aria-label={t("nav_label")}
           >
             {navItems.map((item) => (
@@ -138,10 +138,10 @@ const Header: React.FC<HeaderProps> = ({
           </nav>
         )}
 
-        <div className={`hidden items-center gap-4 md:flex ${reveal(contentRevealed)}`}>
+        <div className={`hidden items-center gap-4 md:flex md:justify-self-end ${reveal(contentRevealed)}`}>
           <LanguageSwitcher />
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0">
             {socialLinks.map((social) => (
               <a
                 key={social.alt}
@@ -151,7 +151,7 @@ const Header: React.FC<HeaderProps> = ({
                 className="flex h-8 w-8 items-center justify-center rounded-full border border-line opacity-60 transition hover:border-os2 hover:opacity-100"
               >
                 {/* os PNGs são line-art preto puro: sem invert desaparecem no escuro */}
-                <Image src={social.icon} alt={social.alt} width={14} height={14} className="invert" />
+                <Image src={social.icon} alt={social.alt} width={20} height={14} className="invert" />
               </a>
             ))}
           </div>
