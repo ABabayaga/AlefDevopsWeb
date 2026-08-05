@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Analytics } from "@vercel/analytics/next";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
+import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 
 import Header from "@/components/Header";
@@ -26,6 +27,15 @@ export default function Home() {
   // conteúdo, sem cada um reimplementar a leitura de matchMedia nem os tempos.
   const intro = useIntroSequence();
 
+  const { locale } = useRouter();
+  const isEn = locale === "en";
+  const canonicalUrl = isEn
+    ? "https://www.alefdevops.com/en"
+    : "https://www.alefdevops.com/";
+  const ogImageUrl = `https://www.alefdevops.com/api/og?locale=${isEn ? "en" : "pt"}`;
+  const metaTitle = t("meta_title");
+  const metaDescription = t("meta_description");
+
   // Clique em Trabalhos/Sobre mim no nav não navega aqui na home: guarda a
   // origem do clique pro Hero desenhar a raiz até o planeta, e só quando ela
   // chega (ou de imediato, no branch estático) o modal abre.
@@ -46,11 +56,51 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Alef Devops</title>
-        <meta name="description" content={t("meta_description")} />
+        <title>{metaTitle}</title>
+        <meta name="description" content={metaDescription} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#070b10" />
         <link rel="icon" href="/code-square.svg" />
+
+        <link rel="canonical" href={canonicalUrl} />
+        <link rel="alternate" hrefLang="pt-BR" href="https://www.alefdevops.com/" />
+        <link rel="alternate" hrefLang="en" href="https://www.alefdevops.com/en" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.alefdevops.com/" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:locale" content={isEn ? "en_US" : "pt_BR"} />
+        <meta property="og:locale:alternate" content={isEn ? "pt_BR" : "en_US"} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={ogImageUrl} />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Alef Devops",
+              url: "https://www.alefdevops.com/",
+              jobTitle: isEn
+                ? "Custom website and web system developer"
+                : "Desenvolvedor de sites e sistemas web sob medida",
+              description: metaDescription,
+              sameAs: [
+                "https://www.linkedin.com/in/alefdevops/",
+                "https://github.com/ABabayaga",
+                "https://www.instagram.com/alef.lim4/",
+              ],
+              knowsAbout: ["Next.js", "TypeScript", "React", "Web3", "Smart Contracts"],
+            }),
+          }}
+        />
       </Head>
 
       <PixelBlastBackground />
