@@ -24,13 +24,17 @@ There is no test runner. "Testing" a change means `npm run build` succeeding, pl
 
 ## Architecture
 
-**The live site is mostly one page, plus two content routes reached through a nav modal.** Successive refactors reduced a multi-page Bootstrap site to a single hero; `/trabalhos` and `/sobre` are the first real pages added since. Build output is 10 static pages — 5 routes × 2 locales — plus one dynamic API route:
+**The live site is one page.** Successive refactors reduced a multi-page Bootstrap site to a single hero. Build output is 8 static pages — 4 routes × 2 locales:
 
 - `/` (`src/pages/index.tsx`) — `Intro`, `Header`, `Hero`, `<Analytics />`, all fed by one `useIntroSequence()` call. That is the whole page.
-- `/trabalhos` (`src/pages/trabalhos.tsx`) — projects showcase: three category sections (Sites/Apps/Sistemas), each a grid of `ProjectCard`.
-- `/sobre` (`src/pages/sobre.tsx`) — full bio and photo.
 - `/api/send-email` — see Contact below.
 - `/404`.
+
+"Trabalhos" and "Sobre" are not pages — they're `NavRootModal` content, rendered by
+`TrabalhosContent.tsx` and `SobreContent.tsx` (both in `src/components/`) and opened from
+`Header.tsx`'s nav. There used to be `/trabalhos` and `/sobre` pages that this same content
+lived in, reached via a "ver mais" link from a teaser modal; the pages were deleted once the
+modal grew to show the content directly, so there's no longer a URL for either.
 
 `Hero.tsx` renders one of two branches, decided once on mount by `prefersStaticHero()`. Below the 1024px breakpoint, under `prefers-reduced-motion`, and in the server-rendered HTML, it falls back to a static branch: eyebrow, the single `<h1>`, a support paragraph, one always-visible WhatsApp CTA, and `<ExpertiseAreas />`. Otherwise it mounts the choreographed branch: a `300vh` container (`containerRef`) with a `sticky top-0` child that stays pinned while `useScrollProgress` drives a WebGL scene. That branch is **radial**: the headline sits centred over the closed planet and leaves as soon as the first root starts growing, and the three area blocks are absolutely positioned around the planet — Infrastructure upper-left, Web2 right, Web3 lower-left — each joined to its own shell by an orthogonal "root" that grows with the scroll. The WhatsApp CTA returns centred at the bottom in the last stage. The WhatsApp number and URL builder live in `src/lib/whatsapp.ts`, shared by `Hero.tsx` and `Header.tsx`; the pre-filled message is a locale key, so it differs per language. `Hero` also takes a `contentRevealed` prop (see the loading-intro section below): its content is hidden only while the curtain covers it, and returns slightly after the logo starts travelling to the header.
 
@@ -62,7 +66,7 @@ Their readiness differs sharply:
 - `ServicesSection`, `AboutSection`, `ContactSection` — dark-themed, translated, keys already in both locales. Cheap to re-enable.
 - `SkillsSection` — **still Bootstrap-era**: `className="container py-5"`, large inline `style={{}}` objects, white-background modals, `<img src="/bootstrap.svg">`. Bootstrap CSS is no longer loaded, so those classes resolve to nothing. Content was preserved verbatim from the old `AboutSection`; decide the form (tabs / expanding cards / timeline) before restyling.
 
-**`navItems` in `Header.tsx` is the re-attachment point for internal nav.** It is no longer empty: it carries one entry, the WhatsApp link built from `whatsappHref()`, with `external: true` so `NavEntry` renders it as an `<a target="_blank">` instead of a `next/link`. The `NavItem` type has an `external?: boolean` field for exactly this. Re-enabling an internal section means adding a non-external entry to the same array — it's mapped in both the desktop `<nav>` and the mobile drawer, so restoring one entry restores both.
+**`navItems` in `Header.tsx` carries two entries, "Trabalhos" and "Sobre mim", both opening `NavRootModal` instead of navigating.** Neither has an `href` — `NavItem.href` is reserved for a future `external: true` entry, which `NavEntry` would render as `<a target="_blank">` (the `external` field exists for exactly this, unused today). Every current item has a `modalKey` instead and renders as `<button type="button">`, since its content lives entirely inside the modal (`NavRootModal.tsx`, via `TrabalhosContent`/`SobreContent`) and there's nothing to link to. Both entries are mapped in the desktop `<nav>` and the mobile drawer, so adding a third restores both automatically.
 
 `Header` itself is one `sticky top-0` component, transparent over the hero and switching to `bg-ink/85 backdrop-blur-md` past 24px of scroll via a `scroll` listener. It owns the mobile hamburger (`open` state) and renders `LanguageSwitcher` in both the desktop bar and the drawer. Its logo is `<BrandLogo>` (see below), not inline markup.
 
@@ -147,7 +151,7 @@ Global base layer sets `color-scheme: dark`, `scroll-behavior: smooth`, `scroll-
 
 ## Contact
 
-The live path is WhatsApp: the CTA in the hero (static branch always, choreographed branch once `stage >= 4`) and the always-present entry in `Header.tsx`'s `navItems`. The hero design spec states email contact is being retired.
+The live path is WhatsApp: the CTA in the hero (static branch always, choreographed branch once `stage >= 4`). The hero design spec states email contact is being retired.
 
 `src/pages/api/send-email.js` nonetheless still exists and works: POST-only, `nodemailer` over Gmail SMTP using `SMTP_USER` / `SMTP_PASS` (see `.env.example`), relaying to a recipient hardcoded in the file. Its only consumer is the disabled `ContactSection`, so nothing currently calls it. An earlier version sat in `src/api/`, outside `pages/`, and 404'd — don't move it back.
 
