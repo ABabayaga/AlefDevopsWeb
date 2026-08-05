@@ -25,6 +25,7 @@
     "next": "^14.2.13",
     "next-i18next": "^15.4.2",
     "nodemailer": "^6.9.16",
+    "postprocessing": "^6.39.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-i18next": "^15.5.3",

@@ -27,6 +27,26 @@ export const GLOBE_INTRO_OFFSET_VW = 18;
 /** Raio comum das cascas em repouso: fechadas, leem como um planeta sólido. */
 export const COLLAPSED_RADIUS = 0.67;
 
+/**
+ * O planeta fechado (progress 0) some um pouco maior que o raio de repouso
+ * das cascas — só para leitura antes do scroll começar. O boost decai a
+ * zero exatamente quando a primeira casca começa a abrir (LAYERS[0].from),
+ * então não interfere na animação de abertura, que continua seguindo só os
+ * raios de LAYERS.
+ */
+export const CLOSED_SCALE_BOOST = 1.32;
+
+/**
+ * Deslocamento vertical do planeta fechado (progress 0), em vh — negativo
+ * sobe. Decai com o mesmo smoothstep de CLOSED_SCALE_BOOST (some quando
+ * LAYERS[0] começa a abrir), pelo mesmo motivo: depois disso quem decide a
+ * posição são os raios de LAYERS e as âncoras de CircuitRoots, que já
+ * assumem o planeta centralizado — mexer nelas também quebraria o rastreio
+ * das raízes durante o scroll. NavRootReveal roda sempre com o scroll
+ * assentado no topo (progress ≈ 0), então usa o valor cheio, sem decair.
+ */
+export const CLOSED_VERTICAL_OFFSET_VH = -7;
+
 export interface Layer {
   /** Chave do locale: areas.<key>.title */
   key: "infra" | "web2" | "web3";

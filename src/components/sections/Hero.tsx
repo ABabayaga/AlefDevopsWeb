@@ -146,10 +146,12 @@ const Hero: React.FC<HeroProps> = ({ contentRevealed, pendingTarget, onRootArriv
           aria-hidden={!titleVisible}
           className={`absolute inset-y-0 left-8 flex items-center lg:left-16 ${reveal(titleVisible)}`}
         >
-          <div className="max-w-lg px-4 text-left">
+          <div className="max-w-2xl -translate-y-10 px-4 text-left lg:-translate-y-14">
             {eyebrow(false)}
             <h1 className="type-display type-hero m-0 text-fg">{t("title")}</h1>
-            <p className="measure mt-7 text-fg-muted">{t("hero_sub")}</p>
+            {/* Sem .measure aqui: seu teto de 62ch ainda força a quebra da
+                frase pt, que é o que este ajuste pede numa linha só. */}
+            <p className="mt-7 text-fg-muted">{t("hero_sub")}</p>
           </div>
         </div>
 

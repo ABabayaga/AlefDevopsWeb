@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/sections/Hero";
 import Intro from "@/components/Intro";
 import NavRootModal from "@/components/NavRootModal";
+import PixelBlastBackground from "@/components/PixelBlastBackground";
 import { useIntroSequence } from "@/hooks/useIntroSequence";
 import { getI18nStaticProps } from "@/lib/getI18nStaticProps";
 import type { NavModalKey } from "@/lib/navModal";
@@ -51,6 +52,8 @@ export default function Home() {
         <meta name="theme-color" content="#070b10" />
         <link rel="icon" href="/code-square.svg" />
       </Head>
+
+      <PixelBlastBackground />
 
       {/* Antes do Header de propósito: a cortina é fixed e cobre tudo, mas
           renderizar cedo deixa claro que ela é a primeira coisa da página. */}

@@ -94,8 +94,15 @@
   }
 
   /* Headline curta, de duas linhas, então o teto é alto: é a escala que faz o
-     hero parecer intencional em vez de vazio. */
+     hero parecer intencional em vez de vazio. Mono em vez do --font-sans de
+     .type-display — mesma família dos rótulos técnicos (.type-label), pra
+     ler como leitura de terminal, não como título editorial. Sobrescreve
+     font-family/font-stretch/letter-spacing de .type-display por vir depois
+     dela na cascata. */
   .type-hero {
+    font-family: var(--font-mono);
+    font-stretch: normal;
+    letter-spacing: -0.01em;
     font-size: clamp(2.75rem, 7vw, 5.5rem);
   }
 

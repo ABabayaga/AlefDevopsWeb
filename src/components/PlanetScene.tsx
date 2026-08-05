@@ -10,6 +10,8 @@ import {
 import {
   CAMERA_FOV,
   CAMERA_Z,
+  CLOSED_SCALE_BOOST,
+  CLOSED_VERTICAL_OFFSET_VH,
   COLLAPSED_RADIUS,
   GLOBE_INTRO_OFFSET_VW,
   INTRO_SHIFT_END,
@@ -120,6 +122,14 @@ const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode }) =>
       };
     });
 
+    // Escala do grupo raiz inteiro, não das cascas individuais: cresce o
+    // planeta fechado sem tocar no raio de abertura de cada camada (LAYERS),
+    // que é quem decide o tamanho durante o scroll.
+    const applyClosedBoost = (progress: number) => {
+      const settled = smoothstep(0, LAYERS[0].from, progress);
+      root.scale.setScalar(CLOSED_SCALE_BOOST - (CLOSED_SCALE_BOOST - 1) * settled);
+    };
+
     const applyProgress = (progress: number) => {
       for (const shell of shells) {
         const open = smoothstep(shell.from, shell.to, progress);
@@ -137,13 +147,18 @@ const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode }) =>
     // por frame. No modo estático não há coluna de texto para abrir espaço.
     const applyContainerShift = (progress: number) => {
       if (staticMode) return;
-      const shifted = 1 - smoothstep(0, INTRO_SHIFT_END, progress);
-      container.style.transform = `translateX(${shifted * GLOBE_INTRO_OFFSET_VW}vw)`;
+      const xShifted = 1 - smoothstep(0, INTRO_SHIFT_END, progress);
+      // Mesma janela de decaimento de applyClosedBoost: some junto com o
+      // boost de escala, antes de LAYERS e CircuitRoots assumirem o controle.
+      const ySettled = smoothstep(0, LAYERS[0].from, progress);
+      const y = CLOSED_VERTICAL_OFFSET_VH * (1 - ySettled);
+      container.style.transform = `translate(${xShifted * GLOBE_INTRO_OFFSET_VW}vw, ${y}vh)`;
     };
 
     // No modo estático a cena mostra o estado final: as três cascas abertas,
     // que é o mesmo que o HTML estático diz.
     applyProgress(staticMode ? 1 : progressRef.current);
+    applyClosedBoost(staticMode ? 1 : progressRef.current);
     applyContainerShift(staticMode ? 1 : progressRef.current);
     renderer.render(scene, camera);
 
@@ -160,6 +175,7 @@ const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode }) =>
 
       root.rotation.y += SPIN_SPEED * step;
       applyProgress(progressRef.current);
+      applyClosedBoost(progressRef.current);
       applyContainerShift(progressRef.current);
       renderer.render(scene, camera);
     };

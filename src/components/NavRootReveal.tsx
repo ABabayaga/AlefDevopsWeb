@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { orthogonalRoot } from "@/lib/rootPath";
-import { COLLAPSED_RADIUS, screenRadiusFraction } from "@/lib/shellStages";
+import {
+  CLOSED_SCALE_BOOST,
+  CLOSED_VERTICAL_OFFSET_VH,
+  COLLAPSED_RADIUS,
+  screenRadiusFraction,
+} from "@/lib/shellStages";
 
 /** Mesma janela de tempo de MORPH_MS em useIntroSequence: rápido o bastante
  *  pra não atrasar o modal, devagar o bastante pra ler como uma raiz crescendo. */
@@ -71,8 +76,11 @@ const NavRootReveal: React.FC<NavRootRevealProps> = ({ origin, onArrived }) => {
     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
 
     const centerX = width / 2;
-    const centerY = height / 2;
-    const radius = screenRadiusFraction(COLLAPSED_RADIUS) * height;
+    // Só roda com o scroll assentado no topo (progress ≈ 0, ver waitForSettle
+    // acima), então o planeta está sempre no boost cheio do fechado — mesmo
+    // deslocamento vertical que PlanetScene aplica nesse estado, sem decair.
+    const centerY = height / 2 + (CLOSED_VERTICAL_OFFSET_VH / 100) * height;
+    const radius = screenRadiusFraction(COLLAPSED_RADIUS) * CLOSED_SCALE_BOOST * height;
     const radians = (ANCHOR_ANGLE * Math.PI) / 180;
     const anchorX = centerX + Math.cos(radians) * radius;
     const anchorY = centerY - Math.sin(radians) * radius;
