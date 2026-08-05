@@ -10,9 +10,9 @@ const PixelBlast = dynamic(() => import("@/components/PixelBlast"), { ssr: false
  *  ruído ambiente atrás do texto e do planeta, não como uma camada disputando
  *  atenção com eles. */
 const PixelBlastBackground: React.FC = () => (
-  <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 opacity-40">
+  <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 opacity-60">
     <PixelBlast
-      color="#1b2a42"
+      color="#1c2733"
       variant="square"
       pixelSize={4}
       patternScale={3}
