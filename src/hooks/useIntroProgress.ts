@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 const SELF_RUN_CEILING = 90;
 
 /** Tempo que a barra leva para ir de 0 a SELF_RUN_CEILING. */
-const SELF_RUN_MS = 1600;
+const SELF_RUN_MS = 2200;
 
 /** Piso do total: abaixo disso a cortina pisca e ninguém lê. */
-const MIN_TOTAL_MS = 1800;
+const MIN_TOTAL_MS = 2500;
 
 /** Teto rígido: rede ruim não pode prender ninguém atrás da cortina. */
 const MAX_TOTAL_MS = 6000;

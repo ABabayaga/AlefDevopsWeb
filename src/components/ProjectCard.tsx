@@ -19,7 +19,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectKey, image, orientatio
       <div
         className={
           orientation === "portrait"
-            ? "relative aspect-9/19 bg-ink"
+            ? "relative h-90 bg-ink"
             : "relative aspect-video"
         }
       >
