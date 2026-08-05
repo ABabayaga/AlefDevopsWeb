@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "next-i18next";
 import CircuitRoots from "@/components/CircuitRoots";
 import ExpertiseAreas from "@/components/ExpertiseAreas";
+import NavRootReveal from "@/components/NavRootReveal";
 import ScrollCue from "@/components/ScrollCue";
 import { prefersStaticHero, useScrollProgress } from "@/hooks/useScrollProgress";
+import type { NavModalKey } from "@/lib/navModal";
 import { reveal } from "@/lib/reveal";
 import { STAGE_CTA, STAGE_TITLE_OUT } from "@/lib/shellStages";
 import { whatsappHref } from "@/lib/whatsapp";
@@ -18,9 +20,15 @@ interface HeroProps {
    *  conteúdo entrar atrás dele em vez de junto. Já nasce verdadeiro sem intro
    *  (sem JS, reduced-motion, sessão repetida) — que é o HTML do servidor. */
   contentRevealed: boolean;
+  /** Clique pendente vindo do nav (Trabalhos/Sobre mim), com a origem na tela.
+   *  Nulo enquanto nada foi clicado. */
+  pendingTarget: { key: NavModalKey; origin: DOMRect } | null;
+  /** Chamado quando a raiz chega ao planeta (ou de imediato, no branch
+   *  estático, que não tem planeta pra raiz nenhuma atracar). */
+  onRootArrived: (key: NavModalKey) => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ contentRevealed }) => {
+const Hero: React.FC<HeroProps> = ({ contentRevealed, pendingTarget, onRootArrived }) => {
   const { t } = useTranslation("common");
   const containerRef = useRef<HTMLElement>(null);
 
@@ -33,6 +41,20 @@ const Hero: React.FC<HeroProps> = ({ contentRevealed }) => {
   }, []);
 
   const { progressRef, stage } = useScrollProgress(containerRef, !isStatic);
+
+  // Sem planeta no branch estático, a raiz não tem onde atracar: o modal
+  // abre na hora. No coreografado, só garante que o Hero esteja visível —
+  // quem confirma que o scroll assentou é o próprio NavRootReveal.
+  useEffect(() => {
+    if (!pendingTarget) return;
+    if (isStatic) {
+      onRootArrived(pendingTarget.key);
+      return;
+    }
+    if (window.scrollY > 1) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [pendingTarget, isStatic, onRootArrived]);
 
   const href = whatsappHref(t("hero_whatsapp_message"));
 
@@ -105,6 +127,14 @@ const Hero: React.FC<HeroProps> = ({ contentRevealed }) => {
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
         <PlanetScene progressRef={progressRef} staticMode={false} />
         <CircuitRoots progressRef={progressRef} stage={stage} />
+
+        {pendingTarget && (
+          <NavRootReveal
+            key={pendingTarget.key}
+            origin={pendingTarget.origin}
+            onArrived={() => onRootArrived(pendingTarget.key)}
+          />
+        )}
 
         {/* Nasce ancorado à esquerda — o globo nasce deslocado à direita no
             PlanetScene e desliza ao centro junto com o scroll. O título sai

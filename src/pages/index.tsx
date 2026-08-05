@@ -2,12 +2,15 @@ import Head from "next/head";
 import { Analytics } from "@vercel/analytics/next";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
+import { useCallback, useState } from "react";
 
 import Header from "@/components/Header";
 import Hero from "@/components/sections/Hero";
 import Intro from "@/components/Intro";
+import NavRootModal from "@/components/NavRootModal";
 import { useIntroSequence } from "@/hooks/useIntroSequence";
 import { getI18nStaticProps } from "@/lib/getI18nStaticProps";
+import type { NavModalKey } from "@/lib/navModal";
 
 // A home é só o hero. ServicesSection, AboutSection, ContactSection e
 // SkillsSection continuam em src/components/sections, sem serem renderizadas;
@@ -21,6 +24,23 @@ export default function Home() {
   // `phase` pra saber quando assumir o logo compartilhado e revelar o
   // conteúdo, sem cada um reimplementar a leitura de matchMedia nem os tempos.
   const intro = useIntroSequence();
+
+  // Clique em Trabalhos/Sobre mim no nav não navega aqui na home: guarda a
+  // origem do clique pro Hero desenhar a raiz até o planeta, e só quando ela
+  // chega (ou de imediato, no branch estático) o modal abre.
+  const [pendingTarget, setPendingTarget] = useState<{ key: NavModalKey; origin: DOMRect } | null>(
+    null
+  );
+  const [modalKey, setModalKey] = useState<NavModalKey | null>(null);
+
+  const handleModalNav = useCallback((key: NavModalKey, origin: DOMRect) => {
+    setPendingTarget({ key, origin });
+  }, []);
+
+  const handleRootArrived = useCallback((key: NavModalKey) => {
+    setPendingTarget(null);
+    setModalKey(key);
+  }, []);
 
   return (
     <>
@@ -36,11 +56,21 @@ export default function Home() {
           renderizar cedo deixa claro que ela é a primeira coisa da página. */}
       <Intro phase={intro.phase} percent={intro.percent} stage={intro.stage} />
 
-      <Header introPhase={intro.phase} contentRevealed={intro.contentRevealed} />
+      <Header
+        introPhase={intro.phase}
+        contentRevealed={intro.contentRevealed}
+        onModalNav={handleModalNav}
+      />
 
       <main id="main">
-        <Hero contentRevealed={intro.contentRevealed} />
+        <Hero
+          contentRevealed={intro.contentRevealed}
+          pendingTarget={pendingTarget}
+          onRootArrived={handleRootArrived}
+        />
       </main>
+
+      <NavRootModal modalKey={modalKey} onClose={() => setModalKey(null)} />
 
       <Analytics />
     </>

@@ -19,7 +19,7 @@ export const CAMERA_Z = 5.2;
  * janela desse deslizamento tem que fechar antes de `LAYERS[0].from` (0.1),
  * senão a primeira raiz começa a crescer com o globo ainda fora do centro.
  */
-export const INTRO_SHIFT_END = 0.08;
+export const INTRO_SHIFT_END = 0.5;
 
 /** Deslocamento inicial do globo, em vw, no progress 0. */
 export const GLOBE_INTRO_OFFSET_VW = 18;
