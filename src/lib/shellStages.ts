@@ -68,11 +68,13 @@ export interface Layer {
   angle: number;
 }
 
-// O raio é a trajetória: a infra é o núcleo, a web2 o meio, a web3 a
-// superfície. Uma sustenta a outra, de dentro para fora.
+// O raio é a trajetória: a web2 é o núcleo, a web3 o meio, a infra a
+// superfície. Web2 é a frente principal — abre primeiro e leva a cor
+// primária (os2) mesmo sendo a casca menor; infra fecha a sequência como
+// base que sustenta as outras duas, de dentro para fora.
 export const LAYERS: readonly Layer[] = [
   {
-    key: "infra",
+    key: "web2",
     color: 0xf4c542,
     cssColor: "var(--color-os2)",
     count: 260,
@@ -82,21 +84,25 @@ export const LAYERS: readonly Layer[] = [
     angle: 150,
   },
   {
-    key: "web2",
-    color: 0xdde5ee,
-    cssColor: "var(--color-fg)",
+    key: "web3",
+    color: 0x22d3c5,
+    cssColor: "var(--color-om3)",
     count: 380,
-    radius: 1.2,
+    radius: 1.0,
     from: 0.32,
     to: 0.58,
     angle: 5,
   },
   {
-    key: "web3",
-    color: 0x22d3c5,
-    cssColor: "var(--color-om3)",
+    key: "infra",
+    color: 0xdde5ee,
+    cssColor: "var(--color-fg)",
     count: 520,
-    radius: 1.6,
+    // Era 1.6: os blocos de texto ganharam listas de sub-itens e passaram a
+    // disputar espaço com a casca externa (que é a maior e a que fica aberta
+    // por mais tempo — as outras duas permanecem reveladas depois que abrem).
+    // 1.35 mantém a progressão núcleo→superfície sem o texto pisar na esfera.
+    radius: 1.35,
     from: 0.55,
     to: 0.82,
     angle: 215,

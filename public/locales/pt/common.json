@@ -61,18 +61,37 @@
   "areas": {
     "infra": {
       "title": "Infraestrutura",
-      "desc": "Fibra, POPs e monitoramento de rede física",
-      "stack": "OTDR · NOC · Redes"
+      "desc": "Redes físicas, provisionamento e monitoramento",
+      "items": [
+        "Projeto e operação de rede FTTH/GPON",
+        "Roteamento e peering (BGP, OSPF)",
+        "Monitoramento e observabilidade (Zabbix, Grafana)",
+        "Operação de NOC e resposta a incidentes",
+        "Peering em IX (ex: IX.CG)"
+      ],
+      "stack": "BGP · OSPF · GPON/FTTH · OTDR · Zabbix · Grafana · NOC"
     },
     "web2": {
       "title": "Web2",
       "desc": "Sistemas, APIs e painéis administrativos",
-      "stack": "React · Next.js · Node · MongoDB"
+      "items": [
+        "Painéis administrativos e dashboards",
+        "APIs REST e integrações",
+        "Aplicações React / Next.js",
+        "Backend em Node.js, bancos MongoDB e SQL",
+        "Deploy e infraestrutura de aplicação"
+      ],
+      "stack": "React · Next.js · TypeScript · Node · NestJS · MongoDB"
     },
     "web3": {
       "title": "Web3",
-      "desc": "Contratos inteligentes, tokens e dApps",
-      "stack": "Solidity · OpenZeppelin · RainbowKit"
+      "desc": "Experiência com contratos inteligentes e dApps",
+      "items": [
+        "Desenvolvimento de smart contracts (Solidity)",
+        "Integração front-end com carteiras (RainbowKit, Ethers.js)",
+        "Testes e deploy com Hardhat"
+      ],
+      "stack": "Solidity · OpenZeppelin · Hardhat · Ethers.js · RainbowKit"
     }
   },
 

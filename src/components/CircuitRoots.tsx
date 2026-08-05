@@ -9,13 +9,35 @@ import { LAYERS, layerScreenRadius } from "@/lib/shellStages";
 /**
  * Onde cada bloco pousa. Os ângulos moram em LAYERS porque a cena e a raiz
  * precisam deles; a caixa mora aqui porque é layout e só o layout se importa.
- * A ordem é a mesma de LAYERS.
+ * A ordem é a mesma de LAYERS. Os slots da esquerda (Web2 em cima, Infra
+ * embaixo) usam 7% em vez do 11% original — os três blocos têm uma lista de
+ * sub-itens agora (ver MAX_ITEMS) e ficaram mais altos, então precisam da
+ * folga extra antes do overflow-hidden do container cortar o texto.
  */
 const BOXES = [
-  "left-[4%] top-[11%]",
+  "left-[4%] top-[7%]",
   "right-[4%] top-1/2 -translate-y-1/2",
-  "left-[4%] bottom-[11%]",
+  "left-[4%] bottom-[7%]",
 ] as const;
+
+/**
+ * Mesma ordem de BOXES. Em vh, não vw: o raio da casca (layerScreenRadius)
+ * também é fração da ALTURA, então a largura da caixa precisa acompanhar a
+ * mesma unidade — em vw ela cresceria fora de proporção numa janela larga e
+ * baixa e pisaria na esfera aberta (que fica maior no fim do scroll, quando
+ * os três blocos já estão revelados e continuam assim). Web2 ganha um pouco
+ * mais por ser a área em destaque.
+ */
+const WIDTHS = [
+  "w-[clamp(11rem,26vh,15rem)]",
+  "w-[clamp(10rem,22vh,13rem)]",
+  "w-[clamp(10rem,22vh,13rem)]",
+] as const;
+
+/** A caixa é estreita e o container corta overflow — cada bloco mostra só os
+ *  N sub-itens mais essenciais aqui; a lista completa mora na versão estática
+ *  (ExpertiseAreas), que tem largura livre. */
+const MAX_ITEMS = 3;
 
 /**
  * Estágio em que o texto da camada entra. O estágio 1 é a saída do título, daí
@@ -204,6 +226,7 @@ const CircuitRoots: React.FC<CircuitRootsProps> = ({ progressRef, stage }) => {
 
       {LAYERS.map((layer, index) => {
         const visible = stage >= stageForLayer(index);
+        const featured = layer.key === "web2";
         return (
           <div
             key={layer.key}
@@ -211,9 +234,14 @@ const CircuitRoots: React.FC<CircuitRootsProps> = ({ progressRef, stage }) => {
               blockRefs.current[index] = element;
             }}
             aria-hidden={!visible}
-            className={`absolute flex w-[clamp(13rem,20vw,19rem)] flex-col gap-3 pt-4 ${BOXES[index]} ${reveal(visible)}`}
+            className={`absolute flex flex-col gap-2 pt-4 ${WIDTHS[index]} ${BOXES[index]} ${reveal(visible)}`}
           >
-            <AreaCard index={`0${index + 1}`} areaKey={layer.key} />
+            <AreaCard
+              index={`0${index + 1}`}
+              areaKey={layer.key}
+              variant={featured ? "featured" : "compact"}
+              maxItems={MAX_ITEMS}
+            />
           </div>
         );
       })}
