@@ -7,6 +7,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import type { IntroPhase } from "@/hooks/useIntroSequence";
 import type { NavModalKey } from "@/lib/navModal";
 import { reveal } from "@/lib/reveal";
+import { whatsappHref } from "@/lib/whatsapp";
 
 const socialLinks = [
   { href: "https://www.linkedin.com/in/alefdevops/", icon: "/linkedin.png", alt: "LinkedIn" },
@@ -101,6 +102,8 @@ const Header: React.FC<HeaderProps> = ({
     { label: t("nav_sobre"), modalKey: "sobre" },
   ];
 
+  const contactHref = whatsappHref(t("hero_whatsapp_message"));
+
   return (
     <header
       className={`sticky top-0 z-50 transition-colors duration-300 ${
@@ -152,6 +155,15 @@ const Header: React.FC<HeaderProps> = ({
               </a>
             ))}
           </div>
+
+          <a
+            href={contactHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="type-label rounded-full bg-os2 px-4 py-2 text-ink no-underline transition-opacity hover:opacity-85"
+          >
+            {t("hero_whatsapp")}
+          </a>
         </div>
 
         <button
@@ -198,6 +210,9 @@ const Header: React.FC<HeaderProps> = ({
                 navItems.length > 0 ? "border-t border-line-soft" : ""
               }`}
             >
+              {/* Sem CTA de contato aqui: no mobile o hero já traz o botão de
+                  WhatsApp sempre visível, e repeti-lo dentro do drawer só
+                  duplicava o mesmo destino. O CTA do desktop continua. */}
               <div className="flex items-center gap-3">
                 {socialLinks.map((social) => (
                   <a

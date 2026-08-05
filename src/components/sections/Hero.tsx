@@ -96,9 +96,22 @@ const Hero: React.FC<HeroProps> = ({ contentRevealed, pendingTarget, onRootArriv
   if (isStatic) {
     return (
       <section className="relative overflow-hidden">
-        <PlanetScene progressRef={progressRef} staticMode />
+        {/* No mobile o globo nasce centrado na seção inteira e a borda de cima
+            encosta no parágrafo. Descer a cena tira a malha de cima do texto;
+            o tamanho não muda porque o canvas continua do tamanho da seção.
+            Só até lg — acima disso o estático é o caso de reduced-motion, com
+            largura de sobra e sem essa colisão. */}
+        <PlanetScene
+          progressRef={progressRef}
+          staticMode
+          className="translate-y-[12vh] lg:translate-y-0"
+        />
 
-        <div className="relative mx-auto max-w-6xl px-5 pt-16 pb-20 sm:px-8 lg:pt-24 lg:pb-28">
+        {/* pt menor no mobile: o header sticky já ocupa espaço em fluxo acima,
+            então o pt-16 virava folga dupla e empurrava o bloco de texto pra
+            cima da malha do globo. Sobe o texto, aumenta a distância pro globo
+            — que desce pelo translate acima, no sentido oposto. */}
+        <div className="relative mx-auto max-w-6xl px-5 pt-8 pb-20 sm:px-8 sm:pt-16 lg:pt-24 lg:pb-28">
           <div
             aria-hidden={!contentRevealed}
             className={reveal(contentRevealed)}

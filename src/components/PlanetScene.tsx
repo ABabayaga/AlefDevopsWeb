@@ -38,9 +38,14 @@ interface Shell {
 interface PlanetSceneProps {
   progressRef: MutableRefObject<number>;
   staticMode: boolean;
+  /** Só o branch estático usa, pra deslocar a cena sem mexer no tamanho do
+   *  canvas (o FOV é vertical: encolher o container encolheria o globo junto).
+   *  No coreografado não vale — lá o transform do container é reescrito por
+   *  frame em applyContainerShift e qualquer classe aqui seria sobrescrita. */
+  className?: string;
 }
 
-const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode }) => {
+const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode, className = "" }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -255,7 +260,7 @@ const PlanetScene: React.FC<PlanetSceneProps> = ({ progressRef, staticMode }) =>
     <div
       ref={containerRef}
       aria-hidden
-      className="pointer-events-none absolute inset-0"
+      className={`pointer-events-none absolute inset-0 ${className}`}
     />
   );
 };

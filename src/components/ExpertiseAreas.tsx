@@ -18,9 +18,19 @@ const compactAreas = [
 const ExpertiseAreas: React.FC = () => {
   // gap-px sobre bg-line: o filete entre as áreas é o próprio fundo aparecendo
   // pelo gap, então o mobile vira uma coluna com régua horizontal sem regra nova.
+  //
+  // O px-3 é só do mobile e some no sm: ali a coluna encosta na margem da
+  // página e o texto ficava colado na borda da tela. Os filetes continuam de
+  // ponta a ponta — quem recua é o conteúdo. Do sm pra cima o grid já resolve o
+  // espaçamento pelo px-6 com as pontas zeradas, e um recuo extra desalinharia
+  // as áreas do resto da página.
+  //
+  // A margem de topo maior no mobile é o espaço em que o globo do hero estático
+  // aparece: os blocos abaixo são bg-ink e tapam a cena, então encurtá-la é
+  // encurtar o globo.
   return (
-    <div className="mt-16 lg:mt-20">
-      <div className="flex flex-col gap-4 border-t border-line bg-ink py-8 sm:py-10">
+    <div className="mt-28 sm:mt-16 lg:mt-20">
+      <div className="flex flex-col gap-4 border-t border-line bg-ink px-3 py-8 sm:px-0 sm:py-10">
         <AreaCard index="01" areaKey="web2" variant="featured" />
       </div>
 
@@ -28,7 +38,7 @@ const ExpertiseAreas: React.FC = () => {
         {compactAreas.map((area) => (
           <li
             key={area.id}
-            className="flex flex-col gap-3 bg-ink py-7 sm:px-6 sm:first:pl-0 sm:last:pr-0"
+            className="flex flex-col gap-3 bg-ink px-3 py-7 sm:px-6 sm:first:pl-0 sm:last:pr-0"
           >
             <AreaCard index={area.id} areaKey={area.key} />
           </li>
