@@ -53,6 +53,12 @@
     "p2": "Before coding full-time, I spent over 14 years as co-founder and CTO of a regional internet service provider (ISP), where I built and operated the entire network infrastructure from scratch: BGP/OSPF routing, GPON/FTTH deployment, peering at the local internet exchange, and monitoring with Zabbix and Grafana. I sold the company in 2024 and moved fully into software development, bringing that systems-level view and infrastructure mindset with me.",
     "p3": "I'm currently finishing my degree in Systems Analysis and Development, and I'm always building something, whether shipping features for clients or working on my own projects in my spare time."
   },
+  "sobre_career": {
+    "telecom": "Telecom Engineer",
+    "infra": "Infrastructure Architect",
+    "fullstack": "Full Stack Developer",
+    "ai": "Building AI-powered software"
+  },
 
   "hero_eyebrow": "Alef Lima · Campo Grande-MS",
   "hero_sub": "From front-end to database, from admin panel to on-chain contract. Fifteen years of infrastructure make sure what I ship stays up.",

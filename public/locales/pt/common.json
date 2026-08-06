@@ -53,6 +53,12 @@
     "p2": "Antes de programar em tempo integral, passei mais de 14 anos como cofundador e CTO de um provedor de internet (ISP) regional, onde construí e operei toda a infraestrutura de rede do zero: roteamento BGP/OSPF, implantação de GPON/FTTH, peering no ponto de troca de tráfego local e monitoramento com Zabbix e Grafana. Vendi a empresa em 2024 e migrei totalmente para desenvolvimento de software, levando comigo essa visão sistêmica e essa mentalidade de infraestrutura.",
     "p3": "Atualmente estou concluindo a graduação em Análise e Desenvolvimento de Sistemas, e estou sempre construindo algo, seja entregando funcionalidades para clientes ou trabalhando em projetos próprios nas horas vagas."
   },
+  "sobre_career": {
+    "telecom": "Engenheiro de Telecom",
+    "infra": "Arquiteto de Infraestrutura",
+    "fullstack": "Desenvolvedor Full Stack",
+    "ai": "Construindo software com IA"
+  },
 
   "hero_eyebrow": "Alef Lima · Campo Grande-MS",
   "hero_sub": "Do front-end ao banco, do painel administrativo ao contrato on-chain.",

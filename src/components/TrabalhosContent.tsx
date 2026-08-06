@@ -15,9 +15,8 @@ const categories = [
 ] as const;
 
 /**
- * Corpo do modal de "Trabalhos" (ver NavRootModal) — o modal é dono do
- * cabeçalho (título + fechar); aqui mora só o conteúdo, migrado tal como
- * estava na antiga página /trabalhos.
+ * Corpo da página /trabalhos (ver src/pages/trabalhos.tsx) — o cabeçalho da
+ * seção fica por conta de SectionHeader; aqui mora só o conteúdo.
  */
 const TrabalhosContent: React.FC = () => {
   const { t } = useTranslation("common");

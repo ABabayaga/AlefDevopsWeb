@@ -20,21 +20,19 @@ npm test         # alias for `npm run build`
 
 There is no test runner. "Testing" a change means `npm run build` succeeding, plus `npm run dev` and clicking through at desktop and ~375px widths, then switching locale with `LanguageSwitcher` to confirm both languages of any new keys.
 
-**`npm run lint` is broken and silently so.** ESLint 9 is installed but Next 14's `next lint` passes removed options (`useEslintrc`, `extensions`, …), so it prints `Invalid Options:` and **exits 0**. `npm run build` hits the same failure, prints `⨯ ESLint: Invalid Options`, and then builds successfully anyway. So: lint output is noise, a clean build does *not* mean lint passed, and a build is only broken if compilation or type checking fails. Fixing lint means either migrating to `eslint.config.mjs` flat config or pinning ESLint 8.
+**`npm run lint` is broken.** ESLint 9 is installed but Next 14's `next lint` passes removed options (`useEslintrc`, `extensions`, `resolvePluginsRelativeTo`, `rulePaths`, `ignorePath`, `reportUnusedDisableDirectives`), so it prints `Invalid Options:` and **exits 1** — `npm run lint` fails as a command. `npm run build` hits the same underlying failure but swallows it: it prints a one-line `⨯ ESLint: Invalid Options` during the "Linting and checking validity of types" step and then proceeds to compile, type-check, and generate pages normally, exiting 0. So: a clean build does *not* mean lint passed (lint never actually ran), and a build is only broken if compilation or type checking fails — the ESLint line in build output is noise. Fixing lint means either migrating to `eslint.config.mjs` flat config or pinning ESLint 8.
 
 ## Architecture
 
-**The live site is one page.** Successive refactors reduced a multi-page Bootstrap site to a single hero. Build output is 8 static pages — 4 routes × 2 locales:
+**The live site is the hero plus two plain content pages.** Successive refactors reduced a multi-page Bootstrap site to a single hero; "Trabalhos" and "Sobre mim" then came back as real routes. Build output is 3 routes × 2 locales, plus the two API routes and `/404`:
 
-- `/` (`src/pages/index.tsx`) — `Intro`, `Header`, `Hero`, `<Analytics />`, all fed by one `useIntroSequence()` call. That is the whole page.
+- `/` (`src/pages/index.tsx`) — `PixelBlastBackground`, `Intro`, `Header`, `<main><Hero /></main>`, `<Analytics />`, all fed by one `useIntroSequence()` call. `index.tsx` also owns the full SEO `<Head>` (canonical/hreflang, Open Graph, Twitter Card, and a JSON-LD `<script>` built by `buildJsonLd()`, see SEO below). That's the whole page.
+- `/sobre` (`src/pages/sobre.tsx`) and `/trabalhos` (`src/pages/trabalhos.tsx`) — thin pages: `Header` (no `introPhase`/`contentRevealed` props, so it renders its final state with no animation) + a `SectionHeader` (label/title from the `nav_sobre`/`sobre_header` and `nav_trabalhos`/`trabalhos_header` locale keys) + `SobreContent`/`TrabalhosContent` + `Footer`, inside a `mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-24` `<main>` — the same shape as the disabled blog pages in `src/pages-disabled/`. Reached from `Header.tsx`'s nav as ordinary `<Link>`s.
+- `/api/og` (`src/pages/api/og.tsx`) — edge-runtime (`export const config = { runtime: "edge" }`) route using `next/og`'s `ImageResponse` to render the Open Graph card server-side from a `?locale=en|pt` query param. No static asset; `index.tsx` points `og:image`/`twitter:image` at it.
 - `/api/send-email` — see Contact below.
 - `/404`.
 
-"Trabalhos" and "Sobre" are not pages — they're `NavRootModal` content, rendered by
-`TrabalhosContent.tsx` and `SobreContent.tsx` (both in `src/components/`) and opened from
-`Header.tsx`'s nav. There used to be `/trabalhos` and `/sobre` pages that this same content
-lived in, reached via a "ver mais" link from a teaser modal; the pages were deleted once the
-modal grew to show the content directly, so there's no longer a URL for either.
+`SobreContent.tsx` and `TrabalhosContent.tsx` (both in `src/components/`) hold the actual body content for `/sobre` and `/trabalhos` — the page owns the heading via `SectionHeader`, so these components start straight at the content. They used to live only inside a `NavRootModal` overlay, opened by a nav click that first grew a decorative root from the planet to the clicked button (`NavRootReveal`) before the modal appeared; that modal, the root-growing state machine, and `src/lib/navModal.ts` were all deleted when the nav switched to real navigation, since a page transition made the "root travels to the content" narrative moot.
 
 `Hero.tsx` renders one of two branches, decided once on mount by `prefersStaticHero()`. Below the 1024px breakpoint, under `prefers-reduced-motion`, and in the server-rendered HTML, it falls back to a static branch: eyebrow, the single `<h1>`, a support paragraph, one always-visible WhatsApp CTA, and `<ExpertiseAreas />`. Otherwise it mounts the choreographed branch: a `300vh` container (`containerRef`) with a `sticky top-0` child that stays pinned while `useScrollProgress` drives a WebGL scene. That branch is **radial**: the headline sits centred over the closed planet and leaves as soon as the first root starts growing, and the three area blocks are absolutely positioned around the planet — Web2 upper-left, Web3 right, Infrastructure lower-left — each joined to its own shell by an orthogonal "root" that grows with the scroll. Web2 is the featured layer: it's the core shell (smallest radius, opens first) and carries the primary `os2` accent; Infrastructure is the outer/surface shell that opens last, alongside the CTA, carrying the neutral `fg` colour that used to belong to Web2's slot. The WhatsApp CTA returns centred at the bottom in the last stage. The WhatsApp number and URL builder live in `src/lib/whatsapp.ts`, shared by `Hero.tsx` and `Header.tsx`; the pre-filled message is a locale key, so it differs per language. `Hero` also takes a `contentRevealed` prop (see the loading-intro section below): its content is hidden only while the curtain covers it, and returns slightly after the logo starts travelling to the header.
 
@@ -56,7 +54,7 @@ modal grew to show the content directly, so there's no longer a URL for either.
 - `src/components/sections/` — `ServicesSection`, `AboutSection`, `ContactSection`, `SkillsSection` are imported nowhere.
 - `src/pages-disabled/` — the two blog pages (`blog.tsx`, `blog/pagehashfile.tsx`), moved out of `src/pages/` so Next stops routing them. `/blog` currently 404s.
 
-`src/components/Footer.tsx` is a third case: dropped from `index.tsx` so the live page ends with the hero, but still imported and rendered by both blog pages in `src/pages-disabled/`. It carries a `DESATIVADO` docblock and its `allfooter` key stays in both locales.
+`src/components/Footer.tsx` is a third case, but only a partial one: dropped from `index.tsx` so the home page ends with the hero, it's still live on `/sobre`, `/trabalhos`, and both blog pages in `src/pages-disabled/`.
 
 `tsconfig.json` includes `**/*.tsx` from the repo root, so **everything under `src/pages-disabled/` and the unused sections is still compiled and type-checked** — a type error in dormant code breaks the build even though the route doesn't exist. Verified with `npx tsc --noEmit --listFiles`. Conversely, they render nowhere, so a visual or runtime bug there is invisible until re-enabled.
 
@@ -66,7 +64,7 @@ Their readiness differs sharply:
 - `ServicesSection`, `AboutSection`, `ContactSection` — dark-themed, translated, keys already in both locales. Cheap to re-enable.
 - `SkillsSection` — **still Bootstrap-era**: `className="container py-5"`, large inline `style={{}}` objects, white-background modals, `<img src="/bootstrap.svg">`. Bootstrap CSS is no longer loaded, so those classes resolve to nothing. Content was preserved verbatim from the old `AboutSection`; decide the form (tabs / expanding cards / timeline) before restyling.
 
-**`navItems` in `Header.tsx` carries two entries, "Trabalhos" and "Sobre mim", both opening `NavRootModal` instead of navigating.** Neither has an `href` — `NavItem.href` is reserved for a future `external: true` entry, which `NavEntry` would render as `<a target="_blank">` (the `external` field exists for exactly this, unused today). Every current item has a `modalKey` instead and renders as `<button type="button">`, since its content lives entirely inside the modal (`NavRootModal.tsx`, via `TrabalhosContent`/`SobreContent`) and there's nothing to link to. Both entries are mapped in the desktop `<nav>` and the mobile drawer, so adding a third restores both automatically.
+`navItems` in `Header.tsx` carries two entries, "Trabalhos" and "Sobre mim", each a plain `NavItem` (`label`, `href`) pointing at `/trabalhos` and `/sobre`, rendered by `NavEntry` as a `<Link>`. `NavItem.external` is the only special case: reserved for a link that should open in a new tab via `<a target="_blank">`, unused today. Both entries are mapped in the desktop `<nav>` and the mobile drawer, so adding a third restores both automatically.
 
 `Header` itself is one `sticky top-0` component, transparent over the hero and switching to `bg-ink/85 backdrop-blur-md` past 24px of scroll via a `scroll` listener. It owns the mobile hamburger (`open` state) and renders `LanguageSwitcher` in both the desktop bar and the drawer. Its logo is `<BrandLogo>` (see below), not inline markup.
 
@@ -97,7 +95,13 @@ Other details that still hold:
 
 `BrandLogo`'s two children (icon chip and wordmark) are `motion.span`s carrying `layout` — but only while `layoutId` is set. The lg and sm boxes have different width-to-height ratios, so without the children measuring themselves the parent's projection stretches the lockup horizontally mid-trip; and outside the morph, an unconditional `layout` would animate every unrelated box change (locale switch, font load).
 
-`Header` accepts `introPhase` and `contentRevealed` as optional props defaulting to `"done"`/`true`, for pages outside the intro flow (the disabled blog pages under `src/pages-disabled/` render `Header` with no intro at all).
+`Header` accepts `introPhase` and `contentRevealed` as optional props defaulting to `"done"`/`true`, for pages outside the intro flow — `/sobre`, `/trabalhos`, and the disabled blog pages under `src/pages-disabled/` all render `Header` with no intro at all.
+
+**Two pieces of chrome live in `_app.tsx`, above every page, not in `index.tsx`:** `<Component />` then `<MusicToggle />`, both siblings inside the font-variable wrapper div. `MusicToggle.tsx` is a fixed bottom-right button (`z-40`) that loops `public/audio/background.mp3`; it attempts autoplay on the page's first pointer/keyboard/wheel/touch/scroll event (browsers block audio-with-sound before any interaction) and falls back to the manual toggle if that `.play()` rejects. `PixelBlastBackground.tsx`, by contrast, renders inside `index.tsx` itself (not `_app.tsx`) as the first child before `Intro`/`Header`/`Hero` — a fixed, `-z-10`, `pointer-events-none`, low-opacity (`opacity-28`) wrapper around `PixelBlast.tsx`, a `three`-based particle/pixel field loaded via `next/dynamic` with `ssr: false` (same reasoning as `PlanetScene`: keep `three` out of the first paint and the static HTML). It's decorative texture behind the whole page, independent of the hero's own WebGL scene.
+
+## SEO
+
+`index.tsx`'s `<Head>` carries canonical/hreflang (`pt-BR`, `en`, `x-default`), Open Graph, and Twitter Card tags, plus a JSON-LD `<script type="application/ld+json">` built by `buildJsonLd()` in `src/lib/jsonLd.ts`. That function returns a single `@graph` — `WebSite`, `Person`, and `Organization` linked by `@id` (e.g. `${canonicalUrl}#person`) rather than nested, so search engines resolve them as one connected entity instead of three disconnected ones. The `Person` node's `knowsAbout` array is a long, near-duplicated (EN/PT) keyword list spanning the full stack — frontend, backend, databases, mobile, cloud, and the infra/networking vocabulary (BGP, GPON, VLAN, Zabbix, …) that is this site's whole positioning; keep both language arrays in sync if it's ever edited. `og:image`/`twitter:image` point at `/api/og` (see the route above), not a static file. `public/robots.txt` and `public/sitemap.xml` are static and hand-maintained — the sitemap lists just the two locale URLs (`/` and `/en`) with reciprocal `hreflang` alternates; there's no `next-sitemap` generation step, so a new route/locale means editing the XML by hand.
 
 **Path alias**: `@/*` → `src/*`. `strict` is on.
 
@@ -123,9 +127,9 @@ Component classes in `@layer components`:
 - `.type-display` — Archivo at `font-stretch: 125%`, headings only. Depends on the `wdth` axis being loaded.
 - `.type-hero` — `clamp(2.75rem, 7vw, 5.5rem)`. The high ceiling assumes the short two-line headline; it was raised from a much lower value when the long manifesto sentence was replaced. Only the hero `<h1>` uses it.
 - `.type-label` — mono uppercase, wide tracking, for eyebrows and technical data. It force-uppercases, so don't apply it to unit strings.
-- `.type-section`, `.measure` (62ch reading width, replaced an old `text-align: justify`) — currently used **only by disabled code** (`SectionHeader`, the dormant sections, the moved blog pages) plus `.measure` in the hero.
+- `.type-section`, `.measure` (62ch reading width, replaced an old `text-align: justify`) — used by `SectionHeader` (live on `/sobre` and `/trabalhos`, plus the moved blog pages and the dormant sections) and by `.measure` in the hero.
 
-`SectionHeader.tsx` (labeled rule + title) is likewise only consumed by disabled code right now. Keep it: it is the intended heading pattern for any section that comes back.
+`SectionHeader.tsx` (labeled rule + title) is the heading pattern for `/sobre` and `/trabalhos`, the blog pages, and any dormant section that comes back.
 
 Global base layer sets `color-scheme: dark`, `scroll-behavior: smooth`, `scroll-padding-top: 5rem` (so hash anchors clear the sticky header), an `os2` selection colour and focus ring, and a `prefers-reduced-motion` block that collapses all animation/transition durations.
 
@@ -139,7 +143,7 @@ Global base layer sets `color-scheme: dark`, `scroll-behavior: smooth`, `scroll-
 
 `next-i18next`, locales `pt` (default) and `en`, configured in `next-i18next.config.js` and spread into `next.config.js`. `localeDetection` is deliberately omitted — Next only accepts `false` there, and passing `true` fails config validation.
 
-- Strings live in `public/locales/{en,pt}/common.json` — 71 keys, with nested objects (`areas.infra.title`, `smart_contracts.desc1`, `form.send`, `about_bio.p1`). The two files are currently key-for-key in sync; keep them that way.
+- Strings live in `public/locales/{en,pt}/common.json` — 116 leaf keys, with nested objects (`areas.infra.title`, `smart_contracts.desc1`, `form.send`, `about_bio.p1`, `intro.*` for the four curtain stage labels, `music.play`/`music.pause`). The two files are currently key-for-key in sync; keep them that way. `MusicToggle` is the one caller that passes a literal English fallback as `t()`'s second argument (`t("music.play", "Play background music")`) — belt-and-suspenders since the keys already exist in both locales.
 - Many keys serve only disabled sections. Don't assume an unreferenced key is dead — check `src/components/sections/` and `src/pages-disabled/` before removing one.
 - Stack strings (`areas.*.stack`) are single strings with `·` separators baked in, not arrays joined in JSX. Translating one means editing the string.
 - `ServicesSection` looks up `t(\`${service.key}.title\`)` and `t(\`${service.key}.${detail}\`)` from local `services`/`details` arrays. Adding a service means the array entry **plus** `title`/`desc1`/`desc2`/`desc3` in both locale files.

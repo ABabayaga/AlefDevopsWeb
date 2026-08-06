@@ -3,17 +3,14 @@ import { Analytics } from "@vercel/analytics/next";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
 
 import Header from "@/components/Header";
 import Hero from "@/components/sections/Hero";
 import Intro from "@/components/Intro";
-import NavRootModal from "@/components/NavRootModal";
 import PixelBlastBackground from "@/components/PixelBlastBackground";
 import { useIntroSequence } from "@/hooks/useIntroSequence";
 import { getI18nStaticProps } from "@/lib/getI18nStaticProps";
 import { buildJsonLd } from "@/lib/jsonLd";
-import type { NavModalKey } from "@/lib/navModal";
 
 // A home é só o hero. ServicesSection, AboutSection, ContactSection e
 // SkillsSection continuam em src/components/sections, sem serem renderizadas;
@@ -36,23 +33,6 @@ export default function Home() {
   const ogImageUrl = `https://www.alefdevops.com/api/og?locale=${isEn ? "en" : "pt"}`;
   const metaTitle = t("meta_title");
   const metaDescription = t("meta_description");
-
-  // Clique em Trabalhos/Sobre mim no nav não navega aqui na home: guarda a
-  // origem do clique pro Hero desenhar a raiz até o planeta, e só quando ela
-  // chega (ou de imediato, no branch estático) o modal abre.
-  const [pendingTarget, setPendingTarget] = useState<{ key: NavModalKey; origin: DOMRect } | null>(
-    null
-  );
-  const [modalKey, setModalKey] = useState<NavModalKey | null>(null);
-
-  const handleModalNav = useCallback((key: NavModalKey, origin: DOMRect) => {
-    setPendingTarget({ key, origin });
-  }, []);
-
-  const handleRootArrived = useCallback((key: NavModalKey) => {
-    setPendingTarget(null);
-    setModalKey(key);
-  }, []);
 
   return (
     <>
@@ -97,21 +77,11 @@ export default function Home() {
           renderizar cedo deixa claro que ela é a primeira coisa da página. */}
       <Intro phase={intro.phase} percent={intro.percent} stage={intro.stage} />
 
-      <Header
-        introPhase={intro.phase}
-        contentRevealed={intro.contentRevealed}
-        onModalNav={handleModalNav}
-      />
+      <Header introPhase={intro.phase} contentRevealed={intro.contentRevealed} />
 
       <main id="main">
-        <Hero
-          contentRevealed={intro.contentRevealed}
-          pendingTarget={pendingTarget}
-          onRootArrived={handleRootArrived}
-        />
+        <Hero contentRevealed={intro.contentRevealed} />
       </main>
-
-      <NavRootModal modalKey={modalKey} onClose={() => setModalKey(null)} />
 
       <Analytics />
     </>

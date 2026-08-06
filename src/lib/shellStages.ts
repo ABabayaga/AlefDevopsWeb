@@ -42,8 +42,7 @@ export const CLOSED_SCALE_BOOST = 1.32;
  * LAYERS[0] começa a abrir), pelo mesmo motivo: depois disso quem decide a
  * posição são os raios de LAYERS e as âncoras de CircuitRoots, que já
  * assumem o planeta centralizado — mexer nelas também quebraria o rastreio
- * das raízes durante o scroll. NavRootReveal roda sempre com o scroll
- * assentado no topo (progress ≈ 0), então usa o valor cheio, sem decair.
+ * das raízes durante o scroll.
  */
 export const CLOSED_VERTICAL_OFFSET_VH = -7;
 

@@ -5,7 +5,6 @@ import { useTranslation } from "next-i18next";
 import BrandLogo from "@/components/BrandLogo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import type { IntroPhase } from "@/hooks/useIntroSequence";
-import type { NavModalKey } from "@/lib/navModal";
 import { reveal } from "@/lib/reveal";
 import { whatsappHref } from "@/lib/whatsapp";
 
@@ -17,22 +16,16 @@ const socialLinks = [
 
 interface NavItem {
   label: string;
-  /** Só itens externos usam href pra navegar de verdade. */
-  href?: string;
+  href: string;
   /** Link externo: abre em aba nova e leva rel de segurança. */
   external?: boolean;
-  /** Dispara a raiz até o planeta e abre o modal correspondente. Todo item
-   *  interno tem um — não existe mais página por trás pra navegar, então o
-   *  item renderiza como <button>, não <Link>. */
-  modalKey?: NavModalKey;
 }
 
 const NavEntry: React.FC<{
   item: NavItem;
   className: string;
   onNavigate?: () => void;
-  onModalClick?: (key: NavModalKey, origin: DOMRect) => void;
-}> = ({ item, className, onNavigate, onModalClick }) => {
+}> = ({ item, className, onNavigate }) => {
   if (item.external) {
     return (
       <a
@@ -47,17 +40,10 @@ const NavEntry: React.FC<{
     );
   }
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (item.modalKey && onModalClick) {
-      onModalClick(item.modalKey, event.currentTarget.getBoundingClientRect());
-    }
-    onNavigate?.();
-  };
-
   return (
-    <button type="button" onClick={handleClick} className={className}>
+    <Link href={item.href} onClick={onNavigate} className={className}>
       {item.label}
-    </button>
+    </Link>
   );
 };
 
@@ -67,17 +53,9 @@ interface HeaderProps {
   introPhase?: IntroPhase;
   /** Idem: sem intro, o resto do header já nasce visível. */
   contentRevealed?: boolean;
-  /** Só a home passa isso: intercepta os itens com modalKey pra tocar a raiz
-   *  e abrir o modal, em vez de navegar. Fora da home os links funcionam
-   *  normalmente (ex. páginas de blog em src/pages-disabled). */
-  onModalNav?: (key: NavModalKey, origin: DOMRect) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  introPhase = "done",
-  contentRevealed = true,
-  onModalNav,
-}) => {
+const Header: React.FC<HeaderProps> = ({ introPhase = "done", contentRevealed = true }) => {
   const { t } = useTranslation("common");
   // O logo só carrega o layoutId compartilhado a partir de "morphing": é o
   // instante em que a cópia grande da cortina deixa de ser renderizada, e a
@@ -98,8 +76,8 @@ const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const navItems: NavItem[] = [
-    { label: t("nav_trabalhos"), modalKey: "trabalhos" },
-    { label: t("nav_sobre"), modalKey: "sobre" },
+    { label: t("nav_trabalhos"), href: "/trabalhos" },
+    { label: t("nav_sobre"), href: "/sobre" },
   ];
 
   const contactHref = whatsappHref(t("hero_whatsapp_message"));
@@ -131,7 +109,6 @@ const Header: React.FC<HeaderProps> = ({
               <NavEntry
                 key={item.label}
                 item={item}
-                onModalClick={onModalNav}
                 className="type-label text-fg-muted no-underline transition-colors hover:text-fg"
               />
             ))}
@@ -200,7 +177,6 @@ const Header: React.FC<HeaderProps> = ({
                 key={item.label}
                 item={item}
                 onNavigate={() => setOpen(false)}
-                onModalClick={onModalNav}
                 className="type-label border-b border-line-soft py-4 text-fg-muted no-underline transition-colors hover:text-fg"
               />
             ))}

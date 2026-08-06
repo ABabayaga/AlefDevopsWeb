@@ -5,7 +5,17 @@
       "Bash(npx --yes playwright screenshot --viewport-size=1440,300 --wait-for-timeout=3000 \"http://localhost:3002\" \"/private/tmp/claude-501/-Users-aleflima-Documents-Alef-Devops-AlefDevopsWeb/54fa61e2-69f9-4ba5-b665-28bb327df92d/scratchpad/header-desktop5.png\")",
       "Bash(npx --yes playwright screenshot --viewport-size=375,300 --wait-for-timeout=5000 \"http://localhost:3002\" \"/private/tmp/claude-501/-Users-aleflima-Documents-Alef-Devops-AlefDevopsWeb/54fa61e2-69f9-4ba5-b665-28bb327df92d/scratchpad/header-mobile3.png\")",
       "Bash(npx --yes playwright screenshot --viewport-size=1440,300 --wait-for-timeout=3000 \"http://localhost:3002\" \"/private/tmp/claude-501/-Users-aleflima-Documents-Alef-Devops-AlefDevopsWeb/54fa61e2-69f9-4ba5-b665-28bb327df92d/scratchpad/header-desktop6.png\")",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(node -e \"require\\('playwright'\\)\")",
+      "Bash(npx --yes playwright install chromium)",
+      "Bash(node shot.js)",
+      "Bash(open \"http://localhost:3000\")",
+      "Bash(node -e ' *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/sobre)",
+      "Bash(curl -s -o /dev/null -w \"/trabalhos -> %{http_code}\\\\n\" http://localhost:3000/trabalhos)",
+      "Bash(curl -s -o /dev/null -w \"/en/sobre -> %{http_code}\\\\n\" http://localhost:3000/en/sobre)",
+      "Bash(curl -s -o /dev/null -w \"/en/trabalhos -> %{http_code}\\\\n\" http://localhost:3000/en/trabalhos)",
+      "Bash(open \"http://localhost:3000/sobre\")"
     ]
   }
 }

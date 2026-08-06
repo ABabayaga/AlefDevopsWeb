@@ -1,11 +1,10 @@
 import { useTranslation } from "next-i18next";
 
 /**
- * DESATIVADO: saiu da home em 2026-07-30 — o hero ocupa a tela inteira e a
- * barra de copyright quebrava o fim da rolagem coreografada. O componente
- * continua íntegro e traduzido; ainda é usado pelas páginas de blog em
- * src/pages-disabled. Para religar, basta voltar a renderizá-lo em
- * src/pages/index.tsx (a chave `allfooter` segue nos dois locales).
+ * Fora da home desde 2026-07-30 — o hero ocupa a tela inteira e a barra de
+ * copyright quebrava o fim da rolagem coreografada. Segue em uso nas páginas
+ * /sobre e /trabalhos e nas páginas de blog desativadas em src/pages-disabled.
+ * Para religar na home, basta voltar a renderizá-lo em src/pages/index.tsx.
  */
 const Footer: React.FC = () => {
   const { t } = useTranslation("common");

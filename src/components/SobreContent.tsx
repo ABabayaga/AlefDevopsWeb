@@ -2,11 +2,12 @@ import Image from "next/image";
 import { useTranslation } from "next-i18next";
 
 const paragraphs = ["p1", "p2", "p3"] as const;
+const careerSteps = ["telecom", "infra", "fullstack", "ai"] as const;
 
 /**
- * Corpo do modal de "Sobre" (ver NavRootModal) — mesma foto + bio da antiga
- * página /sobre, só que a coluna da foto encolhe (era lg:w-72, painel de
- * página inteira; agora sm:w-56, painel de modal mais estreito).
+ * Corpo da página /sobre (ver src/pages/sobre.tsx) — o cabeçalho da seção
+ * fica por conta de SectionHeader; aqui mora só foto, bio e a progressão de
+ * carreira.
  */
 const SobreContent: React.FC = () => {
   const { t } = useTranslation("common");
@@ -24,6 +25,25 @@ const SobreContent: React.FC = () => {
           </p>
         ))}
       </div>
+
+      <ol className="flex shrink-0 flex-col gap-6 border-l border-line pl-4 sm:w-48">
+        {careerSteps.map((step, i) => {
+          const isLast = i === careerSteps.length - 1;
+          return (
+            <li key={step} className="relative">
+              <span
+                className={`absolute -left-4.75 top-1 h-1.5 w-1.5 rounded-full ${
+                  isLast ? "bg-os2" : "bg-line"
+                }`}
+                aria-hidden
+              />
+              <p className={`type-label m-0 ${isLast ? "text-os2" : "text-fg-muted"}`}>
+                {t(`sobre_career.${step}`)}
+              </p>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 };
