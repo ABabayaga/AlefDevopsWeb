@@ -4,7 +4,8 @@
       "Bash(npx --yes playwright screenshot --viewport-size=375,300 --wait-for-timeout=3000 \"http://localhost:3002\" \"/private/tmp/claude-501/-Users-aleflima-Documents-Alef-Devops-AlefDevopsWeb/54fa61e2-69f9-4ba5-b665-28bb327df92d/scratchpad/header-mobile2.png\")",
       "Bash(npx --yes playwright screenshot --viewport-size=1440,300 --wait-for-timeout=3000 \"http://localhost:3002\" \"/private/tmp/claude-501/-Users-aleflima-Documents-Alef-Devops-AlefDevopsWeb/54fa61e2-69f9-4ba5-b665-28bb327df92d/scratchpad/header-desktop5.png\")",
       "Bash(npx --yes playwright screenshot --viewport-size=375,300 --wait-for-timeout=5000 \"http://localhost:3002\" \"/private/tmp/claude-501/-Users-aleflima-Documents-Alef-Devops-AlefDevopsWeb/54fa61e2-69f9-4ba5-b665-28bb327df92d/scratchpad/header-mobile3.png\")",
-      "Bash(npx --yes playwright screenshot --viewport-size=1440,300 --wait-for-timeout=3000 \"http://localhost:3002\" \"/private/tmp/claude-501/-Users-aleflima-Documents-Alef-Devops-AlefDevopsWeb/54fa61e2-69f9-4ba5-b665-28bb327df92d/scratchpad/header-desktop6.png\")"
+      "Bash(npx --yes playwright screenshot --viewport-size=1440,300 --wait-for-timeout=3000 \"http://localhost:3002\" \"/private/tmp/claude-501/-Users-aleflima-Documents-Alef-Devops-AlefDevopsWeb/54fa61e2-69f9-4ba5-b665-28bb327df92d/scratchpad/header-desktop6.png\")",
+      "Bash(python3 -c ' *)"
     ]
   }
 }

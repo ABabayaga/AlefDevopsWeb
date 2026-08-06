@@ -12,6 +12,7 @@ import NavRootModal from "@/components/NavRootModal";
 import PixelBlastBackground from "@/components/PixelBlastBackground";
 import { useIntroSequence } from "@/hooks/useIntroSequence";
 import { getI18nStaticProps } from "@/lib/getI18nStaticProps";
+import { buildJsonLd } from "@/lib/jsonLd";
 import type { NavModalKey } from "@/lib/navModal";
 
 // A home é só o hero. ServicesSection, AboutSection, ContactSection e
@@ -83,22 +84,9 @@ export default function Home() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Alef Devops",
-              url: "https://www.alefdevops.com/",
-              jobTitle: isEn
-                ? "Custom website and web system developer"
-                : "Desenvolvedor de sites e sistemas web sob medida",
-              description: metaDescription,
-              sameAs: [
-                "https://www.linkedin.com/in/alefdevops/",
-                "https://github.com/ABabayaga",
-                "https://www.instagram.com/alef.lim4/",
-              ],
-              knowsAbout: ["Next.js", "TypeScript", "React", "Web3", "Smart Contracts"],
-            }),
+            __html: JSON.stringify(
+              buildJsonLd({ isEn, canonicalUrl, metaTitle, metaDescription, t })
+            ),
           }}
         />
       </Head>
