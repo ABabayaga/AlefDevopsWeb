@@ -50,7 +50,7 @@
   "sobre_photo_alt": "Foto de Alef Lima",
   "sobre_bio": {
     "p1": "Sou um desenvolvedor full-stack baseado em Campo Grande, Brasil, trabalhando com React, TypeScript, NestJS e MongoDB na construção de sistemas em produção, atualmente com foco em software de logística e gestão de frotas.",
-    "p2": "Antes de programar em tempo integral, passei mais de 14 anos como cofundador e CTO de um provedor de internet (ISP) regional, onde construí e operei toda a infraestrutura de rede do zero: roteamento BGP/OSPF, implantação de GPON/FTTH, peering no ponto de troca de tráfego local e monitoramento com Zabbix e Grafana. Vendi a empresa em 2024 e migrei totalmente para desenvolvimento de software, levando comigo essa visão sistêmica e essa mentalidade de infraestrutura.",
+    "p2": "Antes de programar em tempo integral, passei mais de 14 anos como cofundador e CTO de um provedor de internet (ISP) regional, onde construí e operei toda a infraestrutura de rede do zero: roteamento BGP/OSPF, implantação de GPON/FTTH, peering no ponto de troca de tráfego local e monitoramento com Zabbix e Grafana. Vendi a empresa em 2024 e migrei totalmente para desenvolvimento de software, levando comigo essa visão sistêmica e essa mentalidade de infraestrutura."
     
   },
   "sobre_career": {
