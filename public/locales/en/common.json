@@ -51,7 +51,7 @@
   "sobre_bio": {
     "p1": "I'm a full-stack developer based in Campo Grande, Brazil, working with React, TypeScript, NestJS and MongoDB to build production systems, currently focused on logistics and fleet management software.",
     "p2": "Before coding full-time, I spent over 14 years as co-founder and CTO of a regional internet service provider (ISP), where I built and operated the entire network infrastructure from scratch: BGP/OSPF routing, GPON/FTTH deployment, peering at the local internet exchange, and monitoring with Zabbix and Grafana. I sold the company in 2024 and moved fully into software development, bringing that systems-level view and infrastructure mindset with me.",
-    "p3": "I'm currently finishing my degree in Systems Analysis and Development, and I'm always building something, whether shipping features for clients or working on my own projects in my spare time."
+    
   },
   "sobre_career": {
     "telecom": "Telecom Engineer",
