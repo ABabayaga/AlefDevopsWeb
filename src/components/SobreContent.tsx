@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
 
-const paragraphs = ["p1", "p2", "p3"] as const;
+const paragraphs = ["p1", "p2"] as const;
 const careerSteps = ["telecom", "infra", "fullstack", "ai"] as const;
 
 /**
