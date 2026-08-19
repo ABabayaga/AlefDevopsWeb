@@ -15,7 +15,24 @@
       "Bash(curl -s -o /dev/null -w \"/trabalhos -> %{http_code}\\\\n\" http://localhost:3000/trabalhos)",
       "Bash(curl -s -o /dev/null -w \"/en/sobre -> %{http_code}\\\\n\" http://localhost:3000/en/sobre)",
       "Bash(curl -s -o /dev/null -w \"/en/trabalhos -> %{http_code}\\\\n\" http://localhost:3000/en/trabalhos)",
-      "Bash(open \"http://localhost:3000/sobre\")"
+      "Bash(open \"http://localhost:3000/sobre\")",
+      "Bash(git -C \"/Users/aleflima/Documents/Alef Devops/AlefDevopsWeb\" status --porcelain=v1 -- .)",
+      "Bash(docker compose *)",
+      "Bash(docker exec *)",
+      "Bash(xargs cat)",
+      "Bash(npx ts-node *)",
+      "Bash(curl -s -X POST http://localhost:3344/ingestion -H 'x-api-key: local-dev-key' -F 'file=@/tmp/test-doc.md;type=text/markdown')",
+      "Bash(lsof -ti:3344)",
+      "Bash(xargs -r kill -9)",
+      "Bash(pkill -f \"nest start --watch\")",
+      "Bash(curl -s -X POST http://localhost:3344/assistant -H 'Content-Type: application/json' -d '{\"question\":\"O que a Alef Devops faz?\"}')",
+      "Bash(curl -s -o /dev/null -w '%{http_code}\\\\n' -X POST http://localhost:3344/assistant -H 'Content-Type: application/json' -d '{\"question\":\"\"}')",
+      "Bash(curl -s http://localhost:3344/ -o /dev/null -w \"%{http_code}\\\\n\")",
+      "Bash(lsof -i :3344 -sTCP:LISTEN)",
+      "Bash(timeout 40 bash -c 'until curl -sf http://localhost:3344 >/dev/null 2>&1 || curl -s http://localhost:3344 -o /dev/null -w \"%{http_code}\" | grep -qE \"^[0-9]\"; do sleep 1; done')",
+      "Bash(curl -s -o /dev/null -w \"backend http: %{http_code}\\\\n\" http://localhost:3344)",
+      "Bash(node test-assistant.js)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/en)"
     ]
   }
 }

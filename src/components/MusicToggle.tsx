@@ -17,7 +17,14 @@ const FIRST_INTERACTION_EVENTS = [
   "scroll",
 ] as const;
 
-export default function MusicToggle() {
+interface MusicToggleProps {
+  className?: string;
+}
+
+const DEFAULT_CLASSNAME =
+  "flex h-8 w-8 items-center justify-center rounded-full border border-line opacity-60 transition hover:border-os2 hover:opacity-100";
+
+export default function MusicToggle({ className = DEFAULT_CLASSNAME }: MusicToggleProps) {
   const { t } = useTranslation("common");
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -79,7 +86,7 @@ export default function MusicToggle() {
           isPlaying ? "Pause background music" : "Play background music",
         )}
         aria-pressed={isPlaying}
-        className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-line-soft bg-surface/80 backdrop-blur-md transition-opacity hover:opacity-85"
+        className={className}
       >
         <span aria-hidden className="flex h-4 items-end gap-0.75">
           {BAR_HEIGHTS.map((height, index) => (

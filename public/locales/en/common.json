@@ -53,6 +53,7 @@
     "p2": "Before coding full-time, I spent over 14 years as co-founder and CTO of a regional internet service provider (ISP), where I built and operated the entire network infrastructure from scratch: BGP/OSPF routing, GPON/FTTH deployment, peering at the local internet exchange, and monitoring with Zabbix and Grafana. I sold the company in 2024 and moved fully into software development, bringing that systems-level view and infrastructure mindset with me."
     
   },
+  "sobre_social": "Find me at",
   "sobre_career": {
     "telecom": "Telecom Engineer",
     "infra": "Infrastructure Architect",
@@ -62,7 +63,7 @@
 
   "hero_eyebrow": "Alef Lima · Campo Grande-MS",
   "hero_sub": "From front-end to database, from admin panel to on-chain contract. Fifteen years of infrastructure make sure what I ship stays up.",
-  "hero_whatsapp": "Chat on WhatsApp",
+  "hero_whatsapp": "WhatsApp",
   "hero_whatsapp_message": "Hi Alef! I came from your site.",
 
   "areas": {
@@ -177,5 +178,17 @@
   "music": {
     "play": "Play background music",
     "pause": "Pause background music"
+  },
+
+  "assistant_chat": {
+    "trigger": "Assistant",
+    "title": "Talk to AlefDevops",
+    "subtitle": "Ask about projects, stack, or how to get started working together.",
+    "placeholder": "Type your question...",
+    "send": "Send",
+    "sending": "Sending...",
+    "close": "Close",
+    "error": "I couldn't answer right now. Try again or reach me directly on WhatsApp.",
+    "error_whatsapp_cta": "Talk on WhatsApp"
   }
 }

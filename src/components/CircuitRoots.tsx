@@ -13,9 +13,15 @@ import { LAYERS, layerScreenRadius } from "@/lib/shellStages";
  * embaixo) usam 7% em vez do 11% original — os três blocos têm uma lista de
  * sub-itens agora (ver MAX_ITEMS) e ficaram mais altos, então precisam da
  * folga extra antes do overflow-hidden do container cortar o texto.
+ *
+ * O slot da Web2 é o único que disputa espaço com o Header (sticky, ~6.5rem
+ * com a barra social): numa janela mais baixa 7% da altura cai abaixo dessa
+ * marca e o índice "01" some atrás da barra. Daí o max() — a fração continua
+ * mandando em telas altas, e o piso em rem garante que o topo do bloco sempre
+ * comece depois do header.
  */
 const BOXES = [
-  "left-[4%] top-[7%]",
+  "left-[4%] top-[max(7.5rem,7%)]",
   "right-[4%] top-1/2 -translate-y-1/2",
   "left-[4%] bottom-[7%]",
 ] as const;
