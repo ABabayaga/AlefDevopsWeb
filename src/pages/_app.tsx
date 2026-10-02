@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import { Archivo, IBM_Plex_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 
 import MusicToggle from "@/components/MusicToggle";
 
@@ -27,6 +28,8 @@ function App({ Component, pageProps }: AppProps) {
     <div className={`${archivo.variable} ${plexMono.variable} font-sans`}>
       <Component {...pageProps} />
       <MusicToggle />
+      {/* Aqui e não no index: assim /sobre e /trabalhos também contam visitas. */}
+      <Analytics />
     </div>
   );
 }

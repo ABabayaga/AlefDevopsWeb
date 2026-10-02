@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { Analytics } from "@vercel/analytics/next";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
@@ -82,8 +81,6 @@ export default function Home() {
       <main id="main">
         <Hero contentRevealed={intro.contentRevealed} />
       </main>
-
-      <Analytics />
     </>
   );
 }
