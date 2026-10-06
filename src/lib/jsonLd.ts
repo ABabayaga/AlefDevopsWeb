@@ -1,23 +1,33 @@
 import type { TFunction } from "i18next";
+import { SITE_LOCALES, type SiteLocale } from "@/lib/siteLocales";
 
 const AREA_KEYS = ["web2", "web3", "infra"] as const;
+
+const JOB_TITLE: Record<SiteLocale, string> = {
+  pt: "Desenvolvedor de sites e sistemas web sob medida",
+  en: "Custom website and web system developer",
+  es: "Desarrollador de sitios y sistemas web a medida",
+};
 
 // @graph liga as entidades por @id em vez de aninhar Person dentro de
 // Organization: assim o Google resolve WebSite, Person e Organization como
 // a mesma entidade em vez de três instâncias soltas e desconectadas.
 export function buildJsonLd({
-  isEn,
+  locale,
   canonicalUrl,
   metaTitle,
   metaDescription,
   t,
 }: {
-  isEn: boolean;
+  locale: SiteLocale;
   canonicalUrl: string;
   metaTitle: string;
   metaDescription: string;
   t: TFunction;
 }) {
+  // knowsAbout só tem listas en/pt: o espanhol reaproveita a inglesa, que é
+  // quase toda nome próprio de tecnologia e não precisa de tradução.
+  const isEn = locale !== "pt";
   const websiteId = `${canonicalUrl}#website`;
   const personId = `${canonicalUrl}#person`;
   const organizationId = `${canonicalUrl}#organization`;
@@ -30,7 +40,7 @@ export function buildJsonLd({
         "@id": websiteId,
         name: metaTitle,
         url: canonicalUrl,
-        inLanguage: isEn ? "en" : "pt-BR",
+        inLanguage: SITE_LOCALES[locale].hrefLang,
         publisher: { "@id": organizationId },
       },
       {
@@ -40,9 +50,7 @@ export function buildJsonLd({
         alternateName: "Alef Devops",
         url: canonicalUrl,
         worksFor: { "@id": organizationId },
-        jobTitle: isEn
-          ? "Custom website and web system developer"
-          : "Desenvolvedor de sites e sistemas web sob medida",
+        jobTitle: JOB_TITLE[locale],
         description: metaDescription,
         sameAs: [
           "https://www.linkedin.com/in/alefdevops/",
@@ -198,7 +206,7 @@ export function buildJsonLd({
         founder: { "@id": personId },
         hasOfferCatalog: {
           "@type": "OfferCatalog",
-          name: isEn ? "Services" : "Serviços",
+          name: t("services"),
           itemListElement: AREA_KEYS.map((key) => ({
             "@type": "Offer",
             itemOffered: {

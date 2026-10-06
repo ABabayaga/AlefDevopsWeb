@@ -15,7 +15,7 @@ const SobreContent: React.FC = () => {
   return (
     <div className="mt-6 flex flex-col gap-8 sm:flex-row sm:items-start">
       <div className="relative aspect-4/5 w-full shrink-0 overflow-hidden rounded-sm border border-line sm:w-56">
-        <Image src="/me.jpeg" alt={t("sobre_photo_alt")} fill className="object-cover" />
+        <Image src="/alef.jpeg" alt={t("sobre_photo_alt")} fill className="object-cover" />
       </div>
 
       <div className="measure flex flex-col gap-6">

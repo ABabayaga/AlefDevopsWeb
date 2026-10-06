@@ -5,6 +5,7 @@ import Image from "next/image";
 const locales = [
   { code: "pt", label: "Português", short: "PT", flag: "/icons/brazil.svg" },
   { code: "en", label: "English", short: "EN", flag: "/icons/usa.svg" },
+  { code: "es", label: "Español", short: "ES", flag: "/icons/spain.svg" },
 ] as const;
 
 type LocaleCode = (typeof locales)[number]["code"];

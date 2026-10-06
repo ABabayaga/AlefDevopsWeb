@@ -10,6 +10,7 @@ import PixelBlastBackground from "@/components/PixelBlastBackground";
 import { useIntroSequence } from "@/hooks/useIntroSequence";
 import { getI18nStaticProps } from "@/lib/getI18nStaticProps";
 import { buildJsonLd } from "@/lib/jsonLd";
+import { SITE_LOCALES, toSiteLocale } from "@/lib/siteLocales";
 
 // A home é só o hero. ServicesSection, AboutSection, ContactSection e
 // SkillsSection continuam em src/components/sections, sem serem renderizadas;
@@ -24,12 +25,10 @@ export default function Home() {
   // conteúdo, sem cada um reimplementar a leitura de matchMedia nem os tempos.
   const intro = useIntroSequence();
 
-  const { locale } = useRouter();
-  const isEn = locale === "en";
-  const canonicalUrl = isEn
-    ? "https://www.alefdevops.com/en"
-    : "https://www.alefdevops.com/";
-  const ogImageUrl = `https://www.alefdevops.com/api/og?locale=${isEn ? "en" : "pt"}`;
+  const { locale: rawLocale } = useRouter();
+  const locale = toSiteLocale(rawLocale);
+  const { url: canonicalUrl, og: ogLocale } = SITE_LOCALES[locale];
+  const ogImageUrl = `https://www.alefdevops.com/api/og?locale=${locale}`;
   const metaTitle = t("meta_title");
   const metaDescription = t("meta_description");
 
@@ -43,8 +42,9 @@ export default function Home() {
         <link rel="icon" href="/code-square.svg" />
 
         <link rel="canonical" href={canonicalUrl} />
-        <link rel="alternate" hrefLang="pt-BR" href="https://www.alefdevops.com/" />
-        <link rel="alternate" hrefLang="en" href="https://www.alefdevops.com/en" />
+        {Object.values(SITE_LOCALES).map(({ hrefLang, url }) => (
+          <link key={hrefLang} rel="alternate" hrefLang={hrefLang} href={url} />
+        ))}
         <link rel="alternate" hrefLang="x-default" href="https://www.alefdevops.com/" />
 
         <meta property="og:type" content="website" />
@@ -52,8 +52,12 @@ export default function Home() {
         <meta property="og:description" content={metaDescription} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:image" content={ogImageUrl} />
-        <meta property="og:locale" content={isEn ? "en_US" : "pt_BR"} />
-        <meta property="og:locale:alternate" content={isEn ? "pt_BR" : "en_US"} />
+        <meta property="og:locale" content={ogLocale} />
+        {Object.values(SITE_LOCALES)
+          .filter((l) => l.og !== ogLocale)
+          .map(({ og }) => (
+            <meta key={og} property="og:locale:alternate" content={og} />
+          ))}
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={metaTitle} />
@@ -64,7 +68,7 @@ export default function Home() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(
-              buildJsonLd({ isEn, canonicalUrl, metaTitle, metaDescription, t })
+              buildJsonLd({ locale, canonicalUrl, metaTitle, metaDescription, t })
             ),
           }}
         />

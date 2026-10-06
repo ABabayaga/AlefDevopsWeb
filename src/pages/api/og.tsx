@@ -12,11 +12,16 @@ const COPY = {
     brand: "Alef Devops",
     tagline: "Custom Websites & Web Systems",
   },
+  es: {
+    brand: "Alef Devops",
+    tagline: "Sitios y Sistemas Web a Medida",
+  },
 } as const;
 
 export default function handler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const locale = searchParams.get("locale") === "en" ? "en" : "pt";
+  const param = searchParams.get("locale");
+  const locale = param === "en" || param === "es" ? param : "pt";
   const { brand, tagline } = COPY[locale];
 
   return new ImageResponse(

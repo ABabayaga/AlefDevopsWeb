@@ -5,10 +5,18 @@
     <loc>https://www.alefdevops.com/</loc>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.alefdevops.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.alefdevops.com/en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.alefdevops.com/es"/>
   </url>
   <url>
     <loc>https://www.alefdevops.com/en</loc>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.alefdevops.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.alefdevops.com/en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.alefdevops.com/es"/>
+  </url>
+  <url>
+    <loc>https://www.alefdevops.com/es</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.alefdevops.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.alefdevops.com/en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.alefdevops.com/es"/>
   </url>
 </urlset>
