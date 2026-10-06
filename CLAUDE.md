@@ -28,7 +28,7 @@ There is no test runner. "Testing" a change means `npm run build` succeeding, pl
 
 - `/` (`src/pages/index.tsx`) — `PixelBlastBackground`, `Intro`, `Header`, `<main><Hero /></main>`, all fed by one `useIntroSequence()` call. `index.tsx` also owns the full SEO `<Head>` (canonical/hreflang, Open Graph, Twitter Card, and a JSON-LD `<script>` built by `buildJsonLd()`, see SEO below). That's the whole page.
 - `/sobre` (`src/pages/sobre.tsx`) and `/trabalhos` (`src/pages/trabalhos.tsx`) — thin pages: `Header` (no `introPhase`/`contentRevealed` props, so it renders its final state with no animation) + a `SectionHeader` (label/title from the `nav_sobre`/`sobre_header` and `nav_trabalhos`/`trabalhos_header` locale keys) + `SobreContent`/`TrabalhosContent` + `Footer`, inside a `mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-24` `<main>` — the same shape as the disabled blog pages in `src/pages-disabled/`. Reached from `Header.tsx`'s nav as ordinary `<Link>`s.
-- `/api/og` (`src/pages/api/og.tsx`) — edge-runtime (`export const config = { runtime: "edge" }`) route using `next/og`'s `ImageResponse` to render the Open Graph card server-side from a `?locale=pt|en|es` query param. No static asset; `index.tsx` points `og:image`/`twitter:image` at it.
+- `/api/og` (`src/pages/api/og.tsx`) — edge-runtime (`export const config = { runtime: "edge" }`) route using `next/og`'s `ImageResponse` to render the Open Graph card server-side: the `BrandLogo` lockup (icon chip + Archivo wide wordmark, fetched from Google Fonts at request time with a fallback to Satori's default sans) over a sparse pixel grid. Language-neutral — `index.tsx` still sends `?locale=`, but the route ignores it, since title/description already come from the meta tags. No static asset; `index.tsx` points `og:image`/`twitter:image` at it.
 - `/api/send-email` — see Contact below.
 - `/404`.
 
@@ -141,7 +141,7 @@ Global base layer sets `color-scheme: dark`, `scroll-behavior: smooth`, `scroll-
 
 ## i18n
 
-`next-i18next`, locales `pt` (default), `en` and `es`, configured in `next-i18next.config.js` and spread into `next.config.js`. `localeDetection` is deliberately omitted — Next only accepts `false` there, and passing `true` fails config validation.
+`next-i18next`, locales `pt` (default), `en` and `es`, configured in `next-i18next.config.js` and spread into `next.config.js`. `localeDetection: false` is set deliberately. Omitting it means detection is **on** (Next's default), which made `/` 307-redirect to `/en` for any `Accept-Language: en` client — Lighthouse flagged it, and crawlers never saw the `pt` home. Alternate locales are reached via `hreflang` and `LanguageSwitcher` instead. Next only accepts `false` there; passing `true` fails config validation.
 
 - Strings live in `public/locales/{pt,en,es}/common.json` — 116 leaf keys, with nested objects (`areas.infra.title`, `smart_contracts.desc1`, `form.send`, `about_bio.p1`, `intro.*` for the four curtain stage labels, `music.play`/`music.pause`). The three files are currently key-for-key in sync; keep them that way. `MusicToggle` is the one caller that passes a literal English fallback as `t()`'s second argument (`t("music.play", "Play background music")`) — belt-and-suspenders since the keys already exist in both locales.
 - Many keys serve only disabled sections. Don't assume an unreferenced key is dead — check `src/components/sections/` and `src/pages-disabled/` before removing one.
