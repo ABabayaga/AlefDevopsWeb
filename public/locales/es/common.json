@@ -1,5 +1,8 @@
 {
-  "title": "Sitios y sistemas a medida.",
+  "hero_title": {
+    "lead": "Sitios y sistemas",
+    "tail": "a medida."
+  },
   "meta_title": "Alef Devops — Sitios y Sistemas Web a Medida",
   "meta_description": "Desarrollo de sitios y sistemas web a medida, con quince años de infraestructura de telecomunicaciones detrás e integración Web3 cuando el proyecto lo requiere.",
 
@@ -168,7 +171,7 @@
   },
 
   "hero_eyebrow": "Alef Lima · Campo Grande-MS",
-  "hero_sub": "Del front-end a la base de datos, del panel administrativo al contrato on-chain.",
+  "hero_sub": "Del front-end a la base de datos, del panel administrativo a la infraestructura.",
   "hero_whatsapp": "Hablar por WhatsApp",
   "hero_whatsapp_message": "¡Hola, Alef! Vengo del sitio web.",
 

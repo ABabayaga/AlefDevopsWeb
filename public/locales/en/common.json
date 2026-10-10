@@ -1,5 +1,8 @@
 {
-  "title": "Custom websites and systems.",
+  "hero_title": {
+    "lead": "Custom websites",
+    "tail": "and systems."
+  },
   "meta_title": "Alef Devops — Custom Websites & Web Systems",
   "meta_description": "Custom website and web system development, backed by fifteen years of telecom infrastructure experience, with Web3 integration when the project calls for it.",
 
@@ -168,7 +171,7 @@
   },
 
   "hero_eyebrow": "Alef Lima · Campo Grande-MS",
-  "hero_sub": "From front-end to database, from admin panel to on-chain contract. Fifteen years of infrastructure make sure what I ship stays up.",
+  "hero_sub": "From front-end to database, from admin panel to infrastructure.",
   "hero_whatsapp": "Chat on WhatsApp",
   "hero_whatsapp_message": "Hi Alef! I came from your site.",
 

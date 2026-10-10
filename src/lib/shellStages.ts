@@ -120,6 +120,17 @@ export function screenRadiusFraction(radius: number): number {
 }
 
 /**
+ * Topo do planeta fechado (progress 0), em % da altura do palco sticky: centro
+ * deslocado por CLOSED_VERTICAL_OFFSET_VH menos o raio aparente já com o boost.
+ * O Hero ancora o topo do eyebrow aqui, então mexer na câmera, no boost ou no
+ * deslocamento leva a headline junto. Dá cerca de 22%.
+ */
+export const CLOSED_TOP_PERCENT =
+  50 +
+  CLOSED_VERTICAL_OFFSET_VH -
+  100 * screenRadiusFraction(COLLAPSED_RADIUS * CLOSED_SCALE_BOOST);
+
+/**
  * Raio corrente da casca na tela, para `open` entre 0 e 1. Interpola em
  * unidades de cena antes de projetar, que é exatamente o que o `scale` do grupo
  * faz no PlanetScene — interpolar já em pixels daria outra curva.

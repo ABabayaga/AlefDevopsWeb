@@ -6,7 +6,7 @@ import ExpertiseAreas from "@/components/ExpertiseAreas";
 import ScrollCue from "@/components/ScrollCue";
 import { prefersStaticHero, useScrollProgress } from "@/hooks/useScrollProgress";
 import { reveal } from "@/lib/reveal";
-import { STAGE_CTA, STAGE_TITLE_OUT } from "@/lib/shellStages";
+import { CLOSED_TOP_PERCENT, STAGE_CTA, STAGE_TITLE_OUT } from "@/lib/shellStages";
 import { whatsappHref } from "@/lib/whatsapp";
 
 // ssr:false mantém o three fora do JS da primeira pintura e do HTML estático.
@@ -46,6 +46,17 @@ const Hero: React.FC<HeroProps> = ({ contentRevealed }) => {
     >
       <span className="min-w-0 leading-relaxed">{t("hero_eyebrow")}</span>
     </p>
+  );
+
+  // Uma linha por família: a quebra é do desenho, não da largura, por isso
+  // cada metade é bloco. O espaço entre os spans é para o leitor de tela, que
+  // sem ele leria "sistemassob". Caixa alta pelo CSS, então o texto nos
+  // locales continua em caixa normal.
+  const headline = (className: string) => (
+    <h1 className={`type-hero m-0 text-fg ${className}`}>
+      <span className="type-hero-sans">{t("hero_title.lead")}</span>{" "}
+      <span className="type-hero-serif">{t("hero_title.tail")}</span>
+    </h1>
   );
 
   // Cria o CTA com tabIndex condicional para respeitar aria-hidden.
@@ -94,7 +105,7 @@ const Hero: React.FC<HeroProps> = ({ contentRevealed }) => {
             className={reveal(contentRevealed)}
           >
             {eyebrow(false)}
-            <h1 className="type-display type-hero m-0 max-w-[18ch] text-fg">{t("title")}</h1>
+            {headline("")}
             <p className="measure mt-7 text-fg-muted">{t("hero_sub")}</p>
             <div className="mt-10">{createCta(contentRevealed)}</div>
           </div>
@@ -121,19 +132,31 @@ const Hero: React.FC<HeroProps> = ({ contentRevealed }) => {
         {/* Nasce ancorado à esquerda — o globo nasce deslocado à direita no
             PlanetScene e desliza ao centro junto com o scroll. O título sai
             quando a primeira raiz começa a crescer — o bloco de Infraestrutura
-            ocupa o canto onde o globo já está centralizado. Centralização
-            vertical por flex, não por -translate-y-1/2: essa transform
-            colidiria com o translate-y que reveal() usa pro fade. */}
+            ocupa o canto onde o globo já está centralizado.
+            Na vertical, o topo do eyebrow fica no topo do planeta fechado
+            (CLOSED_TOP_PERCENT); centralizar no palco deixava o bloco baixo,
+            porque no topo da página o sticky ainda começa abaixo do header. Por
+            `top` e não por transform: um translate colidiria com o translate-y
+            que reveal() usa pro fade. Na horizontal, o mesmo contêiner do
+            Header, para a headline alinhar com o logo. */}
         <div
           aria-hidden={!titleVisible}
-          className={`absolute inset-y-0 left-8 flex items-center lg:left-16 ${reveal(titleVisible)}`}
+          className={`pointer-events-none absolute inset-x-0 ${reveal(titleVisible)}`}
+          style={{ top: `${CLOSED_TOP_PERCENT}%` }}
         >
-          <div className="max-w-2xl -translate-y-10 px-4 text-left lg:-translate-y-14">
-            {eyebrow(false)}
-            <h1 className="type-display type-hero m-0 text-fg">{t("title")}</h1>
-            {/* Sem .measure aqui: seu teto de 62ch ainda força a quebra da
-                frase pt, que é o que este ajuste pede numa linha só. */}
-            <p className="mt-7 text-fg-muted">{t("hero_sub")}</p>
+          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+            <div className={`max-w-2xl text-left ${titleVisible ? "pointer-events-auto" : ""}`}>
+              {eyebrow(false)}
+              {/* O globo nasce deslocado à direita e deixa uns 610px livres à
+                  esquerda em 1440 (500 em 1024). A linha mais larga, "CUSTOM
+                  WEBSITES", mede 6.76em: no teto de 88px do type-hero dá 595px,
+                  então cabe sem teto próprio. Título novo num locale pede
+                  conferir essa conta. */}
+              {headline("")}
+              {/* Sem .measure aqui: seu teto de 62ch ainda força a quebra da
+                  frase pt, que é o que este ajuste pede numa linha só. */}
+              <p className="mt-7 text-fg-muted">{t("hero_sub")}</p>
+            </div>
           </div>
         </div>
 

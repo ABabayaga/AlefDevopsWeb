@@ -119,17 +119,33 @@
     text-wrap: balance;
   }
 
-  /* Headline curta, de duas linhas, então o teto é alto: é a escala que faz o
-     hero parecer intencional em vez de vazio. Mono em vez do --font-sans de
-     .type-display — mesma família dos rótulos técnicos (.type-label), pra
-     ler como leitura de terminal, não como título editorial. Sobrescreve
-     font-family/font-stretch/letter-spacing de .type-display por vir depois
-     dela na cascata. */
+  /* Headline do hero, só ela usa. Duas linhas em caixa alta e duas famílias:
+     a primeira na Archivo estreita e pesada (.type-hero-sans), a segunda numa
+     serifada condensada (.type-hero-serif). As duas são estreitas, então o teto
+     é alto: é a escala que faz o hero parecer intencional em vez de vazio.
+     As fontes vêm das variáveis do next/font e não de --font-sans/--font-mono:
+     o @theme inline não publica essas duas como variáveis CSS, e uma regra
+     com var(--font-mono) aqui caía, sem aviso, na fonte herdada. */
   .type-hero {
-    font-family: var(--font-mono);
+    font-size: clamp(2.75rem, 7vw, 5.5rem);
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+
+  .type-hero-sans {
+    display: block;
+    font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 800;
+    font-stretch: 62%;
+    letter-spacing: -0.01em;
+  }
+
+  .type-hero-serif {
+    display: block;
+    font-family: var(--font-instrument-serif), ui-serif, Georgia, serif;
+    font-weight: 400;
     font-stretch: normal;
     letter-spacing: -0.01em;
-    font-size: clamp(2.75rem, 7vw, 5.5rem);
   }
 
   .type-section {
