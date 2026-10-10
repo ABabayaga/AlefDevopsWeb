@@ -1,47 +1,19 @@
-import Link from "next/link";
 import { useTranslation } from "next-i18next";
 
-import { whatsappHref } from "@/lib/whatsapp";
+import CtaBand from "@/components/CtaBand";
 
-/**
- * Fecho da página. O primário é o mesmo pill do CTA do hero e a mesma
- * mensagem pré-preenchida; o secundário leva para /trabalhos, para quem ainda
- * quer ver antes de falar.
- */
+/** Fecho de /sobre: o bloco é o CtaBand compartilhado com /trabalhos. */
 const SobreCta: React.FC = () => {
   const { t } = useTranslation("common");
 
   return (
-    <section
-     
-      aria-labelledby="sobre-cta"
-      data-reveal
-      className="flex flex-col gap-8 border border-line bg-surface/60 px-6 py-10 sm:px-10 md:flex-row md:items-center md:justify-between"
-    >
-      <div>
-        <span className="type-label text-accent-2">{t("sobre.cta.label")}</span>
-        <h2 id="sobre-cta" className="type-display type-section mt-4 mb-0 text-fg">
-          {t("sobre.cta.title")}
-        </h2>
-      </div>
-
-      <div className="flex flex-col gap-3 sm:flex-row md:shrink-0">
-        <a
-          href={whatsappHref(t("hero_whatsapp_message"))}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="type-label inline-block rounded-full bg-button px-6 py-3.5 text-center text-white no-underline transition-colors hover:bg-button-hover"
-        >
-          {t("sobre.cta.whatsapp")}
-        </a>
-        <Link
-          href="/trabalhos"
-          className="type-label inline-block rounded-full border border-line px-6 py-3.5 text-center text-fg no-underline transition-colors hover:bg-surface-hover"
-        >
-          {t("sobre.cta.work")}
-        </Link>
-      </div>
-    </section>
+    <CtaBand
+      id="sobre-cta"
+      label={t("sobre.cta.label")}
+      title={t("sobre.cta.title")}
+      whatsappLabel={t("sobre.cta.whatsapp")}
+      secondary={{ href: "/trabalhos", label: t("sobre.cta.work") }}
+    />
   );
 };
 

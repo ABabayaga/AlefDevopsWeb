@@ -23,10 +23,21 @@
   "trabalhos_sistemas_label": "Sistemas",
   "trabalhos_visit": "Ver sitio",
   "trabalhos_new_tab": "se abre en una pestaña nueva",
-  "trabalhos_prev": "Proyectos anteriores",
-  "trabalhos_next": "Proyectos siguientes",
-  "trabalhos_goto": "Ir al grupo {{n}}",
-  "trabalhos_slide": "{{index}} de {{total}}",
+  "trabalhos_featured_label": "Destacados",
+  "trabalhos_all_label": "Todos los proyectos",
+  "trabalhos_filter_label": "Filtrar proyectos por tipo",
+  "trabalhos_filter_all": "Todos",
+  "trabalhos_stack": "Tecnologías",
+  "trabalhos_type": {
+    "site": "Sitio",
+    "app": "App",
+    "sistema": "Sistema"
+  },
+  "trabalhos_cta": {
+    "label": "Contacto",
+    "title": "¿Tienes un proyecto en mente?",
+    "whatsapp": "Hablar por WhatsApp"
+  },
   "modal_close": "Cerrar",
 
   "trabalhos_projects": {

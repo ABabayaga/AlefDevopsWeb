@@ -37,6 +37,19 @@
   --color-accent-2: #22d3ee;
 
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Troca de filtro em /trabalhos: a grade remonta e os cards sobem em
+     cascata. Só via motion-safe:, porque o atraso por card não é zerado pelo
+     bloco de movimento reduzido e o fill `both` deixaria o card invisível
+     durante ele. */
+  --animate-card-in: card-in 0.5s var(--ease-out-quint) both;
+
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
 }
 
 @layer base {
@@ -270,7 +283,7 @@
   }
 }
 
-/* Primeiro quadro dos itens que o GSAP faz entrar em /sobre (useGsapReveal).
+/* Primeiro quadro dos itens que o GSAP faz entrar em /sobre e /trabalhos (useGsapReveal).
    Fora de @layer pelo mesmo motivo da cortina: não pode perder para uma
    utility de opacidade. Só sem movimento reduzido, e só com a classe que o
    script do _document põe — sem JS, ou depois do timeout dele, tudo aparece. */
