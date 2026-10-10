@@ -4,7 +4,6 @@ import { useTranslation } from "next-i18next";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import SectionHeader from "@/components/SectionHeader";
 import SobreContent from "@/components/SobreContent";
 import { getI18nStaticProps } from "@/lib/getI18nStaticProps";
 
@@ -22,8 +21,9 @@ const Sobre = () => {
 
       <Header />
 
-      <main id="main" className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-24">
-        <SectionHeader label={t("nav_sobre")} title={t("sobre_header")} />
+      {/* Respiro menor que o de /trabalhos: a abertura já tem foto e régua
+          próprias, e o padding de lá deixava o topo vazio. */}
+      <main id="main" className="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-16">
         <SobreContent />
       </main>
 

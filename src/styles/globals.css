@@ -133,6 +133,23 @@
     animation: intro-packet 1.35s linear infinite;
   }
 
+  /* O PixelBlast é carregado com ssr:false, então surge sobre uma tela já pintada.
+     Sem fade, o padrão inteiro acende num único quadro. A animação vai no
+     container do próprio PixelBlast (não no wrapper), porque ele só monta quando
+     o chunk chega: assim o fade começa quando o padrão aparece, e não antes. */
+  .pixel-blast-fade-in {
+    animation: pixel-blast-fade-in 2.4s var(--ease-out-quint) both;
+  }
+
+  @keyframes pixel-blast-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   @keyframes intro-packet {
     0% {
       left: 0;

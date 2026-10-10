@@ -1,5 +1,6 @@
 import { useTranslation } from "next-i18next";
 import BrandLogo from "@/components/BrandLogo";
+import PixelBlastBackground from "@/components/PixelBlastBackground";
 import { MORPH_MS, type IntroPhase } from "@/hooks/useIntroSequence";
 
 /** Chaves de locale, na ordem das faixas de porcentagem do hook. */
@@ -112,6 +113,13 @@ const Intro: React.FC<IntroProps> = ({ phase, percent, stage }) => {
       }`}
       style={{ transitionDuration: `${MORPH_MS}ms` }}
     >
+      {/* O mesmo fundo da página, repetido aqui porque a cortina é opaca e
+          cobriria o de index.tsx. Com a mesma configuração dos dois lados, o
+          fade do "morphing" revela uma textura idêntica por baixo, sem troca
+          visível. O -z-10 fica acima do bg-ink: a cortina (z-60) é o contexto
+          de empilhamento, e filhos com z negativo pintam sobre o fundo dela. */}
+      <PixelBlastBackground />
+
       {/* Cada camada centraliza a si mesma via absolute inset-0, em vez de
           serem irmãs numa mesma linha flex — senão, enquanto o bloco de
           loading ainda ocupa espaço (só com opacity-0), ele empurra o logo

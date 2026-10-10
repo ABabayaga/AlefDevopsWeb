@@ -609,6 +609,10 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
           composer.render();
         } else renderer.render(scene, camera);
         raf = requestAnimationFrame(animate);
+        // Sem isso, threeRef guarda só o id do primeiro quadro e o
+        // cancelAnimationFrame da limpeza cancela um id já vencido — o loop
+        // seguia renderindo num contexto descartado.
+        if (threeRef.current) threeRef.current.raf = raf;
       };
       raf = requestAnimationFrame(animate);
       threeRef.current = {
@@ -652,20 +656,9 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
       if (t.touch) t.touch.radiusScale = liquidRadius;
     }
     prevConfigRef.current = cfg;
-    return () => {
-      if (threeRef.current && mustReinit) return;
-      if (!threeRef.current) return;
-      const t = threeRef.current;
-      t.resizeObserver?.disconnect();
-      cancelAnimationFrame(t.raf!);
-      t.quad?.geometry.dispose();
-      t.material.dispose();
-      t.composer?.dispose();
-      t.renderer.dispose();
-      t.renderer.forceContextLoss();
-      if (t.renderer.domElement.parentElement === container) container.removeChild(t.renderer.domElement);
-      threeRef.current = null;
-    };
+    // Sem limpeza aqui: troca de prop só atualiza uniforms, e as que exigem
+    // recriar já descartam o contexto antigo no bloco mustReinit acima. O
+    // descarte na desmontagem fica no efeito separado abaixo.
   }, [
     antialias,
     liquid,
@@ -688,6 +681,29 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
     color,
     speed,
   ]);
+
+  // A limpeza antiga ficava no efeito acima e saía cedo justamente quando ele
+  // tinha criado o contexto (`threeRef.current && mustReinit`), ou seja, em toda
+  // desmontagem real. Cada instância desmontada — a da cortina da intro, a da
+  // página a cada troca de idioma — deixava um contexto WebGL vivo. O navegador
+  // limita quantos coexistem e, passado o limite, perde o mais antigo; aí
+  // createShader devolve null e o three quebra em shaderSource.
+  useEffect(
+    () => () => {
+      const t = threeRef.current;
+      if (!t) return;
+      t.resizeObserver?.disconnect();
+      cancelAnimationFrame(t.raf!);
+      t.quad?.geometry.dispose();
+      t.material.dispose();
+      t.composer?.dispose();
+      t.renderer.dispose();
+      t.renderer.forceContextLoss();
+      t.renderer.domElement.remove();
+      threeRef.current = null;
+    },
+    [],
+  );
 
   return (
     <div

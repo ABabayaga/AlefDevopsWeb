@@ -48,16 +48,78 @@
 
   "sobre_header": "De ISP a código.",
   "sobre_photo_alt": "Foto de Alef Lima",
-  "sobre_bio": {
-    "p1": "Sou um desenvolvedor full-stack baseado em Campo Grande, Brasil, trabalhando com React, TypeScript, NestJS e MongoDB na construção de sistemas em produção, atualmente com foco em software de logística e gestão de frotas.",
-    "p2": "Antes de programar em tempo integral, passei mais de 14 anos como cofundador e CTO de um provedor de internet (ISP) regional, onde construí e operei toda a infraestrutura de rede do zero: roteamento BGP/OSPF, implantação de GPON/FTTH, peering no ponto de troca de tráfego local e monitoramento com Zabbix e Grafana. Vendi a empresa em 2024 e migrei totalmente para desenvolvimento de software, levando comigo essa visão sistêmica e essa mentalidade de infraestrutura."
-    
-  },
-  "sobre_career": {
-    "telecom": "Engenheiro de Telecom",
-    "infra": "Arquiteto de Infraestrutura",
-    "fullstack": "Desenvolvedor Full Stack",
-    "ai": "Construindo software com IA"
+  "sobre": {
+    "subtitle": "Desenvolvedor full-stack com mais de uma década de infraestrutura de rede por trás.",
+    "intro": "Sou desenvolvedor full-stack em Campo Grande, trabalhando com React, TypeScript, NestJS e MongoDB. Hoje meu foco é software de logística e gestão de frotas.",
+    "highlights": {
+      "label": "Em números",
+      "isp": {
+        "value": "14+ anos",
+        "caption": "como cofundador e CTO de um ISP regional"
+      },
+      "dev": {
+        "value": "2019",
+        "caption": "início no desenvolvimento de software"
+      },
+      "sale": {
+        "value": "2024",
+        "caption": "venda do ISP e dedicação total a software"
+      }
+    },
+    "timeline": {
+      "label": "Trajetória",
+      "current": "Atual",
+      "telecom": {
+        "year": "2010",
+        "title": "Especialista em Telecom",
+        "desc": "Cofundei um provedor de internet regional e construí a rede do zero."
+      },
+      "infra": {
+        "year": "2018",
+        "title": "Arquiteto de Infraestrutura",
+        "desc": "Roteamento BGP/OSPF, GPON/FTTH, peering em ponto de troca de tráfego, monitoramento com Zabbix e Grafana."
+      },
+      "fullstack": {
+        "year": "2019",
+        "title": "Desenvolvedor Full Stack",
+        "desc": "Comecei a programar e construí o app, a API e o painel administrativo do próprio provedor."
+      },
+      "ai": {
+        "year": "Hoje",
+        "title": "Construindo software com IA",
+        "desc": "Após vender a empresa em 2024, atuo 100% em desenvolvimento, levando a visão de infraestrutura para o software."
+      }
+    },
+    "skills": {
+      "label": "Habilidades",
+      "bridge": "Dois mundos, uma mesma visão de sistema.",
+      "infra": {
+        "title": "Infraestrutura",
+        "items": [
+          "BGP/OSPF",
+          "GPON/FTTH",
+          "Peering IX",
+          "Zabbix",
+          "Grafana"
+        ]
+      },
+      "dev": {
+        "title": "Desenvolvimento",
+        "items": [
+          "React",
+          "TypeScript",
+          "NestJS",
+          "MongoDB",
+          "Next.js"
+        ]
+      }
+    },
+    "cta": {
+      "label": "Contato",
+      "title": "Vamos construir algo juntos?",
+      "whatsapp": "Falar no WhatsApp",
+      "work": "Ver trabalhos"
+    }
   },
 
   "hero_eyebrow": "Alef Lima · Campo Grande-MS",
