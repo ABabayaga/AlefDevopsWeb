@@ -1,8 +1,6 @@
 import { useTranslation } from "next-i18next";
 
 import LabelRule from "@/components/sobre/LabelRule";
-import { useInView } from "@/hooks/useInView";
-import { reveal } from "@/lib/reveal";
 
 /**
  * As duas metades da trajetória lado a lado. A ordem é a da timeline (rede
@@ -17,26 +15,24 @@ const blocks = [
 
 const SobreSkills: React.FC = () => {
   const { t } = useTranslation("common");
-  const [ref, visible] = useInView<HTMLDivElement>();
 
   return (
     <section aria-labelledby="sobre-skills">
       <LabelRule id="sobre-skills" label={t("sobre.skills.label")} />
-      <p className="measure mt-6 mb-0 text-fg/80">{t("sobre.skills.bridge")}</p>
+      <p data-reveal className="measure mt-6 mb-0 text-fg/80">{t("sobre.skills.bridge")}</p>
 
-      <div ref={ref} className="mt-8 grid gap-px border border-line bg-line md:grid-cols-2">
-        {blocks.map((block, i) => {
+      <div className="mt-8 grid gap-px border border-line bg-line md:grid-cols-2">
+        {blocks.map((block) => {
           const items = t(`sobre.skills.${block.key}.items`, { returnObjects: true }) as string[];
           return (
             <div
               key={block.key}
-              className={`flex flex-col gap-5 bg-ink p-6 ${reveal(visible)}`}
-              style={{ transitionDelay: `${i * 110}ms` }}
+              className="flex flex-col gap-5 bg-ink p-6"
             >
-              <h3 className={`type-display m-0 text-[1.375rem] ${block.accent}`}>
+              <h3 data-reveal className={`type-display m-0 text-[1.375rem] ${block.accent}`}>
                 {t(`sobre.skills.${block.key}.title`)}
               </h3>
-              <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+              <ul data-reveal className="m-0 flex list-none flex-wrap gap-2 p-0">
                 {items.map((item) => (
                   <li
                     key={item}

@@ -14,6 +14,16 @@ export default function Document(props: DocumentProps) {
         <noscript>
           <style>{`[data-intro-curtain]{display:none!important}`}</style>
         </noscript>
+        {/* Esconde os [data-reveal] de /sobre antes da primeira pintura, para o
+            GSAP animar a entrada sem o conteúdo piscar (ver useGsapReveal).
+            A classe sai sozinha em 4s: se o bundle falhar, o texto não fica
+            preso invisível. Quando o GSAP já assumiu, ele segura a opacidade
+            inline e a saída da classe não muda nada. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add("js-reveal");setTimeout(function(){document.documentElement.classList.remove("js-reveal")},4000);`,
+          }}
+        />
       </Head>
       <body>
         <Main />

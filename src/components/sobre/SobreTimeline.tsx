@@ -1,8 +1,6 @@
 import { useTranslation } from "next-i18next";
 
 import LabelRule from "@/components/sobre/LabelRule";
-import { useInView } from "@/hooks/useInView";
-import { reveal } from "@/lib/reveal";
 
 const steps = ["telecom", "infra", "fullstack", "ai"] as const;
 
@@ -22,13 +20,12 @@ const steps = ["telecom", "infra", "fullstack", "ai"] as const;
  */
 const SobreTimeline: React.FC = () => {
   const { t } = useTranslation("common");
-  const [ref, visible] = useInView<HTMLOListElement>();
 
   return (
     <section aria-labelledby="sobre-timeline">
       <LabelRule id="sobre-timeline" label={t("sobre.timeline.label")} />
 
-      <ol ref={ref} className="m-0 mt-10 grid list-none p-0 xl:grid-cols-4">
+      <ol className="m-0 mt-10 grid list-none p-0 xl:grid-cols-4">
         {steps.map((step, i) => {
           const current = i === steps.length - 1;
           return (
@@ -37,8 +34,8 @@ const SobreTimeline: React.FC = () => {
               aria-current={current ? "step" : undefined}
               className={`relative border-l pb-10 pl-7 last:pb-0 xl:border-t xl:border-l-0 xl:pt-8 xl:pr-6 xl:pb-0 xl:pl-0 ${
                 current ? "border-accent" : "border-line"
-              } ${reveal(visible)}`}
-              style={{ transitionDelay: `${i * 110}ms` }}
+              }`}
+              data-reveal
             >
               <span
                 aria-hidden

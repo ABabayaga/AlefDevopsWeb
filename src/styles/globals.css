@@ -269,3 +269,13 @@
     display: none;
   }
 }
+
+/* Primeiro quadro dos itens que o GSAP faz entrar em /sobre (useGsapReveal).
+   Fora de @layer pelo mesmo motivo da cortina: não pode perder para uma
+   utility de opacidade. Só sem movimento reduzido, e só com a classe que o
+   script do _document põe — sem JS, ou depois do timeout dele, tudo aparece. */
+@media (prefers-reduced-motion: no-preference) {
+  .js-reveal [data-reveal] {
+    opacity: 0;
+  }
+}

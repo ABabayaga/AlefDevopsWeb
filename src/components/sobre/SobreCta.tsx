@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
 
-import { useInView } from "@/hooks/useInView";
-import { reveal } from "@/lib/reveal";
 import { whatsappHref } from "@/lib/whatsapp";
 
 /**
@@ -12,15 +10,13 @@ import { whatsappHref } from "@/lib/whatsapp";
  */
 const SobreCta: React.FC = () => {
   const { t } = useTranslation("common");
-  const [ref, visible] = useInView<HTMLElement>();
 
   return (
     <section
-      ref={ref}
+     
       aria-labelledby="sobre-cta"
-      className={`flex flex-col gap-8 border border-line bg-surface/60 px-6 py-10 sm:px-10 md:flex-row md:items-center md:justify-between ${reveal(
-        visible,
-      )}`}
+      data-reveal
+      className="flex flex-col gap-8 border border-line bg-surface/60 px-6 py-10 sm:px-10 md:flex-row md:items-center md:justify-between"
     >
       <div>
         <span className="type-label text-accent-2">{t("sobre.cta.label")}</span>

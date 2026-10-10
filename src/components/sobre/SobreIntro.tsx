@@ -19,7 +19,7 @@ const SobreIntro: React.FC = () => {
       <LabelRule label={t("nav_sobre")} />
 
       <div className="mt-8 flex flex-col gap-8 md:flex-row md:items-stretch md:gap-12">
-        <div className="relative aspect-4/5 w-44 shrink-0 overflow-hidden rounded-sm border border-line sm:w-52 md:order-last md:aspect-auto md:min-h-80 md:w-64 lg:w-72">
+        <div data-reveal className="relative aspect-4/5 w-44 shrink-0 overflow-hidden rounded-sm border border-line sm:w-52 md:order-last md:aspect-auto md:min-h-80 md:w-64 lg:w-72">
           <Image
             src="/alef.jpeg"
             alt={t("sobre_photo_alt")}
@@ -31,11 +31,11 @@ const SobreIntro: React.FC = () => {
         </div>
 
         <div className="flex min-w-0 flex-1 flex-col justify-center">
-          <h1 className="type-display type-section measure m-0 text-fg">{t("sobre_header")}</h1>
-          <p className="measure mt-5 mb-0 text-[1.1875rem] leading-snug text-pretty text-fg">
+          <h1 data-reveal className="type-display type-section measure m-0 text-fg">{t("sobre_header")}</h1>
+          <p data-reveal className="measure mt-5 mb-0 text-[1.1875rem] leading-snug text-pretty text-fg">
             {t("sobre.subtitle")}
           </p>
-          <p className="measure mt-5 mb-0 text-fg/80">{t("sobre.intro")}</p>
+          <p data-reveal className="measure mt-5 mb-0 text-fg/80">{t("sobre.intro")}</p>
         </div>
       </div>
     </header>

@@ -1,7 +1,5 @@
 import { useTranslation } from "next-i18next";
 
-import { useInView } from "@/hooks/useInView";
-import { reveal } from "@/lib/reveal";
 
 const highlights = ["isp", "dev", "sale"] as const;
 
@@ -12,21 +10,19 @@ const highlights = ["isp", "dev", "sale"] as const;
  */
 const SobreHighlights: React.FC = () => {
   const { t } = useTranslation("common");
-  const [ref, visible] = useInView<HTMLElement>();
 
   return (
-    <section ref={ref} aria-label={t("sobre.highlights.label")}>
+    <section aria-label={t("sobre.highlights.label")}>
       <dl className="m-0 grid gap-px border border-line bg-line sm:grid-cols-3">
-        {highlights.map((key, i) => (
+        {highlights.map((key) => (
           <div
             key={key}
-            className={`flex flex-col gap-2 bg-ink px-6 py-6 ${reveal(visible)}`}
-            style={{ transitionDelay: `${i * 90}ms` }}
+            className="flex flex-col gap-2 bg-ink px-6 py-6"
           >
-            <dt className="type-display m-0 text-[2rem] text-accent-2 lg:text-[2.5rem]">
+            <dt data-reveal className="type-display m-0 text-[2rem] text-accent-2 lg:text-[2.5rem]">
               {t(`sobre.highlights.${key}.value`)}
             </dt>
-            <dd className="m-0 text-[0.9375rem] leading-snug text-fg/80">
+            <dd data-reveal className="m-0 text-[0.9375rem] leading-snug text-fg/80">
               {t(`sobre.highlights.${key}.caption`)}
             </dd>
           </div>
