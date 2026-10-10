@@ -21,28 +21,62 @@
   "trabalhos_sites_label": "Sitios",
   "trabalhos_apps_label": "Apps",
   "trabalhos_sistemas_label": "Sistemas",
+  "trabalhos_visit": "Ver sitio",
+  "trabalhos_new_tab": "se abre en una pestaña nueva",
+  "trabalhos_prev": "Proyectos anteriores",
+  "trabalhos_next": "Proyectos siguientes",
+  "trabalhos_goto": "Ir al grupo {{n}}",
+  "trabalhos_slide": "{{index}} de {{total}}",
   "modal_close": "Cerrar",
 
   "trabalhos_projects": {
-    "mm": {
+    "game-truck": {
+      "title": "Game Truck",
+      "desc": "Sitio de la plataforma de gestión de flotas que convierte los datos de la flota en indicadores para el gestor y gamificación con ranking para los conductores."
+    },
+    "game-truck-calculadora": {
+      "title": "Calculadora Game Truck",
+      "desc": "Landing page con calculadora interactiva que estima el gasto mensual y anual en diésel de la flota y el ahorro posible con la plataforma."
+    },
+    "transmano": {
+      "title": "Transmano Transportes",
+      "desc": "Sitio institucional de una transportista por carretera con flota propia rastreada y monitoreo las 24 horas."
+    },
+    "avante": {
+      "title": "Avante Global Seguros",
+      "desc": "Sitio de una correduría con más de 35 años en el mercado de seguros y consultoría empresarial."
+    },
+    "br7": {
+      "title": "Agência BR7",
+      "desc": "Sitio del estudio de branding, contenido y web enfocado en transporte, logística y negocios locales."
+    },
+    "upper-gr": {
+      "title": "Grupo Upper GR",
+      "desc": "Sitio institucional del grupo de soluciones en logística y gestión de flotas."
+    },
+    "motora-match": {
       "title": "Motora Match",
-      "desc": "Plataforma que conecta a conductores profesionales y empresas de transporte de forma inteligente, segura y eficiente. Encuentra fletes, construye tu perfil profesional y forma parte de una comunidad exclusiva.",
-      "stack": "Vite · Tailwind · TypeScript"
+      "desc": "Plataforma que conecta a conductores profesionales y empresas de transporte de forma inteligente, segura y eficiente. Encuentra fletes, construye tu perfil profesional y forma parte de una comunidad exclusiva."
     },
-    "gsn": {
+    "galeria-sandra-novas": {
       "title": "Galeria Sandra Novas",
-      "desc": "Sitio de la galería de arte Sandra Novas.",
-      "stack": "React · Vite · Tailwind · TypeScript"
+      "desc": "Sitio de la galería de arte Sandra Novas."
     },
-    "rt2": {
+    "repense-track": {
       "title": "RepenseTrack",
-      "desc": "Conecta a conductores, empresas de transporte y centros de operación en una aplicación completa para la gestión de la jornada, comunicación en tiempo real y control de las entregas.",
-      "stack": "Flutter · NestJS · MongoDB · Redis"
+      "desc": "Conecta a conductores, empresas de transporte y centros de operación en una aplicación completa para la gestión de la jornada, comunicación en tiempo real y control de las entregas."
     },
-    "rpa": {
+    "rpa-facil-contabil": {
       "title": "RPA Fácil Contábil",
-      "desc": "Sistema para el envío automático de documentos vía WhatsApp.",
-      "stack": "NestJS · MongoDB · Vite · TypeScript · Tailwind · Docker"
+      "desc": "Sistema para el envío automático de documentos vía WhatsApp."
+    },
+    "upper-quiz": {
+      "title": "Upper Quiz",
+      "desc": "Quiz gamificado creado para una charla de Upper GR, con preguntas en tiempo real y ranking de los 3 mejores participantes."
+    },
+    "br7-sistema": {
+      "title": "Sistema BR7",
+      "desc": "Sistema web de Agência BR7, con área restringida de acceso por login."
     }
   },
 

@@ -1,49 +1,69 @@
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
 
+import type { Project } from "@/data/projects";
+
 interface ProjectCardProps {
-  /** Chave em t(`trabalhos_projects.${projectKey}.*`). */
-  projectKey: string;
-  image: string;
-  /** "landscape" recorta pra 16:9 (prints de site); "portrait" mostra a tela
-   * inteira do app sem cortar — o print do celular é bem mais alto que largo. */
-  orientation?: "landscape" | "portrait";
+  project: Project;
+  /** Quem posiciona o card sabe a largura dele em cada breakpoint: o carrossel
+   * mostra 1/2/3 por vez, a grade 1/2. */
+  sizes: string;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ projectKey, image, orientation = "landscape" }) => {
+/**
+ * O mesmo card nas três seções de /trabalhos. Ocupa a altura toda do
+ * contêiner (h-full) para os cards de uma fileira alinharem a base, e o link
+ * desce com mt-auto pelo mesmo motivo — descrições têm tamanhos diferentes.
+ */
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, sizes }) => {
   const { t } = useTranslation("common");
-  const title = t(`trabalhos_projects.${projectKey}.title`);
+  const title = t(`trabalhos_projects.${project.slug}.title`);
+  const contain = project.imageFit === "contain";
 
   return (
-    <div className="overflow-hidden rounded-sm border border-line bg-surface">
-      <div
-        className={
-          orientation === "portrait"
-            ? "relative h-90 bg-ink"
-            : "relative aspect-video"
-        }
-      >
+    <article className="flex h-full flex-col overflow-hidden rounded-sm border border-line bg-surface">
+      {/* 16:10 é a proporção dos prints (1440x900), então sites entram sem corte. */}
+      <div className="relative aspect-16/10 border-b border-line bg-ink">
         <Image
-          src={image}
+          src={project.image}
           alt={title}
           fill
-          sizes="(min-width: 640px) 50vw, 100vw"
-          className={orientation === "portrait" ? "object-contain" : "object-cover"}
+          sizes={sizes}
+          className={contain ? "object-contain py-4" : "object-cover object-top"}
         />
       </div>
 
-      <div className="flex flex-col gap-3 p-6">
+      <div className="flex flex-1 flex-col gap-3 p-6">
         <h3 className="type-display m-0 text-[1.375rem] text-fg">{title}</h3>
 
-        <p className="m-0 text-[0.9375rem] leading-relaxed text-fg-muted">
-          {t(`trabalhos_projects.${projectKey}.desc`)}
+        <p className="m-0 line-clamp-2 text-[0.9375rem] leading-relaxed text-fg-muted">
+          {t(`trabalhos_projects.${project.slug}.desc`)}
         </p>
 
-        <p className="m-0 font-mono text-[0.6875rem] leading-relaxed tracking-[0.14em] text-fg-muted/75">
-          {t(`trabalhos_projects.${projectKey}.stack`)}
-        </p>
+        <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+          {project.tech.map((tech) => (
+            <li
+              key={tech}
+              className="rounded-full border border-line px-2.5 py-1 font-mono text-[0.6875rem] leading-none tracking-[0.06em] text-accent-2"
+            >
+              {tech}
+            </li>
+          ))}
+        </ul>
+
+        {project.url && (
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${t("trabalhos_visit")}: ${title} (${t("trabalhos_new_tab")})`}
+            className="type-label mt-auto self-start pt-3 text-accent-2 no-underline underline-offset-4 hover:underline"
+          >
+            {t("trabalhos_visit")} <span aria-hidden>→</span>
+          </a>
+        )}
       </div>
-    </div>
+    </article>
   );
 };
 
