@@ -55,7 +55,7 @@ const DesktopIcon: React.FC<DesktopIconProps> = ({ lit }) => (
       rx="2.5"
       stroke="currentColor"
       strokeWidth="1.5"
-      fill={lit ? "var(--color-os2)" : "none"}
+      fill={lit ? "var(--color-accent)" : "none"}
       fillOpacity={lit ? 0.9 : 0}
       className="transition-[fill-opacity] duration-200"
     />
@@ -141,14 +141,14 @@ const Intro: React.FC<IntroProps> = ({ phase, percent, stage }) => {
 
               <div className="relative h-px w-full bg-line">
                 <div
-                  className="absolute inset-y-0 left-0 bg-os2"
+                  className="absolute inset-y-0 left-0 bg-accent"
                   style={{ width: `${percent}%` }}
                 />
 
                 {PACKETS.map((packet) => (
                   <span
                     key={packet}
-                    className="intro-packet absolute top-1/2 left-0 block h-1 w-1 -translate-y-1/2 rounded-full bg-om3"
+                    className="intro-packet absolute top-1/2 left-0 block h-1 w-1 -translate-y-1/2 rounded-full bg-accent-2"
                     style={{ animationDelay: `${packet * 0.45}s` }}
                   />
                 ))}

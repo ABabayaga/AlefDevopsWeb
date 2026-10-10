@@ -59,7 +59,7 @@ const Hero: React.FC<HeroProps> = ({ contentRevealed }) => {
       target="_blank"
       rel="noopener noreferrer"
       tabIndex={isFocusable ? 0 : -1}
-      className="type-label inline-block rounded-full bg-os2 px-6 py-3.5 text-ink no-underline transition-opacity hover:opacity-85"
+      className="type-label inline-block rounded-full bg-button px-6 py-3.5 text-white no-underline transition-colors hover:bg-button-hover"
     >
       {t("hero_whatsapp")}
     </a>

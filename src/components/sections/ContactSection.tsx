@@ -47,7 +47,7 @@ const ContactSection: React.FC = () => {
   };
 
   const inputClass =
-    "w-full border-0 border-b border-line bg-transparent px-0 py-3 text-fg outline-none transition-colors placeholder:text-fg-muted/50 focus:border-os2";
+    "w-full border-0 border-b border-line bg-transparent px-0 py-3 text-fg outline-none transition-colors placeholder:text-fg-muted/50 focus:border-accent";
 
   return (
     <section id="contact" className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
@@ -98,7 +98,7 @@ const ContactSection: React.FC = () => {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="type-label rounded-full bg-os2 px-7 py-3.5 text-ink transition-opacity hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-50"
+              className="type-label rounded-full bg-button px-7 py-3.5 text-white transition-colors hover:bg-button-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
               {status === "sending" ? t("form.sending") : t("form.send")}
             </button>
@@ -108,7 +108,7 @@ const ContactSection: React.FC = () => {
               role="status"
               aria-live="polite"
               className={`m-0 text-[0.9375rem] ${
-                status === "error" ? "text-os2" : "text-om3"
+                status === "error" ? "text-accent" : "text-accent-2"
               }`}
             >
               {status === "sent" && t("form.sent")}

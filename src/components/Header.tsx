@@ -125,7 +125,7 @@ const Header: React.FC<HeaderProps> = ({ introPhase = "done", contentRevealed = 
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-line opacity-60 transition hover:border-os2 hover:opacity-100"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-line opacity-60 transition hover:border-accent-2 hover:opacity-100"
               >
                 {/* os PNGs são line-art preto puro: sem invert desaparecem no escuro */}
                 <Image src={social.icon} alt={social.alt} width={20} height={14} className="invert" />
@@ -137,7 +137,7 @@ const Header: React.FC<HeaderProps> = ({ introPhase = "done", contentRevealed = 
             href={contactHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="type-label rounded-full bg-os2 px-4 py-2 text-ink no-underline transition-opacity hover:opacity-85"
+            className="type-label rounded-full bg-button px-4 py-2 text-white no-underline transition-colors hover:bg-button-hover"
           >
             {t("hero_whatsapp")}
           </a>

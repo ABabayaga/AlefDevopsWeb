@@ -46,7 +46,7 @@ const ServicesSection: React.FC = () => {
             <ul className="m-0 flex list-none flex-col gap-2 p-0">
               {details.map((detail) => (
                 <li key={detail} className="flex gap-3 text-[0.9375rem] leading-relaxed text-fg-muted">
-                  <span aria-hidden className="mt-[0.72em] h-px w-2.5 shrink-0 bg-om3/70" />
+                  <span aria-hidden className="mt-[0.72em] h-px w-2.5 shrink-0 bg-accent-2/70" />
                   <span>{t(`${service.key}.${detail}`)}</span>
                 </li>
               ))}

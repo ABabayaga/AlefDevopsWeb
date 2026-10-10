@@ -66,8 +66,8 @@ const LanguageSwitcher: React.FC = () => {
               <button
                 type="button"
                 onClick={() => changeLanguage(lng.code)}
-                className={`flex w-full items-center gap-3 px-4 py-3 text-left text-[0.9375rem] transition-colors hover:bg-raised ${
-                  lng.code === current.code ? "text-os2" : "text-fg-muted"
+                className={`flex w-full items-center gap-3 px-4 py-3 text-left text-[0.9375rem] transition-colors hover:bg-surface-hover ${
+                  lng.code === current.code ? "text-accent-2" : "text-fg-muted"
                 }`}
               >
                 <Image src={lng.flag} alt="" width={18} height={18} />

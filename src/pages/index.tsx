@@ -38,7 +38,7 @@ export default function Home() {
         <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#070b10" />
+        <meta name="theme-color" content="#0B1220" />
         <link rel="icon" href="/code-square.svg" />
 
         <link rel="canonical" href={canonicalUrl} />

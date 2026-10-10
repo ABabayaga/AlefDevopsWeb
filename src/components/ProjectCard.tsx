@@ -15,7 +15,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectKey, image, orientatio
   const title = t(`trabalhos_projects.${projectKey}.title`);
 
   return (
-    <div className="overflow-hidden rounded-sm border border-line bg-raised">
+    <div className="overflow-hidden rounded-sm border border-line bg-surface">
       <div
         className={
           orientation === "portrait"

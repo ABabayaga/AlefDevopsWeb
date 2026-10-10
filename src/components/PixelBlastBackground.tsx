@@ -6,7 +6,7 @@ const PixelBlast = dynamic(() => import("@/components/PixelBlast"), { ssr: false
 
 /** Fundo decorativo fixo, atrás de todo o conteúdo da página. pointer-events-none
  *  pra nunca competir com cliques em nav/CTA/modal — é textura, não interação.
- *  Cor próxima de `raised`/`line` e opacidade baixa: o padrão precisa ler como
+ *  Cor próxima de `surface-hover`/`line` e opacidade baixa: o padrão precisa ler como
  *  ruído ambiente atrás do texto e do planeta, não como uma camada disputando
  *  atenção com eles. */
 const PixelBlastBackground: React.FC = () => (

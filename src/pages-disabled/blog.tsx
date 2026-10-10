@@ -25,7 +25,7 @@ const Blog = () => {
       <Head>
         <title>{`${t("blog")} · Alef Devops`}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#070b10" />
+        <meta name="theme-color" content="#0B1220" />
         <link rel="icon" href="/code-square.svg" />
       </Head>
 
@@ -38,7 +38,7 @@ const Blog = () => {
           {posts.map((post) => (
             <li key={post.href}>
               <Link href={post.href} className="group block no-underline">
-                <div className="overflow-hidden rounded-sm border border-line transition-colors group-hover:border-om3/50">
+                <div className="overflow-hidden rounded-sm border border-line transition-colors group-hover:border-accent-2/50">
                   <Image
                     src={post.cover}
                     alt=""

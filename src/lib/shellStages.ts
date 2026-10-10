@@ -5,7 +5,7 @@
  * limiares de estágio em useScrollProgress — com um comentário pedindo para
  * mudar as duas juntas. As raízes seriam a terceira cópia do mesmo número.
  *
- * As cores espelham --color-os2, --color-fg e --color-om3 de globals.css;
+ * As cores espelham --color-accent, --color-accent-2 e --color-fg de globals.css;
  * `color` é o que o three consome, `cssColor` é o que o SVG consome, e as duas
  * saem da mesma linha justamente para não divergirem.
  */
@@ -69,13 +69,13 @@ export interface Layer {
 
 // O raio é a trajetória: a web2 é o núcleo, a web3 o meio, a infra a
 // superfície. Web2 é a frente principal — abre primeiro e leva a cor
-// primária (os2) mesmo sendo a casca menor; infra fecha a sequência como
+// primária (accent) mesmo sendo a casca menor; infra fecha a sequência como
 // base que sustenta as outras duas, de dentro para fora.
 export const LAYERS: readonly Layer[] = [
   {
     key: "web2",
-    color: 0xf4c542,
-    cssColor: "var(--color-os2)",
+    color: 0x3b82f6,
+    cssColor: "var(--color-accent)",
     count: 260,
     radius: 0.72,
     from: 0.1,
@@ -84,8 +84,8 @@ export const LAYERS: readonly Layer[] = [
   },
   {
     key: "web3",
-    color: 0x22d3c5,
-    cssColor: "var(--color-om3)",
+    color: 0x22d3ee,
+    cssColor: "var(--color-accent-2)",
     count: 380,
     radius: 1.0,
     from: 0.32,
@@ -94,7 +94,7 @@ export const LAYERS: readonly Layer[] = [
   },
   {
     key: "infra",
-    color: 0xdde5ee,
+    color: 0xe6edf7,
     cssColor: "var(--color-fg)",
     count: 520,
     // Era 1.6: os blocos de texto ganharam listas de sub-itens e passaram a

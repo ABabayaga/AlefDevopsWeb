@@ -23,7 +23,7 @@ const SobreCta: React.FC = () => {
       )}`}
     >
       <div>
-        <span className="type-label text-os2">{t("sobre.cta.label")}</span>
+        <span className="type-label text-accent-2">{t("sobre.cta.label")}</span>
         <h2 id="sobre-cta" className="type-display type-section mt-4 mb-0 text-fg">
           {t("sobre.cta.title")}
         </h2>
@@ -34,13 +34,13 @@ const SobreCta: React.FC = () => {
           href={whatsappHref(t("hero_whatsapp_message"))}
           target="_blank"
           rel="noopener noreferrer"
-          className="type-label inline-block rounded-full bg-os2 px-6 py-3.5 text-center text-ink no-underline transition-opacity hover:opacity-85"
+          className="type-label inline-block rounded-full bg-button px-6 py-3.5 text-center text-white no-underline transition-colors hover:bg-button-hover"
         >
           {t("sobre.cta.whatsapp")}
         </a>
         <Link
           href="/trabalhos"
-          className="type-label inline-block rounded-full border border-fg/30 px-6 py-3.5 text-center text-fg no-underline transition-colors hover:border-os2 hover:text-os2"
+          className="type-label inline-block rounded-full border border-line px-6 py-3.5 text-center text-fg no-underline transition-colors hover:bg-surface-hover"
         >
           {t("sobre.cta.work")}
         </Link>

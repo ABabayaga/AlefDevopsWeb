@@ -12,7 +12,7 @@ type SectionHeaderProps = {
 const SectionHeader: React.FC<SectionHeaderProps> = ({ label, title, description }) => (
   <header className="mb-12 lg:mb-16">
     <div className="flex items-center gap-4">
-      <span className="type-label text-os2">{label}</span>
+      <span className="type-label text-accent-2">{label}</span>
       <span aria-hidden className="h-px flex-1 bg-line" />
     </div>
 

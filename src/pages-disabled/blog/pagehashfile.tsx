@@ -25,7 +25,7 @@ const Pagehashfile = () => {
       <Head>
         <title>{`${title} · Alef Devops`}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#070b10" />
+        <meta name="theme-color" content="#0B1220" />
         <link rel="icon" href="/code-square.svg" />
       </Head>
 
@@ -34,7 +34,7 @@ const Pagehashfile = () => {
       <main id="main" className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-24">
         <article>
           <div className="flex items-center gap-4">
-            <span className="type-label text-os2">{t("blog")}</span>
+            <span className="type-label text-accent-2">{t("blog")}</span>
             <span aria-hidden className="h-px flex-1 bg-line" />
           </div>
 

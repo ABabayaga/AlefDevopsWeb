@@ -16,7 +16,7 @@ const Trabalhos = () => {
       <Head>
         <title>{`${t("nav_trabalhos")} · Alef Devops`}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#070b10" />
+        <meta name="theme-color" content="#0B1220" />
         <link rel="icon" href="/code-square.svg" />
       </Head>
 

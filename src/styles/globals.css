@@ -8,20 +8,33 @@
 }
 
 @theme {
-  /* Superfícies: escuro de tela de NOC à noite, com viés azul — nunca preto puro. */
-  --color-ink: #02001a;
-  --color-surface: #0e141c;
-  --color-raised: #141d28;
-  --color-line: #1c2733;
-  --color-line-soft: #131b24;
+  /* Paleta "Navy tech". Único lugar com as cores do site: o Tailwind publica
+     cada token como variável em :root (--color-ink, ...). Os poucos pontos que
+     não leem CSS (WebGL em shellStages.ts, Satori em api/og.tsx) repetem os
+     valores em cru — ao mudar um token, conferir esses dois arquivos. */
 
-  --color-fg: #f0f5fb;
-  --color-fg-muted: #a3b3c7;
+  /* Superfícies: navy em vez de preto, mais institucional que a tela de NOC. */
+  --color-ink: #0b1220;
+  --color-surface: #111a2e;
+  --color-surface-hover: #16213a;
+  --color-line: #1e2a44;
+  --color-line-soft: #16213a;
 
-  /* Acentos tirados das jaquetas padronizadas de fibra:
-     amarelo = monomodo OS2 (FTTH, backbone), aqua = multimodo OM3. */
-  --color-os2: #f4c542;
-  --color-om3: #22d3c5;
+  /* Texto nunca em branco puro: #fff sobre navy vibra. fg-muted dá 6:1 sobre
+     surface, folga acima do AA. */
+  --color-fg: #e6edf7;
+  --color-fg-muted: #8a99b4;
+
+  /* accent é o azul da marca (foco, seleção, etapa atual, camada Web2).
+     O botão usa um passo mais escuro: branco sobre #3b82f6 dá só 3.68:1 e o
+     rótulo do botão é texto pequeno; sobre #2563eb sobe para 5.17:1. */
+  --color-accent: #3b82f6;
+  --color-button: #2563eb;
+  --color-button-hover: #1d4ed8;
+
+  /* Ciano só em detalhe: eyebrows, índices, chips, ícones. Usado demais vira
+     neon e perde a função de marcar o que é secundário. */
+  --color-accent-2: #22d3ee;
 
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -56,12 +69,12 @@
   }
 
   ::selection {
-    background-color: var(--color-os2);
+    background-color: var(--color-accent);
     color: var(--color-ink);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-os2);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
     border-radius: 2px;
   }

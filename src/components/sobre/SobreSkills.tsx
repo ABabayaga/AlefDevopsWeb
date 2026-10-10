@@ -7,11 +7,12 @@ import { reveal } from "@/lib/reveal";
 /**
  * As duas metades da trajetória lado a lado. A ordem é a da timeline (rede
  * primeiro, código depois) e a cor segue a do hero: infra neutra em fg,
- * desenvolvimento no amarelo primário, que é o que se oferece hoje.
+ * desenvolvimento no azul primário da camada Web2, que é o que se oferece
+ * hoje; os chips ficam no ciano de detalhe.
  */
 const blocks = [
   { key: "infra", accent: "text-fg", chip: "border-line text-fg/85" },
-  { key: "dev", accent: "text-os2", chip: "border-os2/40 text-fg" },
+  { key: "dev", accent: "text-accent", chip: "border-accent-2/40 text-fg" },
 ] as const;
 
 const SobreSkills: React.FC = () => {

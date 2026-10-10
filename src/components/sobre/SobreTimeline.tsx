@@ -13,7 +13,7 @@ const steps = ["telecom", "infra", "fullstack", "ai"] as const;
  *
  * Cada <li> desenha o próprio trecho da linha (border-l no mobile, border-t no
  * desktop) sem gap entre eles, então os trechos se emendam numa linha contínua
- * e o último pode ter outra cor: a etapa atual acende em os2.
+ * e o último pode ter outra cor: a etapa atual acende em accent.
  *
  * O título usa .type-label com tracking menor que o padrão e nowrap no
  * desktop: com 0.18em, "Arquiteto de Infraestrutura" quebrava em duas linhas
@@ -36,25 +36,25 @@ const SobreTimeline: React.FC = () => {
               key={step}
               aria-current={current ? "step" : undefined}
               className={`relative border-l pb-10 pl-7 last:pb-0 xl:border-t xl:border-l-0 xl:pt-8 xl:pr-6 xl:pb-0 xl:pl-0 ${
-                current ? "border-os2" : "border-line"
+                current ? "border-accent" : "border-line"
               } ${reveal(visible)}`}
               style={{ transitionDelay: `${i * 110}ms` }}
             >
               <span
                 aria-hidden
                 className={`absolute top-1.5 -left-1.25 h-2.5 w-2.5 rounded-full xl:-top-1.25 xl:left-0 ${
-                  current ? "bg-os2 shadow-[0_0_0_4px_rgb(244_197_66/0.18)]" : "border border-fg/50 bg-ink"
+                  current ? "bg-accent ring-4 ring-accent/20" : "border border-fg/50 bg-ink"
                 }`}
               />
 
               <div className="flex items-baseline gap-3">
                 <span
-                  className={`type-display text-[1.75rem] xl:text-[2rem] ${current ? "text-os2" : "text-fg"}`}
+                  className={`type-display text-[1.75rem] xl:text-[2rem] ${current ? "text-accent" : "text-fg"}`}
                 >
                   {t(`sobre.timeline.${step}.year`)}
                 </span>
                 {current && (
-                  <span className="type-label rounded-full border border-os2/50 px-2 py-1 text-[0.625rem] text-os2">
+                  <span className="type-label rounded-full border border-accent/50 px-2 py-1 text-[0.625rem] text-accent">
                     {t("sobre.timeline.current")}
                   </span>
                 )}
@@ -62,7 +62,7 @@ const SobreTimeline: React.FC = () => {
 
               <h3
                 className={`type-label mt-4 mb-0 text-[0.75rem] tracking-[0.06em] xl:whitespace-nowrap ${
-                  current ? "text-os2" : "text-fg"
+                  current ? "text-accent" : "text-fg"
                 }`}
               >
                 {t(`sobre.timeline.${step}.title`)}

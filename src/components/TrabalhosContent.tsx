@@ -26,7 +26,7 @@ const TrabalhosContent: React.FC = () => {
       {categories.map((category) => (
         <section key={category.id}>
           <div className="flex items-center gap-4">
-            <span className="type-label text-os2">{t(category.labelKey)}</span>
+            <span className="type-label text-accent-2">{t(category.labelKey)}</span>
             <span aria-hidden className="h-px flex-1 bg-line" />
           </div>
 

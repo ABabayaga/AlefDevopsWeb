@@ -85,7 +85,7 @@ export default function MusicToggle() {
           {BAR_HEIGHTS.map((height, index) => (
             <span
               key={index}
-              className={`w-0.75 rounded-full bg-om3 ${isPlaying ? "music-bar" : ""}`}
+              className={`w-0.75 rounded-full bg-accent-2 ${isPlaying ? "music-bar" : ""}`}
               style={{ height, animationDelay: BAR_DELAYS[index] }}
             />
           ))}

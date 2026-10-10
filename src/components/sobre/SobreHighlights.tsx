@@ -23,7 +23,7 @@ const SobreHighlights: React.FC = () => {
             className={`flex flex-col gap-2 bg-ink px-6 py-6 ${reveal(visible)}`}
             style={{ transitionDelay: `${i * 90}ms` }}
           >
-            <dt className="type-display m-0 text-[2rem] text-os2 lg:text-[2.5rem]">
+            <dt className="type-display m-0 text-[2rem] text-accent-2 lg:text-[2.5rem]">
               {t(`sobre.highlights.${key}.value`)}
             </dt>
             <dd className="m-0 text-[0.9375rem] leading-snug text-fg/80">

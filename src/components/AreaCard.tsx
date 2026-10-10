@@ -7,7 +7,7 @@ interface AreaCardProps {
   areaKey: string;
   /**
    * "compact" (default) usa título/índice no tamanho e cor originais.
-   * "featured" aumenta o título e troca o índice para `os2` — é só ênfase
+   * "featured" aumenta o título e troca o índice para `accent` — é só ênfase
    * visual, usada hoje pelo bloco do Web2. A lista de sub-itens em
    * `areas.<key>.items` é independente disso: toda área tem uma e ela sempre
    * renderiza, em `auto-fit` em vez de um breakpoint fixo porque a largura
@@ -40,7 +40,7 @@ const AreaCard: React.FC<AreaCardProps> = ({ index, areaKey, variant = "compact"
 
   return (
     <>
-      <span aria-hidden className={`type-label ${featured ? "text-os2" : "text-om3"}`}>
+      <span aria-hidden className={`type-label ${featured ? "text-accent" : "text-accent-2"}`}>
         {index}
       </span>
 
@@ -60,7 +60,7 @@ const AreaCard: React.FC<AreaCardProps> = ({ index, areaKey, variant = "compact"
         <ul className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-x-4 gap-y-1.5 p-0">
           {items.map((item) => (
             <li key={item} className="flex gap-1.5 text-[0.8125rem] leading-snug text-fg-muted">
-              <span aria-hidden className="text-os2">
+              <span aria-hidden className="text-accent-2">
                 →
               </span>
               {item}

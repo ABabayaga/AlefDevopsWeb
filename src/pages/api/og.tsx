@@ -7,9 +7,9 @@ const HEIGHT = 630;
 
 // Mesmos tokens do @theme em globals.css — o Satori não lê CSS, então os
 // valores precisam estar aqui em cru.
-const INK = "#02001a";
-const FG = "#f0f5fb";
-const OM3 = "#22d3c5";
+const INK = "#0b1220";
+const FG = "#e6edf7";
+const ACCENT_2 = "#22d3ee";
 
 const WORDMARK = "Alef Devops";
 
@@ -62,7 +62,7 @@ function pixelField() {
         top: y,
         width: SIZE,
         height: SIZE,
-        backgroundColor: OM3,
+        backgroundColor: ACCENT_2,
         opacity: o,
       }}
     />
